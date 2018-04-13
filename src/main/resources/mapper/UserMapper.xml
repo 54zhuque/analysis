@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.performance.analysis.dao.UserDao">
+
+    <!-- 所有列 -->
+    <sql id="Column_list">
+        id,
+        username,
+        password
+    </sql>
+
+    <resultMap id="showUser" type="User" >
+        <id  column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+    </resultMap>
+
+    <!-- 根据用户名和密码查询数据 -->
+    <select id="getUser"  resultMap="showUser">
+        SELECT
+        <include refid="Column_list" />
+        FROM user
+        WHERE username = #{username} and password =  #{password}
+    </select>
+
+</mapper>
