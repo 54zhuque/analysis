@@ -24,7 +24,7 @@ layui.use(['form','jquery',"layer"],function() {
 
     //公告层
     function showNotice(){
-        layer.open({
+        /*layer.open({
             type: 1,
             title: "系统公告",
             area: '300px',
@@ -43,10 +43,10 @@ layui.use(['form','jquery',"layer"],function() {
             cancel: function(index, layero){
                 tipsShow();
             }
-        });
+        });*/
     }
     function tipsShow(){
-        window.sessionStorage.setItem("showNotice","true");
+        /*window.sessionStorage.setItem("showNotice","true");*/
         if($(window).width() > 432){  //如果页面宽度不足以显示顶部“系统公告”按钮，则不提示
             layer.tips('系统公告躲在了这里', '#userInfo', {
                 tips: 3,
@@ -54,9 +54,9 @@ layui.use(['form','jquery',"layer"],function() {
             });
         }
     }
-    $(".showNotice").on("click",function(){
+   /* $(".showNotice").on("click",function(){
         showNotice();
-    })
+    })*/
 
     //锁屏
     function lockPage(){

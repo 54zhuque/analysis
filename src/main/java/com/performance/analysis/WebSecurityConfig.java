@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter{
         InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
 
         addInterceptor.excludePathPatterns("/error");
+        addInterceptor.excludePathPatterns("/test");
         addInterceptor.excludePathPatterns("/login**");
         addInterceptor.excludePathPatterns("/css/**"); //匿名访问静态资源
         addInterceptor.excludePathPatterns("/images/**");

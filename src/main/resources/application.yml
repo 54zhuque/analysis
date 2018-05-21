@@ -1,4 +1,4 @@
-#����mybatis
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.performance.analysis.pojo
@@ -13,6 +13,6 @@ spring:
 
   datasource:
     username: root
-    password: 123456
-    url: 'jdbc:mysql://127.0.0.1:3306/performance_analysis'
+    password: g8#6vod3
+    url: 'jdbc:mysql://192.168.58.5:3306/performance_analysis'
     driver-class-name: com.mysql.jdbc.Driver
