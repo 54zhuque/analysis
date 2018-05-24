@@ -5,7 +5,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     default-fetch-size: 100
-    efault-statement-timeout: 30
+    default-statement-timeout: 30
     auto-mapping-unknown-column-behavior: WARNING
 
 spring:
@@ -19,7 +19,7 @@ spring:
     encoding: UTF-8
 
   datasource:
-    username: root
-    password: g8#6vod3
-    url: 'jdbc:mysql://192.168.58.5:3306/performance_analysis?characterEncoding=utf8&useSSL=true'
-    driver-class-name: com.mysql.jdbc.Driver
+    username:
+    password:
+    url: 'jdbc:sqlite::resource:performance_analysis.db'
+    driver-class-name: org.sqlite.JDBC
