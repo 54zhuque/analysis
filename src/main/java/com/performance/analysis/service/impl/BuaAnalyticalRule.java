@@ -67,7 +67,7 @@ public class BuaAnalyticalRule {
         BigDecimal weightedScore = new BigDecimal(0);
         int len = weights.length;
         for (int i = 0; i < len; i++) {
-            BigDecimal weight = new BigDecimal(weights[1]);
+            BigDecimal weight = new BigDecimal(weights[i]);
             BigDecimal score = new BigDecimal(scores[i]);
             weightedScore = weightedScore.add(score.multiply(weight));
         }
