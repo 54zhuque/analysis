@@ -72,40 +72,39 @@ public class BuaExcelDataReadInService implements DataReadInService {
         } else if (fileName.endsWith(XLSX)) {
             workbook = new XSSFWorkbook(new FileInputStream(file));
         }
-        if (workbook != null) {
-            Map<String, Integer> stuMap = this.getMapStudents();//获取已入库学生信息
-            if (fileName.contains(BuaExcelEnum.PHYSICAL.toString())) {
-                List<PhysicalEvaluation> physicalEvaluations = this.readInPhysicalEvaluation(workbook);
-                for (PhysicalEvaluation physicalEvaluation : physicalEvaluations) {
-                    int enrollmentYear = Integer.valueOf(physicalEvaluation.getStuNo().substring(0, 4));
-                    Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
-                    Double[] weights = this.getWeights(grade);
-                    physicalEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, physicalEvaluation.getCultureScore(),
-                            physicalEvaluation.getTrainingScore(), physicalEvaluation.getAdditionalPlus()));
-                    this.readInStudent(stuMap, physicalEvaluation.getStuNo(), physicalEvaluation.getName(), grade);
-                    physicalEvaluationDao.addPhysicalEvaluation(physicalEvaluation);
-                }
-            } else if (fileName.contains(BuaExcelEnum.MORAL.toString())) {
-                List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
-                for (MoralEvaluation moralEvaluation : moralEvaluations) {
-                    int enrollmentYear = Integer.valueOf(moralEvaluation.getStuNo().substring(0, 3));
-                    Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
-                    Double[] weights = new Double[]{0.4d, 0.3d, 0.3d};
-                    moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),
-                            moralEvaluation.getTeacherScore(), moralEvaluation.getDormScore()));
-                    this.readInStudent(stuMap, moralEvaluation.getStuNo(), moralEvaluation.getName(), grade);
-                    moralEvaluationDao.addMoralEvaluation(moralEvaluation);
-                }
-            } else if (fileName.contains(BuaExcelEnum.MAJOY.toString())) {
-                //TODO 专业成绩计算入库
-
-            } else {
-                throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
+        if (workbook == null) {
+            throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
+        }
+        if (fileName.contains(BuaExcelEnum.PHYSICAL.toString())) {
+            List<PhysicalEvaluation> physicalEvaluations = this.readInPhysicalEvaluation(workbook);
+            for (PhysicalEvaluation physicalEvaluation : physicalEvaluations) {
+                int enrollmentYear = this.getEnrollmentYear(physicalEvaluation.getStuNo());
+                Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
+                Student stu = new Student(physicalEvaluation.getStuNo(), physicalEvaluation.getName(), grade);
+                studentDao.addStudent(stu);
+                Double[] weights = this.getWeights(grade);
+                physicalEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, physicalEvaluation.getCultureScore(),
+                        physicalEvaluation.getTrainingScore(), physicalEvaluation.getAdditionalPlus()));
+                physicalEvaluationDao.addPhysicalEvaluation(physicalEvaluation);
             }
+        } else if (fileName.contains(BuaExcelEnum.MORAL.toString())) {
+            List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
+            for (MoralEvaluation moralEvaluation : moralEvaluations) {
+                int enrollmentYear = this.getEnrollmentYear(moralEvaluation.getStuNo());
+                Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
+                Student stu = new Student(moralEvaluation.getStuNo(), moralEvaluation.getName(), grade);
+                studentDao.addStudent(stu);
+                Double[] weights = new Double[]{0.4d, 0.3d, 0.3d};
+                moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),
+                        moralEvaluation.getTeacherScore(), moralEvaluation.getDormScore()));
+                moralEvaluationDao.addMoralEvaluation(moralEvaluation);
+            }
+        } else if (fileName.contains(BuaExcelEnum.MAJOY.toString())) {
+            //TODO 专业成绩计算入库
+
         } else {
             throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
         }
-
     }
 
     /**
@@ -194,39 +193,14 @@ public class BuaExcelDataReadInService implements DataReadInService {
         return moralEvaluations;
     }
 
-
     /**
-     * 获取学生缓存用作保存学生实体
+     * 从学号中获取入学年份
      *
-     * @return map
+     * @param stuNo 学号
+     * @return
      */
-    private Map<String, Integer> getMapStudents() {
-        List<Student> students = studentDao.findAllStudent();
-        if (students == null || students.size() == 0) {
-            return new HashMap<>();
-        }
-        Map<String, Integer> map = new HashMap<>(20);
-        for (Student student : students) {
-            map.put(student.getStuNo(), student.getGrade());
-        }
-        return map;
-    }
-
-    /**
-     * 读入学生信息
-     *
-     * @param stuMap  已存入学生信息
-     * @param stuNo   学号
-     * @param stuName 学生姓名
-     */
-    private void readInStudent(Map<String, Integer> stuMap, String stuNo, String stuName, Integer grade) {
-        if (!stuMap.containsKey(stuNo)) {
-            Student stu = new Student();
-            stu.setStuNo(stuNo);
-            stu.setName(stuName);
-            stu.setGrade(grade);
-            studentDao.addStudent(stu);
-        }
+    private Integer getEnrollmentYear(String stuNo) {
+        return Integer.valueOf(stuNo.substring(0, 4));
     }
 
     /**

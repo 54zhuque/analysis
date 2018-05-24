@@ -13,6 +13,15 @@ public class Student implements Serializable {
     private String name;//姓名
     private Integer grade;//年级（1，2，3，4）
 
+    public Student() {
+    }
+
+    public Student(String stuNo, String name, Integer grade) {
+        this.stuNo = stuNo;
+        this.name = name;
+        this.grade = grade;
+    }
+
     public String getStuNo() {
         return stuNo;
     }
