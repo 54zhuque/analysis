@@ -1,48 +1,59 @@
 {
-	"contentManagement": [
+	"achievement_import": [
 		{
-			"title": "文章列表",
+			"title": "学习成绩",
 			"icon": "icon-text",
 			"href": "page/news/newsList.html",
 			"spread": false
 		},
 		{
-			"title": "图片管理",
+			"title": "体育达标",
 			"icon": "&#xe634;",
 			"href": "page/img/images.html",
 			"spread": false
 		},
 		{
-			"title": "其他页面",
-			"icon": "&#xe630;",
+			"title": "课外成绩",
+			"icon": "&#xe634;",
+			"href": "page/img/images.html",
+			"spread": false
+		}
+	],
+	"achievement_analysis": [
+		{
+			"title": "奖学金",
+			"icon": "&#xe612;",
 			"href": "",
 			"spread": false,
 			"children": [
 				{
-					"title": "404页面",
+					"title": "一等奖学金",
 					"icon": "&#xe61c;",
 					"href": "page/404.html",
 					"spread": false
 				},
 				{
-					"title": "登录",
-					"icon": "&#xe609;",
-					"href": "page/login/login.html",
-					"spread": false,
-					"target": "_blank"
+					"title": "二等奖学金",
+					"icon": "&#xe61c;",
+					"href": "page/404.html",
+					"spread": false
+				},
+				{
+					"title": "三等奖学金",
+					"icon": "&#xe61c;",
+					"href": "page/404.html",
+					"spread": false
 				}
 			]
-		}
-	],
-	"memberCenter": [
+		},
 		{
-			"title": "用户中心",
-			"icon": "&#xe612;",
-			"href": "page/user/userList.html",
+			"title": "三好学生",
+			"icon": "icon-vip",
+			"href": "page/user/userGrade.html",
 			"spread": false
 		},
 		{
-			"title": "会员等级",
+			"title": "优秀班干部",
 			"icon": "icon-vip",
 			"href": "page/user/userGrade.html",
 			"spread": false
