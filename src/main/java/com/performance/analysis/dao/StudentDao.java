@@ -19,7 +19,7 @@ import java.util.List;
 public interface StudentDao {
 
     @Insert("insert into student(stu_no,name,grade) values(#{stuNo},#{name},#{grade})")
-    void addStudent(String stuNo, String name, Integer grade);
+    void addStudent(Student student);
 
     @Select("select * from student")
     List<Student> findAllStudent();

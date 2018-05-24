@@ -1,5 +1,7 @@
 package com.performance.analysis.service;
 
+import com.performance.analysis.exception.DataReadInException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -13,5 +15,5 @@ public interface DataReadIn {
      *
      * @param args
      */
-    void readIn(String... args) throws IOException;
+    void readIn(String... args) throws IOException, DataReadInException;
 }

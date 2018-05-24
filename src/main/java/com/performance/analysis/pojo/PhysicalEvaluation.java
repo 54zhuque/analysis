@@ -10,10 +10,11 @@ import java.io.Serializable;
  */
 public class PhysicalEvaluation implements Serializable {
     private String stuNo;//学号
+    private String name;//姓名
     private Double cultureScore;//体育成绩
     private Double trainingScore;//体侧成绩
-    private Double additionalPlus;//
-    private Double fixScore;
+    private Double additionalPlus;//额外加分
+    private Double fixScore;//加权平均
 
     public String getStuNo() {
         return stuNo;
@@ -21,6 +22,14 @@ public class PhysicalEvaluation implements Serializable {
 
     public void setStuNo(String stuNo) {
         this.stuNo = stuNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getCultureScore() {

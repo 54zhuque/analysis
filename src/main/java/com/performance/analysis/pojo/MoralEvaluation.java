@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class MoralEvaluation implements Serializable {
     private String stuNo;//学号
+    private String name;//姓名
     private Double mateScore;//互评分
     private Double teacherScore;//教师评分
     private Double dormScore;//宿舍表现分
@@ -21,6 +22,14 @@ public class MoralEvaluation implements Serializable {
 
     public void setStuNo(String stuNo) {
         this.stuNo = stuNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Double getMateScore() {
