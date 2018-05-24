@@ -82,7 +82,7 @@ public class BuaExcelDataReadInService implements DataReadInService {
                 Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
                 Student stu = new Student(physicalEvaluation.getStuNo(), physicalEvaluation.getName(), grade);
                 studentDao.addStudent(stu);
-                Double[] weights = this.getWeights(grade);
+                Double[] weights = BuaAnalyticalRule.getPhysicalWeights(grade);
                 physicalEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, physicalEvaluation.getCultureScore(),
                         physicalEvaluation.getTrainingScore(), physicalEvaluation.getAdditionalPlus()));
                 physicalEvaluationDao.addPhysicalEvaluation(physicalEvaluation);
@@ -94,7 +94,7 @@ public class BuaExcelDataReadInService implements DataReadInService {
                 Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
                 Student stu = new Student(moralEvaluation.getStuNo(), moralEvaluation.getName(), grade);
                 studentDao.addStudent(stu);
-                Double[] weights = new Double[]{0.4d, 0.3d, 0.3d};
+                Double[] weights = BuaAnalyticalRule.getMoralWeights();
                 moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),
                         moralEvaluation.getTeacherScore(), moralEvaluation.getDormScore()));
                 moralEvaluationDao.addMoralEvaluation(moralEvaluation);
@@ -203,33 +203,6 @@ public class BuaExcelDataReadInService implements DataReadInService {
         return Integer.valueOf(stuNo.substring(0, 4));
     }
 
-    /**
-     * 获取年级上的权重比例
-     *
-     * @param grade 年级
-     * @return
-     */
-    private Double[] getWeights(int grade) {
-        Double[] weights = new Double[3];
-        if (grade == 1) {
-            weights[0] = 0.4d;
-            weights[1] = 0.1d;
-            weights[2] = 0.5d;
-        } else if (grade == 2) {
-            weights[0] = 0.4d;
-            weights[1] = 0.2d;
-            weights[2] = 0.4d;
-        } else if (grade == 3) {
-            weights[0] = 0.6d;
-            weights[1] = 0.4d;
-            weights[2] = 0.0d;
-        } else {
-            weights[0] = 0.0d;
-            weights[1] = 0.0d;
-            weights[2] = 0.0d;
-        }
-        return weights;
-    }
 
     /**
      * 获取cell value
