@@ -1,6 +1,6 @@
 package com.performance.analysis;
 
-import com.performance.analysis.commom.Code;
+import com.performance.analysis.commom.SystemCode;
 import com.performance.analysis.commom.SystemResponse;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StorageException.class)
     @ResponseBody
     public SystemResponse handleStorageException(StorageException e) {
-        return new SystemResponse(Code.ERROR.getCode(), e.getMessage());
+        return new SystemResponse(SystemCode.ERROR.getCode(), e.getMessage());
     }
 
     /**
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataReadInException.class)
     @ResponseBody
     public SystemResponse handleDataReadInException(DataReadInException e) {
-        return new SystemResponse(Code.ERROR.getCode(), e.getMessage());
+        return new SystemResponse(SystemCode.ERROR.getCode(), e.getMessage());
     }
 
     /**
@@ -49,6 +49,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public SystemResponse handleRuntimeException(RuntimeException e) {
-        return new SystemResponse(Code.ERROR.getCode(), Code.ERROR.getMsg());
+        return new SystemResponse(SystemCode.ERROR.getCode(), SystemCode.ERROR.getMsg());
     }
 }

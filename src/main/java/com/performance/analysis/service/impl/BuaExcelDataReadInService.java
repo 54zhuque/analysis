@@ -1,6 +1,6 @@
 package com.performance.analysis.service.impl;
 
-import com.performance.analysis.commom.Code;
+import com.performance.analysis.commom.SystemCode;
 import com.performance.analysis.dao.MoralEvaluationDao;
 import com.performance.analysis.dao.PhysicalEvaluationDao;
 import com.performance.analysis.dao.StudentDao;
@@ -60,11 +60,11 @@ public class BuaExcelDataReadInService implements DataReadInService {
     public void readIn(String... args) throws IOException, DataReadInException {
         File file = new File(args[0]);
         if (file == null) {
-            throw new DataReadInException(Code.FILE_NOT_FIND.getMsg());
+            throw new DataReadInException(SystemCode.FILE_NOT_FIND.getMsg());
         }
         String fileName = file.getName();
         if (!fileName.endsWith(XLS) && !fileName.endsWith(XLSX)) {
-            throw new DataReadInException(Code.READIN_MUST_EXCEL.getMsg());
+            throw new DataReadInException(SystemCode.READIN_MUST_EXCEL.getMsg());
         }
         Workbook workbook = null;
         if (fileName.endsWith(XLS)) {
@@ -100,10 +100,10 @@ public class BuaExcelDataReadInService implements DataReadInService {
                 //TODO 专业成绩计算入库
 
             } else {
-                throw new DataReadInException(Code.READIN_ERROR.getMsg());
+                throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
             }
         } else {
-            throw new DataReadInException(Code.READIN_ERROR.getMsg());
+            throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
         }
 
     }

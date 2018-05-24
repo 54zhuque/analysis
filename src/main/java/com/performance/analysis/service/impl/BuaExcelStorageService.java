@@ -1,6 +1,6 @@
 package com.performance.analysis.service.impl;
 
-import com.performance.analysis.commom.Code;
+import com.performance.analysis.commom.SystemCode;
 import com.performance.analysis.exception.StorageException;
 import com.performance.analysis.service.FileSystemStorageService;
 import org.springframework.stereotype.Service;
@@ -33,10 +33,10 @@ public class BuaExcelStorageService implements FileSystemStorageService {
                 Files.createDirectories(rootLocation);
             }
             if (file.isEmpty()) {
-                throw new StorageException(Code.STORAGE_EMPTY_FILE.getMsg() + " " + filename);
+                throw new StorageException(SystemCode.STORAGE_EMPTY_FILE.getMsg() + " " + filename);
             }
             if (filename.contains("..")) {
-                throw new StorageException(Code.STORAGE_INVALID_FILEPATH.getMsg() + " " + filename);
+                throw new StorageException(SystemCode.STORAGE_INVALID_FILEPATH.getMsg() + " " + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, rootLocation.resolve(filename),
@@ -44,7 +44,7 @@ public class BuaExcelStorageService implements FileSystemStorageService {
             }
             return rootLocation.resolve(filename).toAbsolutePath().toString();
         } catch (IOException e) {
-            throw new StorageException(Code.STORAGE_ERROR.getMsg() + " " + filename, e);
+            throw new StorageException(SystemCode.STORAGE_ERROR.getMsg() + " " + filename, e);
         }
     }
 }

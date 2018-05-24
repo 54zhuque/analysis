@@ -6,7 +6,7 @@ package com.performance.analysis.commom;
  * <p>
  * 返回状态码枚举
  */
-public enum Code {
+public enum SystemCode {
     SUCCESS(200, "操作成功."),
     ERROR(500, "系统错误."),
     FILE_NOT_FIND(10000, "找不到文件."),
@@ -16,11 +16,10 @@ public enum Code {
     STORAGE_INVALID_FILEPATH(10004, "无法存储非法路径"),
     STORAGE_ERROR(10005, "存储错误");
 
-
     private int code;
     private String msg;
 
-    private Code(int code, String msg) {
+    private SystemCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

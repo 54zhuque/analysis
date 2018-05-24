@@ -1,6 +1,6 @@
 package com.performance.analysis.controller;
 
-import com.performance.analysis.commom.Code;
+import com.performance.analysis.commom.SystemCode;
 import com.performance.analysis.commom.SystemResponse;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
@@ -34,7 +34,7 @@ public class BuaAnalysisController {
     public SystemResponse handleBuaExcel(@RequestParam("file") MultipartFile file) throws StorageException, IOException, DataReadInException {
         String path = buaExcelStorageService.store(file, "bua-excels");
         buaExcelDataReadInService.readIn(path);
-        return new SystemResponse(Code.SUCCESS.getCode(), Code.SUCCESS.getMsg());
+        return new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
     }
 
 
