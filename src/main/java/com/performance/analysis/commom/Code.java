@@ -11,7 +11,10 @@ public enum Code {
     ERROR(500, "系统错误."),
     FILE_NOT_FIND(10000, "找不到文件."),
     READIN_MUST_EXCEL(10001, "读取文件必须为Excel文件"),
-    READIN_ERROR(10002, "数据读入错误");
+    READIN_ERROR(10002, "数据读入错误"),
+    STORAGE_EMPTY_FILE(10003, "无法存储空文件"),
+    STORAGE_INVALID_FILEPATH(10004, "无法存储非法路径"),
+    STORAGE_ERROR(10005, "存储错误");
 
 
     private int code;

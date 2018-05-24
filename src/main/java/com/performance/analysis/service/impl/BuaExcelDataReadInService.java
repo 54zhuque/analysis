@@ -8,7 +8,7 @@ import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.pojo.MoralEvaluation;
 import com.performance.analysis.pojo.PhysicalEvaluation;
 import com.performance.analysis.pojo.Student;
-import com.performance.analysis.service.DataReadIn;
+import com.performance.analysis.service.DataReadInService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,8 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +34,10 @@ import java.util.Map;
  * @Author: Tangwei
  * @Date: 2018/5/23 下午2:19
  * <p>
- * 农学院Excel数据导入
+ * BUA Excel数据导入
  */
 @Service
-public class BuaExcelDataReadIn implements DataReadIn {
+public class BuaExcelDataReadInService implements DataReadInService {
     private final static String XLS = "xls";
     private final static String XLSX = "xlsx";
 
@@ -57,11 +60,11 @@ public class BuaExcelDataReadIn implements DataReadIn {
     public void readIn(String... args) throws IOException, DataReadInException {
         File file = new File(args[0]);
         if (file == null) {
-            throw new DataReadInException(Code.FILE_NOT_FIND.toString());
+            throw new DataReadInException(Code.FILE_NOT_FIND.getMsg());
         }
         String fileName = file.getName();
         if (!fileName.endsWith(XLS) && !fileName.endsWith(XLSX)) {
-            throw new DataReadInException(Code.READIN_MUST_EXCEL.toString());
+            throw new DataReadInException(Code.READIN_MUST_EXCEL.getMsg());
         }
         Workbook workbook = null;
         if (fileName.endsWith(XLS)) {
@@ -71,10 +74,10 @@ public class BuaExcelDataReadIn implements DataReadIn {
         }
         if (workbook != null) {
             Map<String, Integer> stuMap = this.getMapStudents();//获取已入库学生信息
-            if (args[1].contains(BuaExcelEnum.PHYSICAL.toString())) {
+            if (fileName.contains(BuaExcelEnum.PHYSICAL.toString())) {
                 List<PhysicalEvaluation> physicalEvaluations = this.readInPhysicalEvaluation(workbook);
                 for (PhysicalEvaluation physicalEvaluation : physicalEvaluations) {
-                    int enrollmentYear = Integer.valueOf(physicalEvaluation.getStuNo().substring(0, 3));
+                    int enrollmentYear = Integer.valueOf(physicalEvaluation.getStuNo().substring(0, 4));
                     Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
                     Double[] weights = this.getWeights(grade);
                     physicalEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, physicalEvaluation.getCultureScore(),
@@ -82,7 +85,7 @@ public class BuaExcelDataReadIn implements DataReadIn {
                     this.readInStudent(stuMap, physicalEvaluation.getStuNo(), physicalEvaluation.getName(), grade);
                     physicalEvaluationDao.addPhysicalEvaluation(physicalEvaluation);
                 }
-            } else if (args[1].contains(BuaExcelEnum.MORAL.toString())) {
+            } else if (fileName.contains(BuaExcelEnum.MORAL.toString())) {
                 List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
                 for (MoralEvaluation moralEvaluation : moralEvaluations) {
                     int enrollmentYear = Integer.valueOf(moralEvaluation.getStuNo().substring(0, 3));
@@ -93,11 +96,14 @@ public class BuaExcelDataReadIn implements DataReadIn {
                     this.readInStudent(stuMap, moralEvaluation.getStuNo(), moralEvaluation.getName(), grade);
                     moralEvaluationDao.addMoralEvaluation(moralEvaluation);
                 }
+            } else if (fileName.contains(BuaExcelEnum.MAJOY.toString())) {
+                //TODO 专业成绩计算入库
+
             } else {
-                throw new DataReadInException(Code.READIN_ERROR.toString());
+                throw new DataReadInException(Code.READIN_ERROR.getMsg());
             }
         } else {
-            throw new DataReadInException(Code.READIN_ERROR.toString());
+            throw new DataReadInException(Code.READIN_ERROR.getMsg());
         }
 
     }
@@ -125,9 +131,15 @@ public class BuaExcelDataReadIn implements DataReadIn {
                 physicalEvaluation = new PhysicalEvaluation();
                 String stuNo = this.getCellValue(row.getCell(0));
                 String stuName = this.getCellValue(row.getCell(1));
-                Double cultureScore = Double.valueOf(this.getCellValue(row.getCell(2)));
-                Double trainingScore = Double.valueOf(this.getCellValue(row.getCell(3)));
-                Double additionalPlus = Double.valueOf(this.getCellValue(row.getCell(4)));
+                String cultureScoreCellValue = this.getCellValue(row.getCell(2));
+                Double cultureScore = StringUtils.isEmpty(cultureScoreCellValue) ?
+                        0 : Double.valueOf(cultureScoreCellValue);
+                String trainingScoreCellValue = this.getCellValue(row.getCell(3));
+                Double trainingScore = StringUtils.isEmpty(trainingScoreCellValue) ?
+                        0 : Double.valueOf(trainingScoreCellValue);
+                String additionalPlusCellValue = this.getCellValue(row.getCell(4));
+                Double additionalPlus = StringUtils.isEmpty(additionalPlusCellValue) ?
+                        0 : Double.valueOf(additionalPlusCellValue);
                 physicalEvaluation.setAdditionalPlus(additionalPlus);
                 physicalEvaluation.setCultureScore(cultureScore);
                 physicalEvaluation.setStuNo(stuNo);
@@ -162,9 +174,15 @@ public class BuaExcelDataReadIn implements DataReadIn {
                 moralEvaluation = new MoralEvaluation();
                 String stuNo = this.getCellValue(row.getCell(0));
                 String stuName = this.getCellValue(row.getCell(1));
-                Double mateScore = Double.valueOf(this.getCellValue(row.getCell(2)));
-                Double teacherScore = Double.valueOf(this.getCellValue(row.getCell(3)));
-                Double dormScore = Double.valueOf(this.getCellValue(row.getCell(4)));
+                String mateScoreCellValue = this.getCellValue(row.getCell(2));
+                Double mateScore = StringUtils.isEmpty(mateScoreCellValue) ?
+                        0 : Double.valueOf(mateScoreCellValue);
+                String teacherScoreCellValue = this.getCellValue(row.getCell(3));
+                Double teacherScore = StringUtils.isEmpty(teacherScoreCellValue) ?
+                        0 : Double.valueOf(teacherScoreCellValue);
+                String dormScoreCellValue = this.getCellValue(row.getCell(4));
+                Double dormScore = StringUtils.isEmpty(dormScoreCellValue) ?
+                        0 : Double.valueOf(dormScoreCellValue);
                 moralEvaluation.setDormScore(dormScore);
                 moralEvaluation.setMateScore(mateScore);
                 moralEvaluation.setStuNo(stuNo);
@@ -202,7 +220,7 @@ public class BuaExcelDataReadIn implements DataReadIn {
      * @param stuName 学生姓名
      */
     private void readInStudent(Map<String, Integer> stuMap, String stuNo, String stuName, Integer grade) {
-        if (!stuMap.containsKey(stuName)) {
+        if (!stuMap.containsKey(stuNo)) {
             Student stu = new Student();
             stu.setStuNo(stuNo);
             stu.setName(stuName);

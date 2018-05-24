@@ -10,4 +10,8 @@ public class DataReadInException extends Exception {
     public DataReadInException(String message) {
         super(message);
     }
+
+    public DataReadInException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

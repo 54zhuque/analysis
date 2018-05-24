@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MoralEvaluationDao {
 
-    @Insert("insert into moral_evaluation(stu_no,mate_score,teacher_score,dorm_score) " +
+    @Insert("insert or ignore into moral_evaluation(stu_no,mate_score,teacher_score,dorm_score,fix_score) " +
             "values(#{stuNo},#{mateScore},#{teacherScore},#{dormScore},#{fixScore})")
     void addMoralEvaluation(MoralEvaluation moralEvaluation);
 }
