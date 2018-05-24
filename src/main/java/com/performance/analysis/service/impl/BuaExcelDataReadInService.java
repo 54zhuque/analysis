@@ -1,6 +1,6 @@
 package com.performance.analysis.service.impl;
 
-import com.performance.analysis.commom.SystemCode;
+import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.dao.MoralEvaluationDao;
 import com.performance.analysis.dao.PhysicalEvaluationDao;
 import com.performance.analysis.dao.StudentDao;
@@ -26,9 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: Tangwei

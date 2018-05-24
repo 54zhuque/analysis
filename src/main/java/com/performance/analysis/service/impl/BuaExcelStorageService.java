@@ -1,6 +1,6 @@
 package com.performance.analysis.service.impl;
 
-import com.performance.analysis.commom.SystemCode;
+import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.exception.StorageException;
 import com.performance.analysis.service.FileSystemStorageService;
 import org.springframework.stereotype.Service;
@@ -39,8 +39,7 @@ public class BuaExcelStorageService implements FileSystemStorageService {
                 throw new StorageException(SystemCode.STORAGE_INVALID_FILEPATH.getMsg() + " " + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, rootLocation.resolve(filename),
-                        StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             }
             return rootLocation.resolve(filename).toAbsolutePath().toString();
         } catch (IOException e) {

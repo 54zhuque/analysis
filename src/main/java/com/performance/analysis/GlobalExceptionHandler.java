@@ -1,7 +1,7 @@
 package com.performance.analysis;
 
-import com.performance.analysis.commom.SystemCode;
-import com.performance.analysis.commom.SystemResponse;
+import com.performance.analysis.common.SystemCode;
+import com.performance.analysis.common.SystemResponse;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
