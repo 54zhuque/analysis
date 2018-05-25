@@ -221,35 +221,18 @@ public class BuaExcelDataReadInService implements DataReadInService {
             }
             int firstRowNum = sheet.getFirstRowNum();
             int lastRowNum = sheet.getLastRowNum();
-            List<CourseEvaluation> courseEvaluations = new ArrayList<>(20);
+            Row firstRow = sheet.getRow(firstRowNum);
+            if (firstRow == null) {
+                continue;
+            }
+            List<CourseEvaluation> courseEvaluations = this.getCourse(firstRow);
             MajorEvaluation majorEvaluation;
-            for (int rowNum = firstRowNum; rowNum <= lastRowNum; rowNum++) {
+            for (int rowNum = firstRowNum + 1; rowNum <= lastRowNum; rowNum++) {
                 Row row = sheet.getRow(rowNum);
                 if (row == null) {
                     continue;
                 }
-                //存储第一行课程名称
-                if (rowNum == firstRowNum) {
-                    int lastCellNum = row.getPhysicalNumberOfCells();
-                    CourseEvaluation courseEvaluation;
-                    for (int cellNum = 2; cellNum < lastCellNum; cellNum++) {
-                        courseEvaluation = new CourseEvaluation();
-                        Cell cell = row.getCell(cellNum);
-                        String[] course = this.getCourse(this.getCellValue(cell));
-                        courseEvaluation.setName(course[0]);
-                        courseEvaluation.setCredit(Double.valueOf(course[1]));
-                        courseEvaluations.add(courseEvaluation);
-                    }
-                    continue;
-                }
-                List<CourseEvaluation> copyCourseEvaluations = new ArrayList<>(20);
-                for (CourseEvaluation courseEvaluation : courseEvaluations) {
-                    CourseEvaluation copyCourseEvaluation = new CourseEvaluation();
-                    copyCourseEvaluation.setScore(courseEvaluation.getScore());
-                    copyCourseEvaluation.setCredit(courseEvaluation.getCredit());
-                    copyCourseEvaluation.setName(courseEvaluation.getName());
-                    copyCourseEvaluations.add(copyCourseEvaluation);
-                }
+                List<CourseEvaluation> copyCourseEvaluations = this.getCourseCopy(courseEvaluations);
                 majorEvaluation = new MajorEvaluation();
                 String stuNo = this.getCellValue(row.getCell(0));
                 String stuName = this.getCellValue(row.getCell(1));
@@ -267,6 +250,48 @@ public class BuaExcelDataReadInService implements DataReadInService {
             }
         }
         return majorEvaluations;
+    }
+
+    /**
+     * 获取Course
+     *
+     * @param titleRow 标题行
+     * @return
+     */
+    private List<CourseEvaluation> getCourse(Row titleRow) {
+        List<CourseEvaluation> courseEvaluations = new ArrayList<>(20);
+        int lastCellNum = titleRow.getPhysicalNumberOfCells();
+        CourseEvaluation courseEvaluation;
+        for (int cellNum = 2; cellNum < lastCellNum; cellNum++) {
+            courseEvaluation = new CourseEvaluation();
+            Cell cell = titleRow.getCell(cellNum);
+            String[] course = this.getCourse(this.getCellValue(cell));
+            courseEvaluation.setName(course[0]);
+            courseEvaluation.setCredit(Double.valueOf(course[1]));
+            courseEvaluations.add(courseEvaluation);
+        }
+        return courseEvaluations;
+    }
+
+    /**
+     * Course 深copy
+     *
+     * @param courseEvaluations
+     * @return
+     */
+    private List<CourseEvaluation> getCourseCopy(List<CourseEvaluation> courseEvaluations) {
+        if (courseEvaluations == null || courseEvaluations.size() == 0) {
+            return null;
+        }
+        List<CourseEvaluation> copyCourseEvaluations = new ArrayList<>(courseEvaluations.size());
+        for (CourseEvaluation courseEvaluation : courseEvaluations) {
+            CourseEvaluation copyCourseEvaluation = new CourseEvaluation();
+            copyCourseEvaluation.setScore(courseEvaluation.getScore());
+            copyCourseEvaluation.setCredit(courseEvaluation.getCredit());
+            copyCourseEvaluation.setName(courseEvaluation.getName());
+            copyCourseEvaluations.add(copyCourseEvaluation);
+        }
+        return copyCourseEvaluations;
     }
 
     /**
