@@ -2,6 +2,7 @@ package com.performance.analysis.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,5 +17,5 @@ public interface MajorEvaluationDao {
 
     @Insert("insert or ignore into major_evaluation(stu_no,course,fix_score) " +
             "values(#{stuNo},#{course},#{fixScore})")
-    void addMajorEvaluation(String stuNo, String course, Double fixScore);
+    void addMajorEvaluation(@Param("stuNo") String stuNo, @Param("course") String course, @Param("fixScore") Double fixScore);
 }

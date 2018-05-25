@@ -72,7 +72,7 @@ public class BuaAnalyticalRule {
             BigDecimal value = new BigDecimal(values[i]);
             weightedScore = weightedScore.add(value.multiply(weight));
         }
-        return weightedScore.doubleValue();
+        return weightedScore.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -96,7 +96,7 @@ public class BuaAnalyticalRule {
             x1 = x1.add(value.multiply(weight));
             x2 = x2.add(weight);
         }
-        return x1.divide(x2, 2).doubleValue();
+        return x1.divide(x2, 2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
