@@ -10,11 +10,11 @@ import java.io.Serializable;
  */
 public class MoralEvaluation implements Serializable {
     private String stuNo;//学号
-    private String name;//姓名
+    private String stuName;//姓名
     private Double mateScore;//互评分
     private Double teacherScore;//教师评分
     private Double dormScore;//宿舍表现分
-    private Double fixScore;//加权平均分
+    private Double fixScore;//加权分
 
     public String getStuNo() {
         return stuNo;
@@ -24,12 +24,12 @@ public class MoralEvaluation implements Serializable {
         this.stuNo = stuNo;
     }
 
-    public String getName() {
-        return name;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
     public Double getMateScore() {

@@ -1,13 +1,13 @@
 package com.performance.analysis.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.performance.analysis.common.SystemCode;
+import com.performance.analysis.dao.MajorEvaluationDao;
 import com.performance.analysis.dao.MoralEvaluationDao;
 import com.performance.analysis.dao.PhysicalEvaluationDao;
 import com.performance.analysis.dao.StudentDao;
 import com.performance.analysis.exception.DataReadInException;
-import com.performance.analysis.pojo.MoralEvaluation;
-import com.performance.analysis.pojo.PhysicalEvaluation;
-import com.performance.analysis.pojo.Student;
+import com.performance.analysis.pojo.*;
 import com.performance.analysis.service.DataReadInService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -40,11 +40,14 @@ public class BuaExcelDataReadInService implements DataReadInService {
     private final static String XLSX = "xlsx";
 
     @Autowired
+    private StudentDao studentDao;
+    @Autowired
     private PhysicalEvaluationDao physicalEvaluationDao;
     @Autowired
     private MoralEvaluationDao moralEvaluationDao;
     @Autowired
-    private StudentDao studentDao;
+    private MajorEvaluationDao majorEvaluationDao;
+
 
     /**
      * BUA数据读入
@@ -90,7 +93,7 @@ public class BuaExcelDataReadInService implements DataReadInService {
             for (MoralEvaluation moralEvaluation : moralEvaluations) {
                 int enrollmentYear = this.getEnrollmentYear(moralEvaluation.getStuNo());
                 Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
-                Student stu = new Student(moralEvaluation.getStuNo(), moralEvaluation.getName(), grade);
+                Student stu = new Student(moralEvaluation.getStuNo(), moralEvaluation.getStuName(), grade);
                 studentDao.addStudent(stu);
                 Double[] weights = BuaAnalyticalRule.getMoralWeights();
                 moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),
@@ -98,8 +101,17 @@ public class BuaExcelDataReadInService implements DataReadInService {
                 moralEvaluationDao.addMoralEvaluation(moralEvaluation);
             }
         } else if (fileName.contains(BuaExcelEnum.MAJOY.toString())) {
-            //TODO 专业成绩计算入库
-
+            List<MajorEvaluation> majorEvaluations = this.readInMajorEvaluation(workbook);
+            for (MajorEvaluation majorEvaluation : majorEvaluations) {
+                int enrollmentYear = this.getEnrollmentYear(majorEvaluation.getStuNo());
+                Integer grade = BuaAnalyticalRule.getGrade(enrollmentYear);
+                Student stu = new Student(majorEvaluation.getStuNo(), majorEvaluation.getStuName(), grade);
+                studentDao.addStudent(stu);
+                majorEvaluation.setFixScore(this.getMajorWeightedAverageScore(majorEvaluation.getCourseEvaluations()));
+                majorEvaluationDao.addMajorEvaluation(majorEvaluation.getStuNo(),
+                        JSON.toJSONString(majorEvaluation.getCourseEvaluations()),
+                        majorEvaluation.getFixScore());
+            }
         } else {
             throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
         }
@@ -109,6 +121,7 @@ public class BuaExcelDataReadInService implements DataReadInService {
      * 读入身体素质评分
      *
      * @param workbook
+     * @return
      */
     private List<PhysicalEvaluation> readInPhysicalEvaluation(Workbook workbook) {
         List<PhysicalEvaluation> physicalEvaluations = new ArrayList<>(30);
@@ -152,6 +165,7 @@ public class BuaExcelDataReadInService implements DataReadInService {
      * 读入思想素质评分
      *
      * @param workbook
+     * @return
      */
     private List<MoralEvaluation> readInMoralEvaluation(Workbook workbook) {
         List<MoralEvaluation> moralEvaluations = new ArrayList<>(30);
@@ -183,12 +197,118 @@ public class BuaExcelDataReadInService implements DataReadInService {
                 moralEvaluation.setDormScore(dormScore);
                 moralEvaluation.setMateScore(mateScore);
                 moralEvaluation.setStuNo(stuNo);
-                moralEvaluation.setName(stuName);
+                moralEvaluation.setStuName(stuName);
                 moralEvaluation.setTeacherScore(teacherScore);
                 moralEvaluations.add(moralEvaluation);
             }
         }
         return moralEvaluations;
+    }
+
+
+    /**
+     * 读入专业素质评分
+     *
+     * @param workbook
+     * @return
+     */
+    private List<MajorEvaluation> readInMajorEvaluation(Workbook workbook) {
+        List<MajorEvaluation> majorEvaluations = new ArrayList<>(30);
+        for (int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
+            Sheet sheet = workbook.getSheetAt(sheetNum);
+            if (sheet == null) {
+                continue;
+            }
+            int firstRowNum = sheet.getFirstRowNum();
+            int lastRowNum = sheet.getLastRowNum();
+            List<CourseEvaluation> courseEvaluations = new ArrayList<>(20);
+            MajorEvaluation majorEvaluation;
+            for (int rowNum = firstRowNum; rowNum <= lastRowNum; rowNum++) {
+                Row row = sheet.getRow(rowNum);
+                if (row == null) {
+                    continue;
+                }
+                //存储第一行课程名称
+                if (rowNum == firstRowNum) {
+                    int lastCellNum = row.getPhysicalNumberOfCells();
+                    CourseEvaluation courseEvaluation;
+                    for (int cellNum = 2; cellNum < lastCellNum; cellNum++) {
+                        courseEvaluation = new CourseEvaluation();
+                        Cell cell = row.getCell(cellNum);
+                        String[] course = this.getCourse(this.getCellValue(cell));
+                        courseEvaluation.setName(course[0]);
+                        courseEvaluation.setCredit(Double.valueOf(course[1]));
+                        courseEvaluations.add(courseEvaluation);
+                    }
+                    continue;
+                }
+                List<CourseEvaluation> copyCourseEvaluations = new ArrayList<>(20);
+                for (CourseEvaluation courseEvaluation : courseEvaluations) {
+                    CourseEvaluation copyCourseEvaluation = new CourseEvaluation();
+                    copyCourseEvaluation.setScore(courseEvaluation.getScore());
+                    copyCourseEvaluation.setCredit(courseEvaluation.getCredit());
+                    copyCourseEvaluation.setName(courseEvaluation.getName());
+                    copyCourseEvaluations.add(copyCourseEvaluation);
+                }
+                majorEvaluation = new MajorEvaluation();
+                String stuNo = this.getCellValue(row.getCell(0));
+                String stuName = this.getCellValue(row.getCell(1));
+                int lastCellNum = row.getPhysicalNumberOfCells();
+                for (int cellNum = 2; cellNum < lastCellNum; cellNum++) {
+                    Cell cell = row.getCell(cellNum);
+                    Double score = StringUtils.isEmpty(this.getCellValue(cell)) ? null
+                            : Double.valueOf(this.getCellValue(cell));
+                    copyCourseEvaluations.get(cellNum - 2).setScore(score);
+                }
+                majorEvaluation.setCourseEvaluations(copyCourseEvaluations);
+                majorEvaluation.setStuNo(stuNo);
+                majorEvaluation.setStuName(stuName);
+                majorEvaluations.add(majorEvaluation);
+            }
+        }
+        return majorEvaluations;
+    }
+
+    /**
+     * 计算专业加权平均分
+     *
+     * @param courseEvaluations
+     * @return
+     */
+    private Double getMajorWeightedAverageScore(List<CourseEvaluation> courseEvaluations) throws DataReadInException {
+        if (courseEvaluations == null || courseEvaluations.size() == 0) {
+            return null;
+        }
+        List<Double> credits = new ArrayList<>(20);
+        List<Double> scores = new ArrayList<>(20);
+        for (int i = 0; i < courseEvaluations.size(); i++) {
+            CourseEvaluation courseEvaluation = courseEvaluations.get(i);
+            if (courseEvaluation.getScore() == null) {
+                continue;
+            }
+            credits.add(courseEvaluation.getCredit());
+            scores.add(courseEvaluation.getScore());
+        }
+        if (credits.size() != scores.size()) {
+            throw new DataReadInException(SystemCode.READIN_SAME_LENGTH.getMsg());
+        }
+        return BuaAnalyticalRule.getWeightedAverageScore(credits.toArray(new Double[credits.size()]),
+                scores.toArray(new Double[scores.size()]));
+    }
+
+    /**
+     * 获取课程截取信息
+     *
+     * @param s
+     * @return
+     */
+    private String[] getCourse(String s) {
+        String[] courseBase = new String[2];
+        String s1 = s.substring(0, s.indexOf("["));
+        String s2 = s.substring(s.indexOf("[") + 1, s.indexOf("]"));
+        courseBase[0] = s1.trim();
+        courseBase[1] = s2.startsWith(".") ? "0" + s2 : s2;
+        return courseBase;
     }
 
     /**
