@@ -14,7 +14,7 @@ public class PhysicalEvaluation implements Serializable {
     private Double cultureScore;//体育成绩
     private Double trainingScore;//体侧成绩
     private Double additionalPlus;//额外加分
-    private Double fixScore;//加权平均
+    private Double fixScore;//加权
 
     public String getStuNo() {
         return stuNo;
