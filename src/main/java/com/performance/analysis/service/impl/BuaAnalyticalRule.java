@@ -20,14 +20,17 @@ public class BuaAnalyticalRule {
     private final static int GRADE_TWO = 2;
     private final static int GRADE_THREE = 3;
 
+
     /**
      * 计算年级，当前年份与入学年份差值，
      * 若月大于入学月日，最新批学生入学，差值需+1，否则+0
      *
-     * @param enrollmentYear
+     * @param stuNo 学号
      * @return
+     * @throws DataReadInException
      */
-    public static Integer getGrade(int enrollmentYear) throws DataReadInException {
+    public static Integer getGrade(String stuNo) throws DataReadInException {
+        int enrollmentYear = Integer.valueOf(stuNo.substring(0, 4));//截取入学年份
         Integer grade;
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();

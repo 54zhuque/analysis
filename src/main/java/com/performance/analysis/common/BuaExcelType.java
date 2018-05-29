@@ -1,4 +1,4 @@
-package com.performance.analysis.service.impl;
+package com.performance.analysis.common;
 
 /**
  * @Author: Tangwei
@@ -6,14 +6,14 @@ package com.performance.analysis.service.impl;
  * <p>
  * excel类型枚举
  */
-public enum BuaExcelEnum {
+public enum BuaExcelType {
     PHYSICAL("身体"),
     MORAL("思想"),
     MAJOY("专业");
 
     private String name;
 
-    private BuaExcelEnum(String name) {
+    private BuaExcelType(String name) {
         this.name = name;
     }
 
