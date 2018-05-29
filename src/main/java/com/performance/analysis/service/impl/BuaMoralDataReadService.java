@@ -12,6 +12,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -33,6 +36,7 @@ public class BuaMoralDataReadService implements FileDataReadService {
     private MoralEvaluationDao moralEvaluationDao;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataReadInException.class)
     public void read(File file) throws IOException, DataReadInException {
         Workbook workbook = ExcelUtil.getWorkbook(file);
         List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
