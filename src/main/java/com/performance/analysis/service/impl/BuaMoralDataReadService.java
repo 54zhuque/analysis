@@ -41,8 +41,11 @@ public class BuaMoralDataReadService implements FileDataReadService {
         Workbook workbook = ExcelUtil.getWorkbook(file);
         List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
         for (MoralEvaluation moralEvaluation : moralEvaluations) {
-            Integer grade = BuaAnalyticalRule.getGrade(moralEvaluation.getStuNo());
-            Student stu = new Student(moralEvaluation.getStuNo(), moralEvaluation.getStuName(), grade);
+            Student stu = new Student();
+            stu.setStuNo(moralEvaluation.getStuNo());
+            stu.setGrade(BuaAnalyticalRule.getGrade(moralEvaluation.getStuNo()));
+            stu.setName(moralEvaluation.getStuName());
+            stu.setMajor(BuaAnalyticalRule.getMajor(moralEvaluation.getStuNo()));
             studentDao.addStudent(stu);
             Double[] weights = BuaAnalyticalRule.getMoralWeights();
             moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),

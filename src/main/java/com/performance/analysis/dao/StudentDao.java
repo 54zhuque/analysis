@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface StudentDao {
 
-    @Insert("insert or ignore into student(stu_no,name,grade) values(#{stuNo},#{name},#{grade})")
+    @Insert("insert or ignore into student(stu_no,name,grade,major) values(#{stuNo},#{name},#{grade},#{major})")
     void addStudent(Student student);
 
     @Select("select * from student")

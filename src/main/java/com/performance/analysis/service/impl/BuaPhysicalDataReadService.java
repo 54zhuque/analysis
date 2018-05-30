@@ -42,7 +42,11 @@ public class BuaPhysicalDataReadService implements FileDataReadService {
         List<PhysicalEvaluation> physicalEvaluations = this.readInPhysicalEvaluation(workbook);
         for (PhysicalEvaluation physicalEvaluation : physicalEvaluations) {
             Integer grade = BuaAnalyticalRule.getGrade(physicalEvaluation.getStuNo());
-            Student stu = new Student(physicalEvaluation.getStuNo(), physicalEvaluation.getName(), grade);
+            Student stu = new Student();
+            stu.setName(physicalEvaluation.getName());
+            stu.setGrade(grade);
+            stu.setStuNo(physicalEvaluation.getStuNo());
+            stu.setMajor(BuaAnalyticalRule.getMajor(physicalEvaluation.getStuNo()));
             studentDao.addStudent(stu);
             Double[] weights = BuaAnalyticalRule.getPhysicalWeights(grade);
             physicalEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, physicalEvaluation.getCultureScore(),

@@ -5,6 +5,7 @@ import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.common.SystemResponse;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
+import com.performance.analysis.service.FileDataReadService;
 import com.performance.analysis.service.FileSystemStorageService;
 import com.performance.analysis.service.impl.BuaMajorDataReadService;
 import com.performance.analysis.service.impl.BuaMoralDataReadService;
@@ -31,11 +32,11 @@ public class BuaAnalysisController {
     @Autowired
     private FileSystemStorageService buaExcelStorageService;
     @Autowired
-    private BuaPhysicalDataReadService buaPhysicalDataReadService;
+    private FileDataReadService buaPhysicalDataReadService;
     @Autowired
-    private BuaMoralDataReadService buaMoralDataReadService;
+    private FileDataReadService buaMoralDataReadService;
     @Autowired
-    private BuaMajorDataReadService buaMajorDataReadService;
+    private FileDataReadService buaMajorDataReadService;
 
     /**
      * Excel上传数据处理

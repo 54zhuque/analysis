@@ -45,8 +45,11 @@ public class BuaMajorDataReadService implements FileDataReadService {
         Workbook workbook = ExcelUtil.getWorkbook(file);
         List<MajorEvaluation> majorEvaluations = this.readInMajorEvaluation(workbook);
         for (MajorEvaluation majorEvaluation : majorEvaluations) {
-            Integer grade = BuaAnalyticalRule.getGrade(majorEvaluation.getStuNo());
-            Student stu = new Student(majorEvaluation.getStuNo(), majorEvaluation.getStuName(), grade);
+            Student stu = new Student();
+            stu.setStuNo(majorEvaluation.getStuNo());
+            stu.setName(majorEvaluation.getStuName());
+            stu.setGrade(BuaAnalyticalRule.getGrade(majorEvaluation.getStuNo()));
+            stu.setMajor(BuaAnalyticalRule.getMajor(majorEvaluation.getStuNo()));
             studentDao.addStudent(stu);
             majorEvaluation.setFixScore(this.getMajorWeightedAverageScore(majorEvaluation.getCourseEvaluations()));
             majorEvaluationDao.addMajorEvaluation(majorEvaluation.getStuNo(),

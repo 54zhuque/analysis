@@ -12,15 +12,7 @@ public class Student implements Serializable {
     private String stuNo;//学号
     private String name;//姓名
     private Integer grade;//年级（1，2，3，4）
-
-    public Student() {
-    }
-
-    public Student(String stuNo, String name, Integer grade) {
-        this.stuNo = stuNo;
-        this.name = name;
-        this.grade = grade;
-    }
+    private String major;//专业
 
     public String getStuNo() {
         return stuNo;
@@ -44,5 +36,13 @@ public class Student implements Serializable {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 }

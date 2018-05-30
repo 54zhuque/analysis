@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StorageException.class)
     @ResponseBody
     public SystemResponse handleStorageException(StorageException e) {
+        e.printStackTrace();
         return new SystemResponse(SystemCode.ERROR.getCode(), e.getMessage());
     }
 
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataReadInException.class)
     @ResponseBody
     public SystemResponse handleDataReadInException(DataReadInException e) {
+        e.printStackTrace();
         return new SystemResponse(SystemCode.ERROR.getCode(), e.getMessage());
     }
 

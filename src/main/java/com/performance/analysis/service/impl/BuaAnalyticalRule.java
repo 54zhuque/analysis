@@ -57,6 +57,16 @@ public class BuaAnalyticalRule {
     }
 
     /**
+     * 获取专业，从学号中截取
+     *
+     * @param stuNo 学号
+     * @return
+     */
+    public static String getMajor(String stuNo) {
+        return stuNo.substring(4, 8);
+    }
+
+    /**
      * 计算加权分
      *
      * @param weights
