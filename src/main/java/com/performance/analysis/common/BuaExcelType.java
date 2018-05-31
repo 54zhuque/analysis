@@ -9,7 +9,8 @@ package com.performance.analysis.common;
 public enum BuaExcelType {
     PHYSICAL("身体"),
     MORAL("思想"),
-    MAJOY("专业");
+    MAJOY("专业"),
+    ENGLISH("英语");
 
     private String name;
 

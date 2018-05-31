@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class EnglishEvaluation implements Serializable {
     private String stuNo;//学号
+    private String stuName;//姓名
     private String englishScore;//英语成绩，大一为分数，其他为CET-4或空
 
     public String getStuNo() {
@@ -18,6 +19,14 @@ public class EnglishEvaluation implements Serializable {
 
     public void setStuNo(String stuNo) {
         this.stuNo = stuNo;
+    }
+
+    public String getStuName() {
+        return stuName;
+    }
+
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
     public String getEnglishScore() {

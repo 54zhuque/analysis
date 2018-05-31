@@ -37,6 +37,8 @@ public class BuaAnalysisController {
     private FileDataReadService buaMoralDataReadService;
     @Autowired
     private FileDataReadService buaMajorDataReadService;
+    @Autowired
+    private FileDataReadService buaEnglishDataReadService;
 
     /**
      * Excel上传数据处理
@@ -59,6 +61,8 @@ public class BuaAnalysisController {
             buaMoralDataReadService.read(uploadFile);
         } else if (fileName.contains(BuaExcelType.MAJOY.toString())) {
             buaMajorDataReadService.read(uploadFile);
+        } else if (fileName.contains(BuaExcelType.ENGLISH.toString())) {
+            buaEnglishDataReadService.read(uploadFile);
         } else {
             throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
         }
