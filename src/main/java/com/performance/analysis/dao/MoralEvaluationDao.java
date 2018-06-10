@@ -15,6 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MoralEvaluationDao {
 
+    /**
+     * 添加思想素质考核评分
+     *
+     * @param moralEvaluation
+     */
     @Insert("insert or ignore into moral_evaluation(stu_no,mate_score,teacher_score,dorm_score,fix_score) " +
             "values(#{stuNo},#{mateScore},#{teacherScore},#{dormScore},#{fixScore})")
     void addMoralEvaluation(MoralEvaluation moralEvaluation);

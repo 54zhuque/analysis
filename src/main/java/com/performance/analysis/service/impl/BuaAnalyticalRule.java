@@ -30,7 +30,8 @@ public class BuaAnalyticalRule {
      * @throws DataReadInException
      */
     public static Integer getGrade(String stuNo) throws DataReadInException {
-        int enrollmentYear = Integer.valueOf(stuNo.substring(0, 4));//截取入学年份
+        //截取入学年份
+        int enrollmentYear = Integer.valueOf(stuNo.substring(0, 4));
         Integer grade;
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();

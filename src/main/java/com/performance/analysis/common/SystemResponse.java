@@ -22,6 +22,9 @@ public class SystemResponse<T> {
         this.data = data;
     }
 
+    public SystemResponse() {
+    }
+
     public int getCode() {
         return code;
     }

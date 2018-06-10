@@ -15,6 +15,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MajorEvaluationDao {
 
+    /**
+     * 添加专业成绩考核评分
+     *
+     * @param stuNo
+     * @param course
+     * @param fixScore
+     */
     @Insert("insert or ignore into major_evaluation(stu_no,course,fix_score) " +
             "values(#{stuNo},#{course},#{fixScore})")
     void addMajorEvaluation(@Param("stuNo") String stuNo, @Param("course") String course, @Param("fixScore") Double fixScore);

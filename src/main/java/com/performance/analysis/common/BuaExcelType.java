@@ -14,7 +14,7 @@ public enum BuaExcelType {
 
     private String name;
 
-    private BuaExcelType(String name) {
+    BuaExcelType(String name) {
         this.name = name;
     }
 

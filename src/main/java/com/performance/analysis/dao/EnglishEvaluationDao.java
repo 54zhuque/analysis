@@ -15,6 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EnglishEvaluationDao {
 
+    /**
+     * 添加英语成绩
+     *
+     * @param englishEvaluation
+     */
     @Insert("insert or ignore into english_evaluation(stu_no,english_score) " +
             "values(#{stuNo},#{englishScore})")
     void addEnglishEvaluation(EnglishEvaluation englishEvaluation);

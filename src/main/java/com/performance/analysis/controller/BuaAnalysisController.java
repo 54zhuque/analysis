@@ -5,20 +5,17 @@ import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.common.SystemResponse;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
+import com.performance.analysis.pojo.StudentEvaluationResult;
+import com.performance.analysis.service.BuaDataAnalysisService;
 import com.performance.analysis.service.FileDataReadService;
 import com.performance.analysis.service.FileSystemStorageService;
-import com.performance.analysis.service.impl.BuaMajorDataReadService;
-import com.performance.analysis.service.impl.BuaMoralDataReadService;
-import com.performance.analysis.service.impl.BuaPhysicalDataReadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: Tangwei
@@ -39,6 +36,8 @@ public class BuaAnalysisController {
     private FileDataReadService buaMajorDataReadService;
     @Autowired
     private FileDataReadService buaEnglishDataReadService;
+    @Autowired
+    private BuaDataAnalysisService buaTripleAResultService;
 
     /**
      * Excel上传数据处理
@@ -69,5 +68,28 @@ public class BuaAnalysisController {
         return new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
     }
 
+    /**
+     * 评优分析
+     *
+     * @param majorGrade 专业年级，学号前几位中获取
+     * @param type       A A++ A+ etc...
+     * @return
+     * @throws DataReadInException
+     */
+    @PostMapping("/bua/analysis/evaluations/{majorGrade}/{type}")
+    @ResponseBody
+    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable String majorGrade, @PathVariable String type) throws DataReadInException {
+        SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
+        List<StudentEvaluationResult> studentEvaluationResults;
+        switch (type) {
+            case "A":
+                studentEvaluationResults = buaTripleAResultService.majorGradeAnalysis(majorGrade);
+                break;
+            default:
+                studentEvaluationResults = null;
+        }
+        response.setData(studentEvaluationResults);
+        return response;
+    }
 
 }

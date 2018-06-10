@@ -15,6 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PhysicalEvaluationDao {
 
+    /**
+     * 添加身体素质考核评分
+     *
+     * @param physicalEvaluation
+     */
     @Insert("insert or ignore into physical_evaluation(stu_no,culture_score,training_score,additional_plus,fix_score) " +
             "values(#{stuNo},#{cultureScore},#{trainingScore},#{additionalPlus},#{fixScore})")
     void addPhysicalEvaluation(PhysicalEvaluation physicalEvaluation);
