@@ -37,7 +37,7 @@ public interface StudentEvaluationDao {
             "left join moral_evaluation on student.stu_no = moral_evaluation.stu_no) " +
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
             "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
-            "where student.stu_no like '%#{majorGrade}%'")
+            "where student.stu_no like '%${majorGrade}%'")
     List<StudentEvaluationDto> findStudentEvaluations(@Param("majorGrade") String majorGrade);
 
     /**
@@ -46,6 +46,15 @@ public interface StudentEvaluationDao {
      * @param studentEvaluationResult
      */
     @Insert("insert into student_evaluation(stu_no,stu_name,physical_score,moral_score,major_score,english_score,evaluation_result) " +
-            "values(#{stuNo},#{stuName},#{physicalScore},#{moralScore},#{majorScore}),#{englishScore},#{evaluationResult}")
+            "values(#{stuNo},#{stuName},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{evaluationResult})")
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
+
+    /**
+     * 查询对应年级专业下的评优信息
+     *
+     * @param majorGrade
+     * @return
+     */
+    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_no like '%${majorGrade}%' ")
+    List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("majorGrade") String majorGrade);
 }

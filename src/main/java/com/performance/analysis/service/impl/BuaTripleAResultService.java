@@ -3,11 +3,15 @@ package com.performance.analysis.service.impl;
 import com.performance.analysis.common.BuaEvaluationEnum;
 import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.BuaDataAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -31,10 +35,20 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
     private StudentEvaluationDao studentEvaluationDao;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataAnalysisException.class)
     public List<StudentEvaluationResult> majorGradeAnalysis(String majorGrade) throws DataReadInException {
+        List<StudentEvaluationResult> tripleAStudents = studentEvaluationDao.
+                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), majorGrade);
+        if (tripleAStudents != null && tripleAStudents.size() > 0) {
+            return tripleAStudents;
+        }
         List<StudentEvaluationDto> studentEvaluationDtos = studentEvaluationDao.findStudentEvaluations(majorGrade);
-        List<StudentEvaluationResult> tripleAStudent = this.getTripleAData(studentEvaluationDtos);
-        return tripleAStudent;
+        tripleAStudents = this.getTripleAData(studentEvaluationDtos);
+        for (StudentEvaluationResult tripleAStudent : tripleAStudents) {
+            //保存评优结果
+            studentEvaluationDao.addStudentEvaluationResult(tripleAStudent);
+        }
+        return tripleAStudents;
     }
 
     /**

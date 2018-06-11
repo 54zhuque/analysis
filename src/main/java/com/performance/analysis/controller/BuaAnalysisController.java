@@ -76,7 +76,7 @@ public class BuaAnalysisController {
      * @return
      * @throws DataReadInException
      */
-    @PostMapping("/bua/analysis/evaluations/{majorGrade}/{type}")
+    @GetMapping("/bua/analysis/evaluations/{majorGrade}/{type}")
     @ResponseBody
     public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable String majorGrade, @PathVariable String type) throws DataReadInException {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
