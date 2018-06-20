@@ -43,24 +43,24 @@ public class BuaAnalysisController {
      * Excel上传数据处理
      *
      * @param file
+     * @param type
      * @return
      * @throws StorageException
      * @throws IOException
      * @throws DataReadInException
      */
-    @PostMapping("/bua/analysis/upload")
+    @PostMapping("/bua/analysis/upload/{type}")
     @ResponseBody
-    public SystemResponse handleBuaExcel(@RequestParam("file") MultipartFile file) throws StorageException, IOException, DataReadInException {
+    public SystemResponse handleBuaExcel(@RequestParam("file") MultipartFile file, @PathVariable String type) throws StorageException, IOException, DataReadInException {
         String path = buaExcelStorageService.store(file, UPLOAD_PATH);
         File uploadFile = new File(path);
-        String fileName = uploadFile.getName();
-        if (fileName.contains(BuaExcelType.PHYSICAL.toString())) {
+        if (type.toLowerCase().equals(BuaExcelType.PHYSICAL.toString())) {
             buaPhysicalDataReadService.read(uploadFile);
-        } else if (fileName.contains(BuaExcelType.MORAL.toString())) {
+        } else if (type.toLowerCase().equals(BuaExcelType.MORAL.toString())) {
             buaMoralDataReadService.read(uploadFile);
-        } else if (fileName.contains(BuaExcelType.MAJOY.toString())) {
+        } else if (type.toLowerCase().equals(BuaExcelType.MAJOY.toString())) {
             buaMajorDataReadService.read(uploadFile);
-        } else if (fileName.contains(BuaExcelType.ENGLISH.toString())) {
+        } else if (type.toLowerCase().equals(BuaExcelType.ENGLISH.toString())) {
             buaEnglishDataReadService.read(uploadFile);
         } else {
             throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
