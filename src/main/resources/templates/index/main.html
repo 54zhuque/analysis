@@ -42,26 +42,5 @@
     </div>
 </div>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script>
-    layui.use('upload', function () {
-        var upload = layui.upload;
-
-        //执行实例
-        var uploadInst = upload.render({
-            elem: '#file_upload',
-            url: '/bua/analysis/upload',
-            field: 'file',
-            accept: 'file',
-            exts: 'xls|xlsx',
-            multiple: false,
-            done: function (res) {
-                window.location.reload();
-            },
-            error: function () {
-                layer.msg('文件上传失败');
-            }
-        });
-    });
-</script>
 </body>
 </html>
