@@ -27,19 +27,19 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术",
+					"title": "生物技术 1",
 					"icon": "&#xe674;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "生物工程",
+					"title": "生物工程 1",
 					"icon": "&#xe64c;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "应用化学",
+					"title": "应用化学 1",
 					"icon": "&#xe631;",
 					"href": "",
 					"spread": false
@@ -53,19 +53,19 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术",
+					"title": "生物技术 2",
 					"icon": "&#xe674;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "生物工程",
+					"title": "生物工程 2",
 					"icon": "&#xe64c;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "应用化学",
+					"title": "应用化学 2",
 					"icon": "&#xe631;",
 					"href": "",
 					"spread": false
@@ -79,19 +79,19 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术",
+					"title": "生物技术 3",
 					"icon": "&#xe674;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "生物工程",
+					"title": "生物工程 3",
 					"icon": "&#xe64c;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "应用化学",
+					"title": "应用化学 3",
 					"icon": "&#xe631;",
 					"href": "",
 					"spread": false
@@ -105,19 +105,19 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术",
+					"title": "生物技术 4",
 					"icon": "&#xe674;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "生物工程",
+					"title": "生物工程 4",
 					"icon": "&#xe64c;",
 					"href": "",
 					"spread": false
 				},
 				{
-					"title": "应用化学",
+					"title": "应用化学 4",
 					"icon": "&#xe631;",
 					"href": "",
 					"spread": false
