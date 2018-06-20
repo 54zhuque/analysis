@@ -1,19 +1,31 @@
 {
 	"achievement_import": [
 		{
-			"title": "学习成绩",
-			"icon": "icon-text",
+			"title": "专业学科",
+			"icon": "&#xe634;",
 			"href": "page/news/newsList.html",
 			"spread": false
 		},
 		{
-			"title": "体育达标",
+			"title": "英语成绩",
 			"icon": "&#xe634;",
 			"href": "page/img/images.html",
 			"spread": false
 		},
 		{
-			"title": "课外成绩",
+			"title": "思想素质",
+			"icon": "&#xe634;",
+			"href": "page/img/images.html",
+			"spread": false
+		},
+		{
+			"title": "身体素质",
+			"icon": "&#xe634;",
+			"href": "page/img/images.html",
+			"spread": false
+		},
+		{
+			"title": "额外加分",
 			"icon": "&#xe634;",
 			"href": "page/img/images.html",
 			"spread": false
