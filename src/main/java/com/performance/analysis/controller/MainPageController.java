@@ -24,8 +24,19 @@ public class MainPageController {
     @Autowired
     private StudentService studentService;
 
+    @GetMapping("/main")
+    public ModelAndView showMain() {
+        ModelAndView view = new ModelAndView();
+
+        List<Student> studentList = studentService.findAllStudent();
+        view.addObject("students", studentList);
+
+        view.setViewName("index/main");
+        return view;
+    }
+
     @GetMapping("/import/{type}")
-    public ModelAndView showMain(@PathVariable String type) {
+    public ModelAndView fileImport(@PathVariable String type) {
         ModelAndView view = new ModelAndView();
 
         List<Student> studentList = studentService.findAllStudent();

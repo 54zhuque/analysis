@@ -4,7 +4,7 @@
 			"title": "专业学科",
 			"icon": "&#xe634;",
 			"href": "/import/majoy",
-			"spread": true
+			"spread": false
 		},
 		{
 			"title": "英语成绩",
