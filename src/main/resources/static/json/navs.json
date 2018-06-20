@@ -21,83 +21,108 @@
 	],
 	"achievement_analysis": [
 		{
-			"title": "奖学金",
-			"icon": "&#xe612;",
+			"title": "一年级",
+			"icon": "&#xe770;",
 			"href": "",
 			"spread": false,
 			"children": [
 				{
-					"title": "一等奖学金",
-					"icon": "&#xe61c;",
-					"href": "page/404.html",
+					"title": "生物技术",
+					"icon": "&#xe674;",
+					"href": "",
 					"spread": false
 				},
 				{
-					"title": "二等奖学金",
-					"icon": "&#xe61c;",
-					"href": "page/404.html",
+					"title": "生物工程",
+					"icon": "&#xe64c;",
+					"href": "",
 					"spread": false
 				},
 				{
-					"title": "三等奖学金",
-					"icon": "&#xe61c;",
-					"href": "page/404.html",
+					"title": "应用化学",
+					"icon": "&#xe631;",
+					"href": "",
 					"spread": false
 				}
 			]
 		},
 		{
-			"title": "三好学生",
-			"icon": "icon-vip",
-			"href": "page/user/userGrade.html",
-			"spread": false
+			"title": "二年级",
+			"icon": "&#xe770;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "生物技术",
+					"icon": "&#xe674;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "生物工程",
+					"icon": "&#xe64c;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "应用化学",
+					"icon": "&#xe631;",
+					"href": "",
+					"spread": false
+				}
+			]
 		},
 		{
-			"title": "优秀班干部",
-			"icon": "icon-vip",
-			"href": "page/user/userGrade.html",
-			"spread": false
-		}
-	],
-	"systemeSttings": [
+			"title": "三年级",
+			"icon": "&#xe770;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "生物技术",
+					"icon": "&#xe674;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "生物工程",
+					"icon": "&#xe64c;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "应用化学",
+					"icon": "&#xe631;",
+					"href": "",
+					"spread": false
+				}
+			]
+		},
 		{
-			"title": "系统基本参数",
-			"icon": "&#xe631;",
-			"href": "page/systemSetting/basicParameter.html",
-			"spread": false
-		},{
-			"title": "系统日志",
-			"icon": "icon-log",
-			"href": "page/systemSetting/logs.html",
-			"spread": false
-		},{
-			"title": "友情链接",
-			"icon": "&#xe64c;",
-			"href": "page/systemSetting/linkList.html",
-			"spread": false
-		},{
-			"title": "图标管理",
-			"icon": "&#xe857;",
-			"href": "page/systemSetting/icons.html",
-			"spread": false
-		}
-	],
-	"seraphApi": [
-		{
-			"title": "三级联动模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/addressDoc.html",
-			"spread": false
-		},{
-			"title": "bodyTab模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/bodyTabDoc.html",
-			"spread": false
-		},{
-			"title": "三级菜单",
-			"icon": "icon-mokuai",
-			"href": "page/doc/navDoc.html",
-			"spread": false
+			"title": "四年级",
+			"icon": "&#xe770;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "生物技术",
+					"icon": "&#xe674;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "生物工程",
+					"icon": "&#xe64c;",
+					"href": "",
+					"spread": false
+				},
+				{
+					"title": "应用化学",
+					"icon": "&#xe631;",
+					"href": "",
+					"spread": false
+				}
+			]
 		}
 	]
 }
