@@ -15,6 +15,7 @@ public class StudentEvaluationResult implements Serializable {
     private Double moralScore;//思想素质计算分
     private Double majorScore;//专业成绩计算分
     private String englishScore;//英语成绩
+    private Double fixScore;//综合评分
     private String evaluationResult;//考核结果
 
     public String getStuNo() {
@@ -55,6 +56,14 @@ public class StudentEvaluationResult implements Serializable {
 
     public void setMajorScore(Double majorScore) {
         this.majorScore = majorScore;
+    }
+
+    public Double getFixScore() {
+        return fixScore;
+    }
+
+    public void setFixScore(Double fixScore) {
+        this.fixScore = fixScore;
     }
 
     public String getEnglishScore() {

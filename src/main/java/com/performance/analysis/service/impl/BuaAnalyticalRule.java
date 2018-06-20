@@ -150,4 +150,14 @@ public class BuaAnalyticalRule {
         Double[] weights = new Double[]{0.4d, 0.3d, 0.3d};
         return weights;
     }
+
+    /**
+     * 获取三好学生评选权重
+     *
+     * @return weights
+     */
+    public static Double[] getTrableAEvaluationWeights() {
+        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
+        return weights;
+    }
 }

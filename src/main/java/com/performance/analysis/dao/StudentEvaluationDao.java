@@ -45,8 +45,8 @@ public interface StudentEvaluationDao {
      *
      * @param studentEvaluationResult
      */
-    @Insert("insert into student_evaluation(stu_no,stu_name,physical_score,moral_score,major_score,english_score,evaluation_result) " +
-            "values(#{stuNo},#{stuName},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{evaluationResult})")
+    @Insert("insert into student_evaluation(stu_no,stu_name,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result) " +
+            "values(#{stuNo},#{stuName},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult})")
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
 
     /**
@@ -55,6 +55,6 @@ public interface StudentEvaluationDao {
      * @param majorGrade
      * @return
      */
-    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_no like '%${majorGrade}%' ")
+    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_no like '%${majorGrade}%' order by fix_score asc")
     List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("majorGrade") String majorGrade);
 }

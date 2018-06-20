@@ -48,6 +48,9 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
             //保存评优结果
             studentEvaluationDao.addStudentEvaluationResult(tripleAStudent);
         }
+        //重新查询排序后的结果
+        tripleAStudents = studentEvaluationDao.
+                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), majorGrade);
         return tripleAStudents;
     }
 
@@ -102,6 +105,8 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
             studentEvaluationResult.setPhysicalScore(dto.getPhysicalScore());
             studentEvaluationResult.setStuName(dto.getStuName());
             studentEvaluationResult.setStuNo(dto.getStuNo());
+            studentEvaluationResult.setFixScore(BuaAnalyticalRule.getWeightedScore(BuaAnalyticalRule.getTrableAEvaluationWeights(),
+                    dto.getPhysicalScore(), dto.getMajorScore(), dto.getMoralScore()));
             studentEvaluationResults.add(studentEvaluationResult);
         }
         return studentEvaluationResults;
