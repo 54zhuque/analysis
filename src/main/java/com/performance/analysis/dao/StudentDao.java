@@ -49,6 +49,7 @@ public interface StudentDao {
      */
     @Select("select " +
             "student.stu_no," +
+            "student.major,"+
             "student.name as stu_name," +
             "student.grade as stu_grade," +
             "physical_evaluation.fix_score as physical_score," +
