@@ -95,10 +95,8 @@ layui.define(["element", "jquery"], function (exports) {
 
     //是否点击窗口切换刷新页面
     Tab.prototype.changeRegresh = function (index) {
-        if (changeRefreshStr === "true") {
-            $(".clildFrame .layui-tab-item").eq(index).find("iframe")[0].contentWindow.location.reload();
-        }
-    }
+        $(".clildFrame .layui-tab-item").eq(index).find("iframe")[0].contentWindow.location.reload();
+    };
 
     //参数设置
     Tab.prototype.set = function (option) {
