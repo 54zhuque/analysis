@@ -15,9 +15,10 @@ public interface BuaDataAnalysisService {
     /**
      * 针对专业年级分析
      *
-     * @param majorGrade 专业年级，可从学号前几位获取
+     * @param grade 年级
+     * @param major 专业，可从学号前几位获取
      * @return
      * @throws DataReadInException
      */
-    List<StudentEvaluationResult> majorGradeAnalysis(String majorGrade) throws DataReadInException;
+    List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataReadInException;
 }

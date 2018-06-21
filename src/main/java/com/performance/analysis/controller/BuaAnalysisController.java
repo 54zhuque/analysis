@@ -71,19 +71,20 @@ public class BuaAnalysisController {
     /**
      * 评优分析
      *
-     * @param majorGrade 专业年级，学号前几位中获取
-     * @param type       A A++ A+ etc...
+     * @param grade 年级
+     * @param major 专业
+     * @param type  A A++ A+ etc...
      * @return
      * @throws DataReadInException
      */
-    @GetMapping("/bua/analysis/evaluations/{majorGrade}/{type}")
+    @GetMapping("/bua/analysis/evaluations/{grade}/{major}/{type}")
     @ResponseBody
-    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable String majorGrade, @PathVariable String type) throws DataReadInException {
+    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) throws DataReadInException {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
         List<StudentEvaluationResult> studentEvaluationResults;
         switch (type) {
             case "A":
-                studentEvaluationResults = buaTripleAResultService.majorGradeAnalysis(majorGrade);
+                studentEvaluationResults = buaTripleAResultService.majorGradeAnalysis(grade, major);
                 break;
             default:
                 studentEvaluationResults = null;

@@ -21,12 +21,14 @@ public interface StudentEvaluationDao {
     /**
      * 查询对应年级专业下的学生考核信息
      *
-     * @param majorGrade
+     * @param grade
+     * @param major
      * @return
      */
     @Select("select " +
             "student.stu_no," +
             "student.name as stu_name," +
+            "student.grade as stu_grade," +
             "physical_evaluation.fix_score as physical_score," +
             "moral_evaluation.fix_score as moral_score," +
             "major_evaluation.fix_score as major_score," +
@@ -37,24 +39,26 @@ public interface StudentEvaluationDao {
             "left join moral_evaluation on student.stu_no = moral_evaluation.stu_no) " +
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
             "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
-            "where student.stu_no like '%${majorGrade}%'")
-    List<StudentEvaluationDto> findStudentEvaluations(@Param("majorGrade") String majorGrade);
+            "where student.grade=${grade} and student.stu_no like '%${major}%'")
+    List<StudentEvaluationDto> findStudentEvaluations(@Param("grade") Integer grade, @Param("major") String major);
 
     /**
      * 存储学生评优记录
      *
      * @param studentEvaluationResult
      */
-    @Insert("insert into student_evaluation(stu_no,stu_name,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result) " +
-            "values(#{stuNo},#{stuName},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult})")
+    @Insert("insert into student_evaluation(stu_no,stu_name,stu_grade,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result) " +
+            "values(#{stuNo},#{stuName},#{stuGrade},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult})")
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
 
     /**
      * 查询对应年级专业下的评优信息
      *
-     * @param majorGrade
+     * @param evaluationResult
+     * @param grade
+     * @param major
      * @return
      */
-    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_no like '%${majorGrade}%' order by fix_score asc")
-    List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("majorGrade") String majorGrade);
+    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score asc")
+    List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
 }

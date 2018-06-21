@@ -36,13 +36,13 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataAnalysisException.class)
-    public List<StudentEvaluationResult> majorGradeAnalysis(String majorGrade) throws DataReadInException {
+    public List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataReadInException {
         List<StudentEvaluationResult> tripleAStudents = studentEvaluationDao.
-                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), majorGrade);
+                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), grade, major);
         if (tripleAStudents != null && tripleAStudents.size() > 0) {
             return tripleAStudents;
         }
-        List<StudentEvaluationDto> studentEvaluationDtos = studentEvaluationDao.findStudentEvaluations(majorGrade);
+        List<StudentEvaluationDto> studentEvaluationDtos = studentEvaluationDao.findStudentEvaluations(grade, major);
         tripleAStudents = this.getTripleAData(studentEvaluationDtos);
         for (StudentEvaluationResult tripleAStudent : tripleAStudents) {
             //保存评优结果
@@ -50,7 +50,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
         }
         //重新查询排序后的结果
         tripleAStudents = studentEvaluationDao.
-                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), majorGrade);
+                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), grade, major);
         return tripleAStudents;
     }
 
@@ -68,8 +68,6 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
         if (studentEvaluationDtos == null || studentEvaluationDtos.size() == 0) {
             return null;
         }
-        //获取年级
-        Integer grade = BuaAnalyticalRule.getGrade(studentEvaluationDtos.get(0).getStuNo());
         List<StudentEvaluationResult> studentEvaluationResults = new ArrayList<>();
         StudentEvaluationResult studentEvaluationResult;
         //英语成绩中位数计算
@@ -88,7 +86,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
                 continue;
             }
             //非一年级学生无需要CET-4，一年级学生英语成绩在专业50%以上
-            if (grade > 1) {
+            if (dto.getStuGrade() > 1) {
                 if (!dto.getEnglishScore().equals(TRIPLEA_ENGLISH_SCORE)) {
                     continue;
                 }
@@ -104,6 +102,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
             studentEvaluationResult.setMoralScore(dto.getMoralScore());
             studentEvaluationResult.setPhysicalScore(dto.getPhysicalScore());
             studentEvaluationResult.setStuName(dto.getStuName());
+            studentEvaluationResult.setStuGrade(dto.getStuGrade());
             studentEvaluationResult.setStuNo(dto.getStuNo());
             studentEvaluationResult.setFixScore(BuaAnalyticalRule.getWeightedScore(BuaAnalyticalRule.getTrableAEvaluationWeights(),
                     dto.getPhysicalScore(), dto.getMajorScore(), dto.getMoralScore()));

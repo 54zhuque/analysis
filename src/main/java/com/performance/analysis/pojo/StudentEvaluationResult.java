@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class StudentEvaluationResult implements Serializable {
     private String stuNo;//学号
     private String stuName;//姓名
+    private Integer stuGrade;//年级
     private Double physicalScore;//身体素质计算分
     private Double moralScore;//思想素质计算分
     private Double majorScore;//专业成绩计算分
@@ -32,6 +33,14 @@ public class StudentEvaluationResult implements Serializable {
 
     public void setStuName(String stuName) {
         this.stuName = stuName;
+    }
+
+    public Integer getStuGrade() {
+        return stuGrade;
+    }
+
+    public void setStuGrade(Integer stuGrade) {
+        this.stuGrade = stuGrade;
     }
 
     public Double getPhysicalScore() {
