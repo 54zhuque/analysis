@@ -17,6 +17,8 @@
 <div class="layui-container width-full padding-10 bg-white">
     <div class="layui-row">
         <div class="layui-col-md12">
+            <input type="hidden" id="grade" th:value="${grade}"/>
+            <input type="hidden" id="subject" th:value="${subject}"/>
             <table class="layui-table">
                 <colgroup>
                     <col width="150">
@@ -27,10 +29,28 @@
                 <tr>
                     <th>学号</th>
                     <th>姓名</th>
-                    <th>班级</th>
+                    <th>年级</th>
+                    <th>身体素质得分</th>
+                    <th>思想素质得分</th>
+                    <th>专业成绩得分</th>
+                    <th>英语成绩</th>
+                    <th>综合评分</th>
+                    <th>考核结果</th>
                 </tr>
                 </thead>
-                <tbody id="excellent_students"></tbody>
+                <tbody id="excellent_students">
+                    <tr v-for="(student, index) in studentList">
+                        <td>{{student.stuNo}}</td>
+                        <td>{{student.stuName}}</td>
+                        <td>{{student.stuGrade}}</td>
+                        <td>{{student.physicalScore}}</td>
+                        <td>{{student.moralScore}}</td>
+                        <td>{{student.majorScore}}</td>
+                        <td>{{student.englishScore}}</td>
+                        <td>{{student.fixScore}}</td>
+                        <td>{{student.evaluationResult}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -38,20 +58,29 @@
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/js/vue.js}"></script>
 <script type="text/javascript">
-    (function(){
-        /*var $ = layui.jquery;
-        var imageTable = new Vue({
-            el: '#excellent_students',
-            data: {
-                imageList: []
+    var studentTable = new Vue({
+        el: '#excellent_students',
+        data: {
+            studentList: []
+        }
+    });
+    layui.use(['form','jquery',"layer"],function() {
+        var $ = layui.jquery;
+
+        var grade = $("#grade").val();
+        var subject = $("#subject").val();
+        //获取数据
+        var url = '/bua/analysis/evaluations/'+grade+'/'+subject+'/A';
+        $.get(url, null, function(data){
+            var code = data['code'];
+            if(parseInt(code) === 200){
+                var showData = data['data'];
+                if(showData && showData.length > 0){
+                    studentTable.$data.studentList = showData;
+                }
             }
         });
-
-        //获取数据
-        $.get('/house/vcloud/images?imageName=', null, function(data){
-            imageTable.$data.imageList = data;
-        });*/
-    })();
+    });
 </script>
 </body>
 </html>
