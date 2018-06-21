@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>成绩分析系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/css/site.css}" media="all"/>
+</head>
+<body class="main_body padding-10">
+<div class="layui-container width-full padding-10 bg-white">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>班级</th>
+                </tr>
+                </thead>
+                <tbody id="excellent_students"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/vue.js}"></script>
+<script type="text/javascript">
+    (function(){
+        /*var $ = layui.jquery;
+        var imageTable = new Vue({
+            el: '#excellent_students',
+            data: {
+                imageList: []
+            }
+        });
+
+        //获取数据
+        $.get('/house/vcloud/images?imageName=', null, function(data){
+            imageTable.$data.imageList = data;
+        });*/
+    })();
+</script>
+</body>
+</html>
