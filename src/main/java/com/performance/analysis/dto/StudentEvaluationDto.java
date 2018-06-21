@@ -10,10 +10,10 @@ public class StudentEvaluationDto {
     private String stuNo;//学号
     private String stuName;//姓名
     private Integer stuGrade;//年级
-    private Double physicalScore;//身体素质计算分
-    private Double moralScore;//思想素质计算分
-    private Double majorScore;//专业成绩计算分
-    private String englishScore;//英语成绩
+    private Double physicalScore = 0.0d;//身体素质计算分
+    private Double moralScore = 0.0d;//思想素质计算分
+    private Double majorScore = 0.0d;//专业成绩计算分
+    private String englishScore = "0";//英语成绩
 
     public String getStuNo() {
         return stuNo;

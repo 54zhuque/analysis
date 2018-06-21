@@ -2,6 +2,7 @@ package com.performance.analysis;
 
 import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.common.SystemResponse;
+import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,6 +41,19 @@ public class GlobalExceptionHandler {
     public SystemResponse handleDataReadInException(DataReadInException e) {
         e.printStackTrace();
         return new SystemResponse(SystemCode.ERROR.getCode(), e.getMessage());
+    }
+
+    /**
+     * 自定义数据分析异常处理
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(DataAnalysisException.class)
+    @ResponseBody
+    public SystemResponse handleDataAnalysisException(DataAnalysisException e) {
+        e.printStackTrace();
+        return new SystemResponse(SystemCode.ERROR.getCode(), "数据不完整");
     }
 
     /**

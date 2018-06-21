@@ -3,6 +3,7 @@ package com.performance.analysis.controller;
 import com.performance.analysis.common.BuaExcelType;
 import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.common.SystemResponse;
+import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
 import com.performance.analysis.pojo.StudentEvaluationResult;
@@ -79,7 +80,7 @@ public class BuaAnalysisController {
      */
     @GetMapping("/bua/analysis/evaluations/{grade}/{major}/{type}")
     @ResponseBody
-    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) throws DataReadInException {
+    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) throws DataAnalysisException {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
         List<StudentEvaluationResult> studentEvaluationResults;
         switch (type) {

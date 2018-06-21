@@ -1,5 +1,6 @@
 package com.performance.analysis.service;
 
+import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 
@@ -20,5 +21,5 @@ public interface BuaDataAnalysisService {
      * @return
      * @throws DataReadInException
      */
-    List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataReadInException;
+    List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataAnalysisException;
 }

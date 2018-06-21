@@ -36,14 +36,18 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataAnalysisException.class)
-    public List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataReadInException {
+    public List<StudentEvaluationResult> majorGradeAnalysis(Integer grade, String major) throws DataAnalysisException {
         List<StudentEvaluationResult> tripleAStudents = studentEvaluationDao.
                 findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), grade, major);
         if (tripleAStudents != null && tripleAStudents.size() > 0) {
             return tripleAStudents;
         }
         List<StudentEvaluationDto> studentEvaluationDtos = studentEvaluationDao.findStudentEvaluations(grade, major);
-        tripleAStudents = this.getTripleAData(studentEvaluationDtos);
+        try {
+            tripleAStudents = this.getTripleAData(studentEvaluationDtos);
+        } catch (Exception e) {
+            throw new DataAnalysisException(e.getMessage());
+        }
         if (tripleAStudents != null) {
             for (StudentEvaluationResult tripleAStudent : tripleAStudents) {
                 //保存评优结果
@@ -93,7 +97,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
                     continue;
                 }
             } else {
-                if (Double.valueOf(dto.getEnglishScore()) <= englishMedianScore) {
+                if (Double.valueOf(dto.getEnglishScore()) < englishMedianScore) {
                     continue;
                 }
             }
@@ -134,13 +138,14 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
             if (sortList.size() == 0 || score < sortList.getFirst()) {
                 sortList.addFirst(score);
             } else {
-                for (int i = 0; i < sortList.size(); i++) {
+                int len = sortList.size();
+                for (int i = 0; i < len; i++) {
                     //存在比列表中数据小的值，选取合适位置插入
                     if (score < sortList.get(i)) {
                         sortList.add(i, score);
                         break;
                     }
-                    if (i == sortList.size() - 1) {
+                    if (i == len - 1) {
                         sortList.addLast(score);
                     }
                 }
