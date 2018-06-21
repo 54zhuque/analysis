@@ -41,19 +41,19 @@
 				{
 					"title": "生物技术 1",
 					"icon": "&#xe674;",
-					"href": "",
+					"href": "/bua/evaluations/1/2013",
 					"spread": false
 				},
 				{
 					"title": "生物工程 1",
 					"icon": "&#xe64c;",
-					"href": "",
+					"href": "/bua/evaluations/1/2014",
 					"spread": false
 				},
 				{
 					"title": "应用化学 1",
 					"icon": "&#xe631;",
-					"href": "",
+					"href": "/bua/evaluations/1/2015",
 					"spread": false
 				}
 			]
@@ -67,19 +67,19 @@
 				{
 					"title": "生物技术 2",
 					"icon": "&#xe674;",
-					"href": "",
+					"href": "/bua/evaluations/2/2013",
 					"spread": false
 				},
 				{
 					"title": "生物工程 2",
 					"icon": "&#xe64c;",
-					"href": "",
+					"href": "/bua/evaluations/2/2014",
 					"spread": false
 				},
 				{
 					"title": "应用化学 2",
 					"icon": "&#xe631;",
-					"href": "",
+					"href": "/bua/evaluations/2/2015",
 					"spread": false
 				}
 			]
@@ -93,19 +93,19 @@
 				{
 					"title": "生物技术 3",
 					"icon": "&#xe674;",
-					"href": "",
+					"href": "/bua/evaluations/3/2013",
 					"spread": false
 				},
 				{
 					"title": "生物工程 3",
 					"icon": "&#xe64c;",
-					"href": "",
+					"href": "/bua/evaluations/3/2014",
 					"spread": false
 				},
 				{
 					"title": "应用化学 3",
 					"icon": "&#xe631;",
-					"href": "",
+					"href": "/bua/evaluations/3/2015",
 					"spread": false
 				}
 			]
@@ -119,19 +119,19 @@
 				{
 					"title": "生物技术 4",
 					"icon": "&#xe674;",
-					"href": "",
+					"href": "/bua/evaluations/4/2013",
 					"spread": false
 				},
 				{
 					"title": "生物工程 4",
 					"icon": "&#xe64c;",
-					"href": "",
+					"href": "/bua/evaluations/4/2014",
 					"spread": false
 				},
 				{
 					"title": "应用化学 4",
 					"icon": "&#xe631;",
-					"href": "",
+					"href": "/bua/evaluations/4/2015",
 					"spread": false
 				}
 			]

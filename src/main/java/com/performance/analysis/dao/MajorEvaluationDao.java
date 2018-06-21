@@ -1,8 +1,11 @@
 package com.performance.analysis.dao;
 
+import com.performance.analysis.pojo.MajorEvaluation;
+import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,4 +28,11 @@ public interface MajorEvaluationDao {
     @Insert("insert or ignore into major_evaluation(stu_no,course,fix_score) " +
             "values(#{stuNo},#{course},#{fixScore})")
     void addMajorEvaluation(@Param("stuNo") String stuNo, @Param("course") String course, @Param("fixScore") Double fixScore);
+
+    /**
+     * 查询所有的专业学科成绩
+     * @return List<MajorEvaluation>
+     */
+    @Select("select * from major_evaluation")
+    List<MajorEvaluation> listMajorEvaluation();
 }

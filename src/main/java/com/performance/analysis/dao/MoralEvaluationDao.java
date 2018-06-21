@@ -1,8 +1,10 @@
 package com.performance.analysis.dao;
 
 import com.performance.analysis.pojo.MoralEvaluation;
+import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -23,4 +25,11 @@ public interface MoralEvaluationDao {
     @Insert("insert or ignore into moral_evaluation(stu_no,mate_score,teacher_score,dorm_score,fix_score) " +
             "values(#{stuNo},#{mateScore},#{teacherScore},#{dormScore},#{fixScore})")
     void addMoralEvaluation(MoralEvaluation moralEvaluation);
+
+    /**
+     * 查询所有的专业学科成绩
+     * @return List<MoralEvaluation>
+     */
+    @Select("select * from moral_evaluation")
+    List<MoralEvaluation> listMoralEvaluation();
 }
