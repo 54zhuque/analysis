@@ -1,5 +1,6 @@
 package com.performance.analysis.controller;
 
+import com.performance.analysis.dto.StudentEvaluationDto;
 import com.performance.analysis.pojo.EnglishEvaluation;
 import com.performance.analysis.pojo.MajorEvaluation;
 import com.performance.analysis.pojo.MoralEvaluation;
@@ -8,6 +9,8 @@ import com.performance.analysis.pojo.Student;
 import com.performance.analysis.service.StudentService;
 import com.performance.analysis.service.VariousGradeService;
 import java.util.List;
+
+import com.performance.analysis.service.impl.BuaTripleAResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +44,8 @@ public class MainPageController {
     public ModelAndView showMain() {
         ModelAndView view = new ModelAndView();
 
-        List<Student> studentList = studentService.findAllStudent();
-        view.addObject("students", studentList);
+        List<StudentEvaluationDto> ses=studentService.studentsResultOverview();
+        view.addObject("students", ses);
 
         view.setViewName("index/main");
         return view;
