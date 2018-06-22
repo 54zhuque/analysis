@@ -1,7 +1,9 @@
 package com.performance.analysis.dao;
 
 import com.performance.analysis.pojo.PhysicalEvaluation;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -22,12 +24,13 @@ public interface PhysicalEvaluationDao {
      *
      * @param physicalEvaluation
      */
-    @Insert("insert or ignore into physical_evaluation(stu_no,culture_score,training_score,additional_plus,fix_score) " +
+    @Insert("insert or replace into physical_evaluation(stu_no,culture_score,training_score,additional_plus,fix_score) " +
             "values(#{stuNo},#{cultureScore},#{trainingScore},#{additionalPlus},#{fixScore})")
     void addPhysicalEvaluation(PhysicalEvaluation physicalEvaluation);
 
     /**
      * 查询所有的体育成绩
+     *
      * @return List<PhysicalEvaluation>
      */
     @Select("select * from physical_evaluation")
