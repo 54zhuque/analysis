@@ -44,13 +44,15 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
         }
         List<StudentEvaluationDto> studentEvaluationDtos = studentEvaluationDao.findStudentEvaluations(grade, major);
         tripleAStudents = this.getTripleAData(studentEvaluationDtos);
-        for (StudentEvaluationResult tripleAStudent : tripleAStudents) {
-            //保存评优结果
-            studentEvaluationDao.addStudentEvaluationResult(tripleAStudent);
+        if (tripleAStudents != null) {
+            for (StudentEvaluationResult tripleAStudent : tripleAStudents) {
+                //保存评优结果
+                studentEvaluationDao.addStudentEvaluationResult(tripleAStudent);
+            }
+            //重新查询排序后的结果
+            tripleAStudents = studentEvaluationDao.
+                    findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), grade, major);
         }
-        //重新查询排序后的结果
-        tripleAStudents = studentEvaluationDao.
-                findStudentEvaluationByMajorGrade(BuaEvaluationEnum.TRIPLEA.getValue(), grade, major);
         return tripleAStudents;
     }
 

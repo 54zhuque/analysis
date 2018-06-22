@@ -10,6 +10,7 @@ public class StudentEvaluationDto {
     private String stuNo;//学号
     private String stuName;//姓名
     private Integer stuGrade;//年级
+    private String major;//专业
     private Double physicalScore;//身体素质计算分
     private Double moralScore;//思想素质计算分
     private Double majorScore;//专业成绩计算分
@@ -69,5 +70,13 @@ public class StudentEvaluationDto {
 
     public void setEnglishScore(String englishScore) {
         this.englishScore = englishScore;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 }
