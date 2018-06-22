@@ -46,7 +46,7 @@ iframe{ position:absolute; height:100%; width:100%; border:none;}
 .admin-header-lock-input:-ms-input-placeholder {color:#fff;}
 .admin-header-lock-input:-moz-placeholder {color:#fff;}
 #unlock{ float: left; }
-#lock-box p{ color:#e60000; }
+#lock-box p{ color:#fff; }
 /*顶部*/
 .header{ z-index:2000;}
 .logo{ color: #fff; float: left; line-height:60px; font-size:20px; padding:0 25px; text-align: center; width:150px;}
