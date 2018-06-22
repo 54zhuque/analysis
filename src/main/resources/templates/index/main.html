@@ -11,10 +11,51 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/layui/font/font-awesome/font-awesome.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/css/site.css}" media="all"/>
+    <style>
+        .layui-col-20percent{
+            position: relative;
+            display: block;
+            box-sizing: border-box;
+            float: left;
+            margin-right: 20px;
+            width: calc(20% - 16px);
+        }
+        .layui-col-20percent button.layui-btn{
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="main_body padding-10">
 <div class="layui-container width-full padding-10 bg-white">
+    <div class="layui-row">
+        <div class="layui-col-20percent">
+            <button class="layui-btn" type="button" id="majoy_upload">
+                <i class="icon fa-graduation-cap" aria-hidden="true"></i> 学科成绩
+            </button>
+        </div>
+        <div class="layui-col-20percent">
+            <button class="layui-btn" type="button" id="english_upload">
+                <i class="icon fa-globe" aria-hidden="true"></i> 英语成绩
+            </button>
+        </div>
+        <div class="layui-col-20percent">
+            <button class="layui-btn" type="button" id="moral_upload">
+                <i class="icon fa-leaf" aria-hidden="true"></i> 思想素质
+            </button>
+        </div>
+        <div class="layui-col-20percent">
+            <button class="layui-btn" type="button" id="physical_upload">
+                <i class="icon fa-heartbeat" aria-hidden="true"></i> 身体素质
+            </button>
+        </div>
+        <div class="layui-col-20percent" style="margin-right: 0;">
+            <button class="layui-btn" type="button" id="extra_upload">
+                <i class="icon fa-plus-square" aria-hidden="true"></i> 额外加分
+            </button>
+        </div>
+    </div>
     <div class="layui-row">
         <div class="layui-col-md12">
             <table class="layui-table">
@@ -54,5 +95,52 @@
     </div>
 </div>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        var options = {
+            elem: '',
+            url: '',
+            field: 'file',
+            accept: 'file',
+            exts: 'xls|xlsx',
+            multiple: false,
+            done: function (res) {
+                window.location.reload();
+            },
+            error: function () {
+                layer.msg('文件上传失败');
+            }
+        };
+        // 定义示例
+        // majoy
+        options['elem'] = '#majoy_upload';
+        options['url'] = '/bua/analysis/upload/majoy';
+        var majoyUpload = upload.render(options);
+
+        // english
+        options['elem'] = '#english_upload';
+        options['url'] = '/bua/analysis/upload/english';
+        var englishUpload = upload.render(options);
+
+        // moral
+        options['elem'] = '#moral_upload';
+        options['url'] = '/bua/analysis/upload/moral';
+        var moralUpload = upload.render(options);
+
+        // physical
+        options['elem'] = '#physical_upload';
+        options['url'] = '/bua/analysis/upload/physical';
+        var physicalUpload = upload.render(options);
+
+        // extra
+        options['elem'] = '#extra_upload';
+        options['url'] = '/bua/analysis/upload/extra';
+        var extraUpload = upload.render(options);
+
+    });
+</script>
 </body>
 </html>
