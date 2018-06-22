@@ -1,7 +1,7 @@
 {
 	"achievement_import": [
 		{
-			"title": "专业学科",
+			"title": "学科成绩",
 			"icon": "&#xe634;",
 			"href": "/import/majoy",
 			"spread": false
