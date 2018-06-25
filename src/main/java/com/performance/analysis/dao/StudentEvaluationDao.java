@@ -59,6 +59,6 @@ public interface StudentEvaluationDao {
      * @param major
      * @return
      */
-    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score asc")
+    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score desc")
     List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
 }
