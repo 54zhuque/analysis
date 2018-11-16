@@ -33,32 +33,6 @@
 	],
 	"achievement_analysis": [
 		{
-			"title": "一年级",
-			"icon": "&#xe770;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "生物技术 1",
-					"icon": "&#xe674;",
-					"href": "/bua/evaluations/1/2013",
-					"spread": false
-				},
-				{
-					"title": "生物工程 1",
-					"icon": "&#xe64c;",
-					"href": "/bua/evaluations/1/2014",
-					"spread": false
-				},
-				{
-					"title": "应用化学 1",
-					"icon": "&#xe631;",
-					"href": "/bua/evaluations/1/2015",
-					"spread": false
-				}
-			]
-		},
-		{
 			"title": "二年级",
 			"icon": "&#xe770;",
 			"href": "",
