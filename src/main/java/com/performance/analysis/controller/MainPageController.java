@@ -1,10 +1,7 @@
 package com.performance.analysis.controller;
 
 import com.performance.analysis.dto.StudentEvaluationDto;
-import com.performance.analysis.pojo.EnglishEvaluation;
-import com.performance.analysis.pojo.MajorEvaluation;
-import com.performance.analysis.pojo.MoralEvaluation;
-import com.performance.analysis.pojo.PhysicalEvaluation;
+import com.performance.analysis.pojo.*;
 import com.performance.analysis.service.StudentService;
 import com.performance.analysis.service.VariousGradeService;
 import java.util.List;
@@ -95,6 +92,9 @@ public class MainPageController {
         } else if (PHYSICAL.equals(type)) {
             List<PhysicalEvaluation> physical = variousGradeService.listPhysicalEvaluation();
             view.addObject("physicalList", physical);
+        } else if (EXTRA.equals(type)) {
+            List<ExtraEvaluation> extra = variousGradeService.listExtraEvaluation();
+            view.addObject("extraList", extra);
         }
     }
 

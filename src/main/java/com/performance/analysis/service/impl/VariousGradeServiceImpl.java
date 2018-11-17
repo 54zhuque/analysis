@@ -1,13 +1,7 @@
 package com.performance.analysis.service.impl;
 
-import com.performance.analysis.dao.EnglishEvaluationDao;
-import com.performance.analysis.dao.MajorEvaluationDao;
-import com.performance.analysis.dao.MoralEvaluationDao;
-import com.performance.analysis.dao.PhysicalEvaluationDao;
-import com.performance.analysis.pojo.EnglishEvaluation;
-import com.performance.analysis.pojo.MajorEvaluation;
-import com.performance.analysis.pojo.MoralEvaluation;
-import com.performance.analysis.pojo.PhysicalEvaluation;
+import com.performance.analysis.dao.*;
+import com.performance.analysis.pojo.*;
 import com.performance.analysis.service.VariousGradeService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,8 @@ public class VariousGradeServiceImpl implements VariousGradeService {
     private MoralEvaluationDao moralEvaluationDao;
     @Autowired
     private PhysicalEvaluationDao physicalEvaluationDao;
+    @Autowired
+    private ExtraEvaluationDao extraEvaluationDao;
 
     @Override
     public List<EnglishEvaluation> listEnglishEvaluation() {
@@ -51,4 +47,10 @@ public class VariousGradeServiceImpl implements VariousGradeService {
     public List<PhysicalEvaluation> listPhysicalEvaluation() {
         return physicalEvaluationDao.listPhysicalEvaluation();
     }
+
+    @Override
+    public List<ExtraEvaluation> listExtraEvaluation() {
+        return extraEvaluationDao.listExraEvaluation();
+    }
+
 }

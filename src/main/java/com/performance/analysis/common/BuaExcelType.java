@@ -10,7 +10,8 @@ public enum BuaExcelType {
     PHYSICAL("physical"),
     MORAL("moral"),
     MAJOY("majoy"),
-    ENGLISH("english");
+    ENGLISH("english"),
+    EXTRA("extra");
 
     private String name;
 

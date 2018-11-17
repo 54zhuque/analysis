@@ -1,9 +1,7 @@
 package com.performance.analysis.service;
 
-import com.performance.analysis.pojo.EnglishEvaluation;
-import com.performance.analysis.pojo.MajorEvaluation;
-import com.performance.analysis.pojo.MoralEvaluation;
-import com.performance.analysis.pojo.PhysicalEvaluation;
+import com.performance.analysis.pojo.*;
+
 import java.util.List;
 
 /**
@@ -38,5 +36,11 @@ public interface VariousGradeService {
      * @return List<PhysicalEvaluation>
      */
     List<PhysicalEvaluation> listPhysicalEvaluation();
+
+    /**
+     * 查询所有的体育成绩
+     * @return List<ExtraEvaluation>
+     */
+    List<ExtraEvaluation> listExtraEvaluation();
 
 }
