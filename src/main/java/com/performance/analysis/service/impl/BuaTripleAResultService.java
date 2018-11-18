@@ -29,7 +29,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
     private final static Double TRIPLEA_PHYSICAL_SCORE = 80d;
     private final static Double TRIPLEA_MORAL_SCORE = 85d;
     private final static Double TRIPLEA_MAJOR_SCORE = 85d;
-    private final static String TRIPLEA_ENGLISH_SCORE = "CET-4";
+    private final static String CET4 = "CET4";
 
     @Autowired
     private StudentEvaluationDao studentEvaluationDao;
@@ -61,11 +61,11 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
     }
 
     /**
-     * 获取符合TripleA条件数据，计算条件：
+     * 获取符合三好学生条件数据，计算条件：
      * 身体素质分大于80
      * 思想素质分大于85
      * 专业素质分大于85
-     * 非一年级学生无需要CET-4，一年级学生英语成绩在专业50%以上
+     * 一年级学生英语成绩在专业50%以上,二年级学生需要英语成绩在专业50%以上或者CET-4，其他需要CET-4
      *
      * @param studentEvaluationDtos
      * @return
@@ -76,6 +76,8 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
         }
         List<StudentEvaluationResult> studentEvaluationResults = new ArrayList<>();
         StudentEvaluationResult studentEvaluationResult;
+        //获取通过CET-4列表
+        List<String> cet4List = studentEvaluationDao.getEnglishCET4List();
         //英语成绩中位数计算
         Double englishMedianScore = this.getMedianNum(studentEvaluationDtos);
         for (StudentEvaluationDto dto : studentEvaluationDtos) {
@@ -91,18 +93,25 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
             if (dto.getMajorScore() != null && dto.getMajorScore() <= TRIPLEA_MAJOR_SCORE) {
                 continue;
             }
-            //非一年级学生无需要CET-4，一年级学生英语成绩在专业50%以上
-            if (dto.getStuGrade() > 1) {
-                if (!dto.getEnglishScore().equals(TRIPLEA_ENGLISH_SCORE)) {
+            //一年级学生英语成绩在专业50%以上,二年级学生需要英语成绩在专业50%以上或者CET-4，其他需要CET-4
+            if (dto.getStuGrade() == 1) {
+                if (Double.valueOf(dto.getEnglishScore()) < englishMedianScore) {
                     continue;
                 }
-            } else {
+            } else if (dto.getStuGrade() == 2) {
                 if (Double.valueOf(dto.getEnglishScore()) < englishMedianScore) {
+                    if (!cet4List.contains(dto.getStuNo())) {
+                        continue;
+                    }
+                }
+            } else {
+                if (!cet4List.contains(dto.getStuNo())) {
                     continue;
                 }
             }
             studentEvaluationResult = new StudentEvaluationResult();
-            studentEvaluationResult.setEnglishScore(dto.getEnglishScore());
+            String englishScore = cet4List.contains(dto.getStuNo()) ? CET4 : dto.getEnglishScore();
+            studentEvaluationResult.setEnglishScore(englishScore);
             studentEvaluationResult.setEvaluationResult(BuaEvaluationEnum.TRIPLEA.getValue());
             studentEvaluationResult.setMajorScore(dto.getMajorScore());
             studentEvaluationResult.setMoralScore(dto.getMoralScore());
@@ -131,7 +140,7 @@ public class BuaTripleAResultService implements BuaDataAnalysisService {
         LinkedList<Integer> sortList = new LinkedList<>();
         for (StudentEvaluationDto dto : studentEvaluationDtos) {
             String englishScore = dto.getEnglishScore();
-            if (StringUtils.isEmpty(englishScore) || englishScore.equals(TRIPLEA_ENGLISH_SCORE)) {
+            if (StringUtils.isEmpty(englishScore)) {
                 continue;
             }
             Integer score = Integer.valueOf(englishScore);

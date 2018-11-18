@@ -43,6 +43,14 @@ public interface StudentEvaluationDao {
     List<StudentEvaluationDto> findStudentEvaluations(@Param("grade") Integer grade, @Param("major") String major);
 
     /**
+     * 获取通过英语四级列表
+     *
+     * @return List<String>
+     */
+    @Select("select stu_no from english_cet4")
+    List<String> getEnglishCET4List();
+
+    /**
      * 存储学生评优记录
      *
      * @param studentEvaluationResult

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,11 @@ public class BuaEnglishDataReadService implements FileDataReadService {
             stu.setMajor(BuaAnalyticalRule.getMajor(englishEvaluation.getStuNo()));
             studentDao.addStudent(stu);
             englishEvaluationDao.addEnglishEvaluation(englishEvaluation);
+            String cet4 = englishEvaluation.getCet4();
+            //记录通过英语四级
+            if (!StringUtils.isEmpty(cet4) && "y".equals(cet4.toLowerCase())) {
+                englishEvaluationDao.addEnglishCET4(stu.getStuNo());
+            }
         }
     }
 
@@ -79,9 +85,11 @@ public class BuaEnglishDataReadService implements FileDataReadService {
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 String englishScore = ExcelUtil.getCellValue(row.getCell(2));
+                String cet4 = ExcelUtil.getCellValue(row.getCell(3));
                 englishEvaluation.setEnglishScore(englishScore);
                 englishEvaluation.setStuName(stuName);
                 englishEvaluation.setStuNo(stuNo);
+                englishEvaluation.setCet4(cet4);
                 englishEvaluations.add(englishEvaluation);
             }
         }

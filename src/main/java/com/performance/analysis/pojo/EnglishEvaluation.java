@@ -9,9 +9,23 @@ import java.io.Serializable;
  * 英语考核
  */
 public class EnglishEvaluation implements Serializable {
-    private String stuNo;//学号
-    private String stuName;//姓名
-    private String englishScore;//英语成绩，大一为分数，其他为CET-4或空
+    /**
+     * 学号
+     */
+    private String stuNo;
+    /**
+     * 姓名
+     */
+    private String stuName;
+    /**
+     * 英语成绩
+     */
+    private String englishScore;
+
+    /**
+     * 英语四级
+     */
+    private String cet4;
 
     public String getStuNo() {
         return stuNo;
@@ -35,5 +49,13 @@ public class EnglishEvaluation implements Serializable {
 
     public void setEnglishScore(String englishScore) {
         this.englishScore = englishScore;
+    }
+
+    public String getCet4() {
+        return cet4;
+    }
+
+    public void setCet4(String cet4) {
+        this.cet4 = cet4;
     }
 }
