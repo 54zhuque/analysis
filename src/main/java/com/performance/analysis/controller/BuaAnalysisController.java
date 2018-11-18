@@ -1,13 +1,11 @@
 package com.performance.analysis.controller;
 
-import com.performance.analysis.common.BuaExcelType;
-import com.performance.analysis.common.SystemCode;
-import com.performance.analysis.common.SystemResponse;
+import com.performance.analysis.common.*;
 import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
 import com.performance.analysis.pojo.StudentEvaluationResult;
-import com.performance.analysis.service.BuaDataAnalysisService;
+import com.performance.analysis.service.BuaEvaluationService;
 import com.performance.analysis.service.FileDataReadService;
 import com.performance.analysis.service.FileSystemStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,9 @@ public class BuaAnalysisController {
     @Autowired
     private FileDataReadService buaExtraDataReadService;
     @Autowired
-    private BuaDataAnalysisService buaTripleAResultService;
+    private BuaEvaluationService studentModelEvaluationService;
+    @Autowired
+    private BuaEvaluationService classCadreModelEvaluationService;
 
     /**
      * Excel上传数据处理
@@ -84,16 +84,21 @@ public class BuaAnalysisController {
      */
     @GetMapping("/bua/analysis/evaluations/{grade}/{major}/{type}")
     @ResponseBody
-    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) throws DataAnalysisException {
+    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
         List<StudentEvaluationResult> studentEvaluationResults;
-        switch (type) {
-            case "A":
-                studentEvaluationResults = buaTripleAResultService.majorGradeAnalysis(grade, major);
-                break;
-            default:
-                studentEvaluationResults = null;
+        BuaEvaluation evaluation = new BuaEvaluation();
+        evaluation.setEvaluationResult(type);
+        evaluation.setGrade(grade);
+        evaluation.setMajor(major);
+        if (BuaEvaluationEnum.STUDENT_MODEL.getValue().equals(type)) {
+            studentEvaluationResults = studentModelEvaluationService.evaluate(evaluation);
+        } else if (BuaEvaluationEnum.CLASS_CADRE_MODEL.getValue().equals(type)) {
+            studentEvaluationResults = classCadreModelEvaluationService.evaluate(evaluation);
+        } else {
+            studentEvaluationResults = null;
         }
+
         response.setData(studentEvaluationResults);
         return response;
     }

@@ -7,7 +7,8 @@ package com.performance.analysis.common;
  * @since 1.0
  */
 public enum BuaEvaluationEnum {
-    TRIPLEA("A", "三好学生");
+    STUDENT_MODEL("A", "三好学生"),
+    CLASS_CADRE_MODEL("B", "优秀学生干部");
 
     private String value;
     private String desc;

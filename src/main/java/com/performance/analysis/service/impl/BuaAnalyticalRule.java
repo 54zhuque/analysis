@@ -6,6 +6,8 @@ import com.performance.analysis.exception.DataReadInException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @Author: Tangwei
@@ -75,10 +77,7 @@ public class BuaAnalyticalRule {
      * @return
      * @throws DataReadInException
      */
-    public static Double getWeightedScore(Double[] weights, Double... values) throws DataReadInException {
-        if (weights.length != values.length) {
-            throw new DataReadInException(SystemCode.READIN_SAME_LENGTH.getMsg());
-        }
+    public static Double getWeightedScore(Double[] weights, Double... values) {
         BigDecimal weightedScore = new BigDecimal(0);
         int len = weights.length;
         for (int i = 0; i < len; i++) {
@@ -151,13 +150,44 @@ public class BuaAnalyticalRule {
         return weights;
     }
 
+
     /**
-     * 获取三好学生评选权重
+     * 获取中位数
      *
-     * @return weights
+     * @param nums 数字列表
+     * @return double 中位数
      */
-    public static Double[] getTrableAEvaluationWeights() {
-        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
-        return weights;
+    public static Double getMedianNum(List<Integer> nums) {
+        Double medianNum;
+        LinkedList<Integer> sortList = new LinkedList<>();
+        for (Integer num : nums) {
+            if (sortList.size() == 0 || num < sortList.getFirst()) {
+                sortList.addFirst(num);
+            } else {
+                int len = sortList.size();
+                for (int i = 0; i < len; i++) {
+                    //存在比列表中数据小的值，选取合适位置插入
+                    if (num < sortList.get(i)) {
+                        sortList.add(i, num);
+                        break;
+                    }
+                    if (i == len - 1) {
+                        sortList.addLast(num);
+                    }
+                }
+            }
+        }
+        if (sortList.size() == 0) {
+            return null;
+        }
+        //奇数偶数
+        boolean even = sortList.size() % 2 == 0;
+        if (even) {
+            int index = sortList.size() / 2;
+            medianNum = Double.valueOf(sortList.get(index - 1) + sortList.get(index)) / 2;
+        } else {
+            medianNum = Double.valueOf(sortList.get((sortList.size() + 1) / 2 - 1));
+        }
+        return medianNum;
     }
 }

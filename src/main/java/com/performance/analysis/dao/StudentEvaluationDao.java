@@ -1,6 +1,7 @@
 package com.performance.analysis.dao;
 
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.pojo.ClassCadre;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,6 +30,7 @@ public interface StudentEvaluationDao {
             "student.stu_no," +
             "student.name as stu_name," +
             "student.grade as stu_grade," +
+            "student.major as major," +
             "physical_evaluation.fix_score as physical_score," +
             "moral_evaluation.fix_score as moral_score," +
             "major_evaluation.fix_score as major_score," +
@@ -51,11 +53,19 @@ public interface StudentEvaluationDao {
     List<String> getEnglishCET4List();
 
     /**
+     * 获取班干部
+     *
+     * @return List<ClassCadre>
+     */
+    @Select("select stu_no from class_cadre")
+    List<String> getClassCadreList();
+
+    /**
      * 存储学生评优记录
      *
      * @param studentEvaluationResult
      */
-    @Insert("insert or replace into student_evaluation(stu_no,stu_name,stu_grade,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result) " +
+    @Insert("insert into student_evaluation(stu_no,stu_name,stu_grade,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result) " +
             "values(#{stuNo},#{stuName},#{stuGrade},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult})")
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
 
@@ -68,5 +78,5 @@ public interface StudentEvaluationDao {
      * @return
      */
     @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score desc")
-    List<StudentEvaluationResult> findStudentEvaluationByMajorGrade(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
+    List<StudentEvaluationResult> findStudentEvaluationByTypeOne(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
 }
