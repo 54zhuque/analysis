@@ -6,6 +6,7 @@ import com.performance.analysis.dto.StudentEvaluationDto;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.pojo.StudentScore;
 import com.performance.analysis.service.BuaEvaluationService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -45,7 +46,7 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
         if (results != null && results.size() > 0) {
             return results;
         }
-        List<StudentEvaluationDto> dtos = studentEvaluationDao.findStudentEvaluations(grade, major);
+        List<StudentEvaluationDto> dtos = studentEvaluationDao.findStudentEvaluationsWithGradMajor(grade, major);
         if (dtos == null || dtos.size() == 0) {
             return null;
         }
@@ -58,36 +59,32 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
             Double physicalScore = dto.getPhysicalScore();
             Double moralScore = dto.getMoralScore();
             Double majorScore = dto.getMajorScore();
+            Double extraScore = dto.getExtraScore();
             String englishScore = dto.getEnglishScore();
             Integer stuGrade = dto.getStuGrade();
             String stuName = dto.getStuName();
             String stuNo = dto.getStuNo();
             String stuMajor = dto.getMajor();
+            Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
 
             StudentScore studentScore = new StudentScore();
             studentScore.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
-            studentScore.setGrade(stuGrade);
-            studentScore.setMajor(stuMajor);
-            studentScore.setMajorFixedScore(majorScore);
-            studentScore.setMoralFixedScore(moralScore);
-            studentScore.setName(stuName);
-            studentScore.setPhysicalFixedScore(physicalScore);
+            studentScore.setStuGrade(stuGrade);
+            studentScore.setStuMajor(stuMajor);
+            studentScore.setMajorScore(majorScore);
+            studentScore.setMoralScore(moralScore);
+            studentScore.setStuName(stuName);
+            studentScore.setPhysicalScore(physicalScore);
             studentScore.setStuNo(stuNo);
+            studentScore.setExtraScore(extraScore);
+            studentScore.setFixScore(fixScore);
             boolean isCET4 = cet4List != null && cet4List.contains(stuNo);
             boolean isMetRequirements = this.meetRequirements(studentScore, isCET4, englishMedianScore);
             if (isMetRequirements) {
                 studentEvaluationResult = new StudentEvaluationResult();
-                Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
-                String englishFixedScore = isCET4 ? "CET4" : englishScore;
+                BeanUtils.copyProperties(studentScore, studentEvaluationResult);
+                studentEvaluationResult.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScore.getEnglishScore()));
                 studentEvaluationResult.setEvaluationResult(evaluationResult);
-                studentEvaluationResult.setMajorScore(majorScore);
-                studentEvaluationResult.setMoralScore(moralScore);
-                studentEvaluationResult.setPhysicalScore(physicalScore);
-                studentEvaluationResult.setEnglishScore(englishFixedScore);
-                studentEvaluationResult.setStuName(stuName);
-                studentEvaluationResult.setStuGrade(stuGrade);
-                studentEvaluationResult.setStuNo(stuNo);
-                studentEvaluationResult.setFixScore(fixScore);
                 studentEvaluationDao.addStudentEvaluationResult(studentEvaluationResult);
             }
         }
@@ -119,10 +116,10 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
         Double physicalScoreRequire = 80d;
         Double moralScoreRequire = 85d;
         Double majorScoreRequire = 85d;
-        Integer grade = studentScore.getGrade();
-        Double physicalFixedScore = studentScore.getPhysicalFixedScore();
-        Double moralFixedScore = studentScore.getMoralFixedScore();
-        Double majorFixedScore = studentScore.getMajorFixedScore();
+        Integer grade = studentScore.getStuGrade();
+        Double physicalFixedScore = studentScore.getPhysicalScore();
+        Double moralFixedScore = studentScore.getMoralScore();
+        Double majorFixedScore = studentScore.getMajorScore();
         Double englishScore = studentScore.getEnglishScore();
         //身体素质不大于80分不符合
         if (physicalFixedScore <= physicalScoreRequire) {

@@ -8,7 +8,12 @@ package com.performance.analysis.common;
  */
 public enum BuaEvaluationEnum {
     STUDENT_MODEL("A", "三好学生"),
-    CLASS_CADRE_MODEL("B", "优秀学生干部");
+    CLASS_CADRE_MODEL("B", "优秀学生干部"),
+    SCHOLARSHIP("W", "奖学金"),
+    SCHOLARSHIP_W0("W0", "特等奖学金"),
+    SCHOLARSHIP_W1("W1", "一等奖学金"),
+    SCHOLARSHIP_W2("W2", "二等奖学金"),
+    SCHOLARSHIP_W3("W3", "三等奖学金");
 
     private String value;
     private String desc;

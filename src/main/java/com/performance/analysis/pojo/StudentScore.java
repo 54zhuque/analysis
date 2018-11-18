@@ -14,34 +14,39 @@ public class StudentScore {
     /**
      * 姓名
      */
-    private String name;
+    private String stuName;
     /**
      * 年级
      */
-    private Integer grade;
+    private Integer stuGrade;
     /**
      * 专业
      */
-    private String major;
-
+    private String stuMajor;
     /**
-     * 身体素质分
+     * 身体素质计算分
      */
-    Double physicalFixedScore;
+    private Double physicalScore;
     /**
-     * 思想素质分
+     * 思想素质计算分
      */
-    Double moralFixedScore;
-
+    private Double moralScore;
     /**
-     * 专业素质分
+     * 专业成绩计算分
      */
-    Double majorFixedScore;
-
+    private Double majorScore;
     /**
      * 英语成绩
      */
-    Double englishScore;
+    private Double englishScore;
+    /**
+     * 综合评分
+     */
+    private Double fixScore;
+    /**
+     * 额外加分（发展性素质分）
+     */
+    private Double extraScore;
 
     public String getStuNo() {
         return stuNo;
@@ -51,52 +56,52 @@ public class StudentScore {
         this.stuNo = stuNo;
     }
 
-    public String getName() {
-        return name;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
-    public Integer getGrade() {
-        return grade;
+    public Integer getStuGrade() {
+        return stuGrade;
     }
 
-    public void setGrade(Integer grade) {
-        this.grade = grade;
+    public void setStuGrade(Integer stuGrade) {
+        this.stuGrade = stuGrade;
     }
 
-    public String getMajor() {
-        return major;
+    public String getStuMajor() {
+        return stuMajor;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setStuMajor(String stuMajor) {
+        this.stuMajor = stuMajor;
     }
 
-    public Double getPhysicalFixedScore() {
-        return physicalFixedScore;
+    public Double getPhysicalScore() {
+        return physicalScore;
     }
 
-    public void setPhysicalFixedScore(Double physicalFixedScore) {
-        this.physicalFixedScore = physicalFixedScore;
+    public void setPhysicalScore(Double physicalScore) {
+        this.physicalScore = physicalScore;
     }
 
-    public Double getMoralFixedScore() {
-        return moralFixedScore;
+    public Double getMoralScore() {
+        return moralScore;
     }
 
-    public void setMoralFixedScore(Double moralFixedScore) {
-        this.moralFixedScore = moralFixedScore;
+    public void setMoralScore(Double moralScore) {
+        this.moralScore = moralScore;
     }
 
-    public Double getMajorFixedScore() {
-        return majorFixedScore;
+    public Double getMajorScore() {
+        return majorScore;
     }
 
-    public void setMajorFixedScore(Double majorFixedScore) {
-        this.majorFixedScore = majorFixedScore;
+    public void setMajorScore(Double majorScore) {
+        this.majorScore = majorScore;
     }
 
     public Double getEnglishScore() {
@@ -105,5 +110,21 @@ public class StudentScore {
 
     public void setEnglishScore(Double englishScore) {
         this.englishScore = englishScore;
+    }
+
+    public Double getFixScore() {
+        return fixScore;
+    }
+
+    public void setFixScore(Double fixScore) {
+        this.fixScore = fixScore;
+    }
+
+    public Double getExtraScore() {
+        return extraScore;
+    }
+
+    public void setExtraScore(Double extraScore) {
+        this.extraScore = extraScore;
     }
 }

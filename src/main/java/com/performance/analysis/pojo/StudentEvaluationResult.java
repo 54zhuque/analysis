@@ -9,15 +9,50 @@ import java.io.Serializable;
  * 学生考核
  */
 public class StudentEvaluationResult implements Serializable {
-    private String stuNo;//学号
-    private String stuName;//姓名
-    private Integer stuGrade;//年级
-    private Double physicalScore;//身体素质计算分
-    private Double moralScore;//思想素质计算分
-    private Double majorScore;//专业成绩计算分
-    private String englishScore;//英语成绩
-    private Double fixScore;//综合评分
-    private String evaluationResult;//考核结果
+    /**
+     * 学号
+     */
+    private String stuNo;
+    /**
+     * 姓名
+     */
+    private String stuName;
+    /**
+     * 年级
+     */
+    private Integer stuGrade;
+    /**
+     * 专业
+     */
+    private String stuMajor;
+    /**
+     * 身体素质计算分
+     */
+    private Double physicalScore;
+    /**
+     * 思想素质计算分
+     */
+    private Double moralScore;
+    /**
+     * 专业成绩计算分
+     */
+    private Double majorScore;
+    /**
+     * 英语成绩
+     */
+    private String englishScore;
+    /**
+     * 综合评分
+     */
+    private Double fixScore;
+    /**
+     * 额外加分（发展性素质分）
+     */
+    private Double extraScore;
+    /**
+     * 考核结果
+     */
+    private String evaluationResult;
 
     public String getStuNo() {
         return stuNo;
@@ -41,6 +76,14 @@ public class StudentEvaluationResult implements Serializable {
 
     public void setStuGrade(Integer stuGrade) {
         this.stuGrade = stuGrade;
+    }
+
+    public String getStuMajor() {
+        return stuMajor;
+    }
+
+    public void setStuMajor(String stuMajor) {
+        this.stuMajor = stuMajor;
     }
 
     public Double getPhysicalScore() {
@@ -81,6 +124,14 @@ public class StudentEvaluationResult implements Serializable {
 
     public void setEnglishScore(String englishScore) {
         this.englishScore = englishScore;
+    }
+
+    public Double getExtraScore() {
+        return extraScore;
+    }
+
+    public void setExtraScore(Double extraScore) {
+        this.extraScore = extraScore;
     }
 
     public String getEvaluationResult() {

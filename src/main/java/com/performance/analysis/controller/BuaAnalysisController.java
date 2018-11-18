@@ -41,6 +41,8 @@ public class BuaAnalysisController {
     private BuaEvaluationService studentModelEvaluationService;
     @Autowired
     private BuaEvaluationService classCadreModelEvaluationService;
+    @Autowired
+    private BuaEvaluationService scholarshipEvaluationService;
 
     /**
      * Excel上传数据处理
@@ -74,13 +76,12 @@ public class BuaAnalysisController {
     }
 
     /**
-     * 评优分析
+     * 学生评优
      *
      * @param grade 年级
      * @param major 专业
-     * @param type  A A++ A+ etc...
+     * @param type  类型A、B
      * @return
-     * @throws DataReadInException
      */
     @GetMapping("/bua/analysis/evaluations/{grade}/{major}/{type}")
     @ResponseBody
@@ -95,10 +96,36 @@ public class BuaAnalysisController {
             studentEvaluationResults = studentModelEvaluationService.evaluate(evaluation);
         } else if (BuaEvaluationEnum.CLASS_CADRE_MODEL.getValue().equals(type)) {
             studentEvaluationResults = classCadreModelEvaluationService.evaluate(evaluation);
+        } else if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
+            studentEvaluationResults = scholarshipEvaluationService.evaluate(evaluation);
         } else {
             studentEvaluationResults = null;
         }
 
+        response.setData(studentEvaluationResults);
+        return response;
+    }
+
+    /**
+     * 奖学金评选
+     *
+     * @param grade 年级
+     * @param type  类型W
+     * @return
+     */
+    @GetMapping("/bua/analysis/evaluations/{grade}/{type}")
+    @ResponseBody
+    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String type) {
+        SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
+        List<StudentEvaluationResult> studentEvaluationResults;
+        BuaEvaluation evaluation = new BuaEvaluation();
+        evaluation.setEvaluationResult(type);
+        evaluation.setGrade(grade);
+        if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
+            studentEvaluationResults = scholarshipEvaluationService.evaluate(evaluation);
+        } else {
+            studentEvaluationResults = null;
+        }
         response.setData(studentEvaluationResults);
         return response;
     }

@@ -15,7 +15,7 @@ public class StudentEvaluationDto {
     private Double moralScore = 0.0d;//思想素质计算分
     private Double majorScore = 0.0d;//专业成绩计算分
     private String englishScore = "0";//英语成绩
-    private String extraScore = "0";//额外加分成绩
+    private Double extraScore = 0.0d;//额外加分成绩
 
     public String getStuNo() {
         return stuNo;
@@ -81,11 +81,11 @@ public class StudentEvaluationDto {
         this.major = major;
     }
 
-    public String getExtraScore() {
+    public Double getExtraScore() {
         return extraScore;
     }
 
-    public void setExtraScore(String extraScore) {
+    public void setExtraScore(Double extraScore) {
         this.extraScore = extraScore;
     }
 }
