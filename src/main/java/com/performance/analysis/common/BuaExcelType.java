@@ -8,8 +8,10 @@ package com.performance.analysis.common;
  */
 public enum BuaExcelType {
     PHYSICAL("physical"),
-    MORAL("moral"),
-    MAJOY("majoy"),
+    MORAL1("moral1"),
+    MORAL2("moral2"),
+    MAJOR1("major1"),
+    MAJOR2("major2"),
     ENGLISH("english"),
     EXTRA("extra"),
     CADRE("cadre");

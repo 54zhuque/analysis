@@ -10,6 +10,9 @@ import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -33,6 +36,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     private StudentEvaluationDao studentEvaluationDao;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public List<StudentEvaluationResult> evaluate(BuaEvaluation evaluation) {
         String evaluationResult = evaluation.getEvaluationResult();
         Integer grade = evaluation.getGrade();
@@ -231,8 +235,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
             if (StringUtils.isEmpty(s)) {
                 continue;
             }
-            Integer score = Integer.valueOf(s);
-            scores.add(score);
+            scores.add(Integer.valueOf(s));
         }
         return BuaAnalyticalRule.getMedianNum(scores);
     }

@@ -20,4 +20,13 @@ public interface FileDataReadService {
      * @throws DataReadInException
      */
     void read(File file) throws IOException, DataReadInException;
+
+    /**
+     * 文件数据合并读入
+     *
+     * @param file
+     * @throws IOException
+     * @throws DataReadInException
+     */
+    void readMerge(File file) throws IOException, DataReadInException;
 }

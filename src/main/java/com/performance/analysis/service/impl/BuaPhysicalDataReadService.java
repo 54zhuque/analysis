@@ -55,6 +55,11 @@ public class BuaPhysicalDataReadService implements FileDataReadService {
         }
     }
 
+    @Override
+    public void readMerge(File file) throws IOException, DataReadInException {
+
+    }
+
     /**
      * 读入身体素质评分
      *

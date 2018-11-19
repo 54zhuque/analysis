@@ -8,6 +8,8 @@ import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.BuaEvaluationService;
 import com.performance.analysis.service.FileDataReadService;
 import com.performance.analysis.service.FileSystemStorageService;
+import com.performance.analysis.service.impl.BuaMajorDataReadService;
+import com.performance.analysis.service.impl.BuaMoralDataReadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,10 +65,16 @@ public class BuaAnalysisController {
         File uploadFile = new File(path);
         if (type.toLowerCase().equals(BuaExcelType.PHYSICAL.toString())) {
             buaPhysicalDataReadService.read(uploadFile);
-        } else if (type.toLowerCase().equals(BuaExcelType.MORAL.toString())) {
+        } else if (type.toLowerCase().equals(BuaExcelType.MORAL1.toString())) {
             buaMoralDataReadService.read(uploadFile);
-        } else if (type.toLowerCase().equals(BuaExcelType.MAJOY.toString())) {
+        } else if (type.toLowerCase().equals(BuaExcelType.MORAL2.toString())) {
+            //下学期合并上学期数据
+            buaMoralDataReadService.readMerge(uploadFile);
+        } else if (type.toLowerCase().equals(BuaExcelType.MAJOR1.toString())) {
             buaMajorDataReadService.read(uploadFile);
+        } else if (type.toLowerCase().equals(BuaExcelType.MAJOR2.toString())) {
+            //下学期合并上学期数据
+            buaMajorDataReadService.readMerge(uploadFile);
         } else if (type.toLowerCase().equals(BuaExcelType.ENGLISH.toString())) {
             buaEnglishDataReadService.read(uploadFile);
         } else if (type.toLowerCase().equals(BuaExcelType.EXTRA.toString())) {

@@ -9,6 +9,9 @@ import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -31,6 +34,7 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
     private StudentEvaluationDao studentEvaluationDao;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public List<StudentEvaluationResult> evaluate(BuaEvaluation evaluation) {
         String evaluationResult = evaluation.getEvaluationResult();
         Integer grade = evaluation.getGrade();

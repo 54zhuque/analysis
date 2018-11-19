@@ -52,9 +52,39 @@ public class BuaMajorDataReadService implements FileDataReadService {
             stu.setMajor(BuaAnalyticalRule.getMajor(majorEvaluation.getStuNo()));
             studentDao.addStudent(stu);
             majorEvaluation.setFixScore(this.getMajorWeightedAverageScore(majorEvaluation.getCourseEvaluations()));
+
             majorEvaluationDao.addMajorEvaluation(majorEvaluation.getStuNo(),
                     JSON.toJSONString(majorEvaluation.getCourseEvaluations()),
                     majorEvaluation.getFixScore());
+        }
+    }
+
+    /**
+     * 合并读取
+     *
+     * @param file
+     * @throws IOException
+     * @throws DataReadInException
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataReadInException.class)
+    public void readMerge(File file) throws IOException, DataReadInException {
+        Workbook workbook = ExcelUtil.getWorkbook(file);
+        List<MajorEvaluation> majorEvaluations = this.readInMajorEvaluation(workbook);
+        for (MajorEvaluation majorEvaluation : majorEvaluations) {
+            String stuNo = majorEvaluation.getStuNo();
+            String course = majorEvaluationDao.findCourseByStuNo(stuNo);
+            if (course == null) {
+                throw new DataReadInException("缺失上学期数据！");
+            }
+            List<CourseEvaluation> courseList1 = JSON.parseArray(course, CourseEvaluation.class);
+            List<CourseEvaluation> courseList2 = majorEvaluation.getCourseEvaluations();
+            List<CourseEvaluation> courseList = new ArrayList<>(courseList1.size() + courseList2.size());
+            courseList.addAll(courseList1);
+            courseList.addAll(courseList2);
+            Double fixScore = this.getMajorWeightedAverageScore(courseList);
+            String courses = JSON.toJSONString(courseList);
+            majorEvaluationDao.addMajorEvaluation(stuNo, courses, fixScore);
         }
     }
 

@@ -3,6 +3,7 @@ package com.performance.analysis.dao;
 import com.performance.analysis.pojo.MoralEvaluation;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +27,15 @@ public interface MoralEvaluationDao {
     @Insert("insert or replace into moral_evaluation(stu_no,mate_score,teacher_score,dorm_score,fix_score) " +
             "values(#{stuNo},#{mateScore},#{teacherScore},#{dormScore},#{fixScore})")
     void addMoralEvaluation(MoralEvaluation moralEvaluation);
+
+    /**
+     * 根据需要查询思想考核分
+     *
+     * @param stuNo 学号
+     * @return
+     */
+    @Select("select * from moral_evaluation where stu_no = #{stuNo}")
+    MoralEvaluation findMoralEvaluationByStuNo(@Param("stuNo") String stuNo);
 
     /**
      * 查询所有的专业学科成绩

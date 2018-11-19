@@ -70,6 +70,22 @@ public class BuaAnalyticalRule {
     }
 
     /**
+     * 获取平均值
+     *
+     * @param values
+     * @return
+     */
+    public static Double getAverageScore(Double... values) {
+        BigDecimal averageScore = new BigDecimal(0);
+        int len = values.length;
+        for (int i = 0; i < len; i++) {
+            BigDecimal value = new BigDecimal(values[i]);
+            averageScore = averageScore.add(value);
+        }
+        return averageScore.divide(new BigDecimal(len), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
      * 计算加权分
      *
      * @param weights

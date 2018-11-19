@@ -54,6 +54,38 @@ public class BuaMoralDataReadService implements FileDataReadService {
         }
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = DataReadInException.class)
+    public void readMerge(File file) throws IOException, DataReadInException {
+        Workbook workbook = ExcelUtil.getWorkbook(file);
+        List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
+        for (MoralEvaluation moralEvaluation : moralEvaluations) {
+            String stuNo = moralEvaluation.getStuNo();
+            MoralEvaluation evaluation = moralEvaluationDao.findMoralEvaluationByStuNo(stuNo);
+            if (evaluation == null) {
+                throw new DataReadInException("缺失上学期数据！");
+            }
+            //计算mate平均分
+            Double mateAverageScore = BuaAnalyticalRule
+                    .getAverageScore(moralEvaluation.getMateScore(), evaluation.getMateScore());
+            //计算teacher平均分
+            Double teacherAverageScore = BuaAnalyticalRule
+                    .getAverageScore(moralEvaluation.getTeacherScore(), evaluation.getTeacherScore());
+            //计算宿舍平均分
+            Double dormAverageScore = BuaAnalyticalRule
+                    .getAverageScore(moralEvaluation.getDormScore(), evaluation.getDormScore());
+            //重新计算加权分
+            Double[] weights = BuaAnalyticalRule.getMoralWeights();
+            Double fixAverageScore = BuaAnalyticalRule.getWeightedScore(weights, mateAverageScore, teacherAverageScore, dormAverageScore);
+            evaluation.setDormScore(dormAverageScore);
+            evaluation.setMateScore(mateAverageScore);
+            evaluation.setTeacherScore(teacherAverageScore);
+            evaluation.setFixScore(fixAverageScore);
+            //更新思想素质数据
+            moralEvaluationDao.addMoralEvaluation(evaluation);
+        }
+    }
+
     /**
      * 读入思想素质评分
      *

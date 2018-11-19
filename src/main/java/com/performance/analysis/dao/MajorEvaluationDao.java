@@ -31,6 +31,15 @@ public interface MajorEvaluationDao {
     void addMajorEvaluation(@Param("stuNo") String stuNo, @Param("course") String course, @Param("fixScore") Double fixScore);
 
     /**
+     * 根据学号查询专业成绩
+     *
+     * @param stuNo
+     * @return
+     */
+    @Select("select course from major_evaluation where stu_no = #{stuNo}")
+    String findCourseByStuNo(@Param("stuNo") String stuNo);
+
+    /**
      * 查询所有的专业学科成绩
      *
      * @return List<MajorEvaluation>

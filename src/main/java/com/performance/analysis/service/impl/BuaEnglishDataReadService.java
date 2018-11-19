@@ -56,6 +56,11 @@ public class BuaEnglishDataReadService implements FileDataReadService {
         }
     }
 
+    @Override
+    public void readMerge(File file) throws IOException, DataReadInException {
+
+    }
+
     /**
      * 读入英语成绩
      *
