@@ -28,6 +28,7 @@ public class MainPageController {
     private static final String MORAL = "moral";
     private static final String EXTRA = "extra";
     private static final String PHYSICAL = "physical";
+    private static final String CADRE = "cadre";
 
     @Autowired
     private StudentService studentService;
@@ -95,6 +96,9 @@ public class MainPageController {
         } else if (EXTRA.equals(type)) {
             List<ExtraEvaluation> extra = variousGradeService.listExtraEvaluation();
             view.addObject("extraList", extra);
+        } else if (CADRE.equals(type)) {
+            List<ClassCadre> cadre = variousGradeService.listCadreEvaluation();
+            view.addObject("cadreList", cadre);
         }
     }
 

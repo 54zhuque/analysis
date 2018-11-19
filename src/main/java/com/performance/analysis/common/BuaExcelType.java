@@ -11,7 +11,8 @@ public enum BuaExcelType {
     MORAL("moral"),
     MAJOY("majoy"),
     ENGLISH("english"),
-    EXTRA("extra");
+    EXTRA("extra"),
+    CADRE("cadre");
 
     private String name;
 

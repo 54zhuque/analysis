@@ -20,7 +20,7 @@
             box-sizing: border-box;
             float: left;
             margin-right: 20px;
-            width: calc(20% - 16px);
+            width: calc(16% - 9px);
         }
         .layui-col-20percent button.layui-btn{
             width: 100%;
@@ -50,9 +50,14 @@
                 <i class="icon fa-heartbeat" aria-hidden="true"></i> 身体素质
             </button>
         </div>
-        <div class="layui-col-20percent" style="margin-right: 0;">
+        <div class="layui-col-20percent">
             <button class="layui-btn" type="button" id="extra_upload">
                 <i class="icon fa-plus-square" aria-hidden="true"></i> 额外加分
+            </button>
+        </div>
+        <div class="layui-col-20percent" style="margin-right: 0;">
+            <button class="layui-btn" type="button" id="cadre_upload">
+                <i class="icon fa-user-md" aria-hidden="true"></i> 班级干部
             </button>
         </div>
     </div>
@@ -139,6 +144,11 @@
         options['elem'] = '#extra_upload';
         options['url'] = '/bua/analysis/upload/extra';
         var extraUpload = upload.render(options);
+
+        // extra
+        options['elem'] = '#cadre_upload';
+        options['url'] = '/bua/analysis/upload/cadre';
+        var cadreUpload = upload.render(options);
 
     });
 </script>

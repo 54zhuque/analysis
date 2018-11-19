@@ -43,4 +43,10 @@ public interface VariousGradeService {
      */
     List<ExtraEvaluation> listExtraEvaluation();
 
+    /**
+     * 查询所有的体育成绩
+     * @return List<ExtraEvaluation>
+     */
+    List<ClassCadre> listCadreEvaluation();
+
 }

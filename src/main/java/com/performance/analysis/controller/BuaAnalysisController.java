@@ -38,6 +38,8 @@ public class BuaAnalysisController {
     @Autowired
     private FileDataReadService buaExtraDataReadService;
     @Autowired
+    private FileDataReadService buaCadreDataReadService;
+    @Autowired
     private BuaEvaluationService studentModelEvaluationService;
     @Autowired
     private BuaEvaluationService classCadreModelEvaluationService;
@@ -69,6 +71,8 @@ public class BuaAnalysisController {
             buaEnglishDataReadService.read(uploadFile);
         } else if (type.toLowerCase().equals(BuaExcelType.EXTRA.toString())) {
             buaExtraDataReadService.read(uploadFile);
+        } else if (type.toLowerCase().equals(BuaExcelType.CADRE.toString())) {
+            buaCadreDataReadService.read(uploadFile);
         } else {
             throw new DataReadInException(SystemCode.READIN_ERROR.getMsg());
         }

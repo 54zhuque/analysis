@@ -29,6 +29,12 @@
 			"icon": "&#xe634;",
 			"href": "/import/extra",
 			"spread": false
+		},
+		{
+			"title": "班级干部",
+			"icon": "&#xe634;",
+			"href": "/import/cadre",
+			"spread": false
 		}
 	],
 	"achievement_analysis": [

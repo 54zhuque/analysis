@@ -27,6 +27,8 @@ public class VariousGradeServiceImpl implements VariousGradeService {
     private PhysicalEvaluationDao physicalEvaluationDao;
     @Autowired
     private ExtraEvaluationDao extraEvaluationDao;
+    @Autowired
+    private CadreEvaluationDao cadreEvaluationDao;
 
     @Override
     public List<EnglishEvaluation> listEnglishEvaluation() {
@@ -51,6 +53,11 @@ public class VariousGradeServiceImpl implements VariousGradeService {
     @Override
     public List<ExtraEvaluation> listExtraEvaluation() {
         return extraEvaluationDao.listExraEvaluation();
+    }
+
+    @Override
+    public List<ClassCadre> listCadreEvaluation() {
+        return cadreEvaluationDao.listCadreEvaluation();
     }
 
 }
