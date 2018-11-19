@@ -42,13 +42,18 @@ public class StudentEvaluationResult implements Serializable {
      */
     private String englishScore;
     /**
-     * 综合评分
+     * 基础素质分=体育*权重+道德*权重+学科*权重
      */
-    private Double fixScore;
+    private Double basicScore;
     /**
      * 额外加分（发展性素质分）
      */
     private Double extraScore;
+
+    /**
+     * 综合评分
+     */
+    private Double fixScore;
     /**
      * 考核结果
      */
@@ -140,5 +145,13 @@ public class StudentEvaluationResult implements Serializable {
 
     public void setEvaluationResult(String evaluationResult) {
         this.evaluationResult = evaluationResult;
+    }
+
+    public Double getBasicScore() {
+        return basicScore;
+    }
+
+    public void setBasicScore(Double basicScore) {
+        this.basicScore = basicScore;
     }
 }

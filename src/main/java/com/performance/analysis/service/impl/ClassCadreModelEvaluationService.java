@@ -3,8 +3,8 @@ package com.performance.analysis.service.impl;
 import com.performance.analysis.common.BuaEvaluation;
 import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.StudentEvaluationResult;
-import com.performance.analysis.pojo.StudentScore;
 import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,25 +61,25 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
             String stuName = dto.getStuName();
             String stuNo = dto.getStuNo();
             String stuMajor = dto.getMajor();
-            Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
 
-            StudentScore studentScore = new StudentScore();
-            studentScore.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
-            studentScore.setStuGrade(stuGrade);
-            studentScore.setStuMajor(stuMajor);
-            studentScore.setMajorScore(majorScore);
-            studentScore.setMoralScore(moralScore);
-            studentScore.setStuName(stuName);
-            studentScore.setPhysicalScore(physicalScore);
-            studentScore.setStuNo(stuNo);
-            studentScore.setExtraScore(extraScore);
-            studentScore.setFixScore(fixScore);
+
+            StudentScoreDto studentScoreDto = new StudentScoreDto();
+            studentScoreDto.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
+            studentScoreDto.setStuGrade(stuGrade);
+            studentScoreDto.setStuMajor(stuMajor);
+            studentScoreDto.setMajorScore(majorScore);
+            studentScoreDto.setMoralScore(moralScore);
+            studentScoreDto.setStuName(stuName);
+            studentScoreDto.setPhysicalScore(physicalScore);
+            studentScoreDto.setStuNo(stuNo);
+            studentScoreDto.setExtraScore(extraScore);
             boolean isClassCadre = classCadre != null && classCadre.contains(stuNo);
-            boolean isMetRequirements = this.meetRequirements(studentScore, isClassCadre);
+            boolean isMetRequirements = this.meetRequirements(studentScoreDto, isClassCadre);
             if (isMetRequirements) {
                 studentEvaluationResult = new StudentEvaluationResult();
-                BeanUtils.copyProperties(studentScore, studentEvaluationResult);
-                studentEvaluationResult.setEnglishScore(String.valueOf(studentScore.getEnglishScore()));
+                //基础素质分、综合素质分在studentScoreDto中计算
+                BeanUtils.copyProperties(studentScoreDto, studentEvaluationResult);
+                studentEvaluationResult.setEnglishScore(String.valueOf(studentScoreDto.getEnglishScore()));
                 studentEvaluationResult.setEvaluationResult(evaluationResult);
                 studentEvaluationDao.addStudentEvaluationResult(studentEvaluationResult);
             }
@@ -91,29 +91,19 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
     }
 
     /**
-     * 根据比重计算综合素质分
-     *
-     * @return weights
-     */
-    private Double[] getWeights() {
-        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
-        return weights;
-    }
-
-    /**
      * 是否满足评判优秀班干部
      *
-     * @param studentScore 学生成绩
-     * @param isClassCadre 是否为班干部
+     * @param studentScoreDto 学生成绩
+     * @param isClassCadre    是否为班干部
      * @return 是否满足 boolean
      */
-    private boolean meetRequirements(StudentScore studentScore, boolean isClassCadre) {
+    private boolean meetRequirements(StudentScoreDto studentScoreDto, boolean isClassCadre) {
         Double physicalScoreRequire = 75d;
         Double moralScoreRequire = 85d;
         Double majorScoreRequire = 75d;
-        Double physicalFixedScore = studentScore.getPhysicalScore();
-        Double moralFixedScore = studentScore.getMoralScore();
-        Double majorFixedScore = studentScore.getMajorScore();
+        Double physicalFixedScore = studentScoreDto.getPhysicalScore();
+        Double moralFixedScore = studentScoreDto.getMoralScore();
+        Double majorFixedScore = studentScoreDto.getMajorScore();
         //满足是班干部条件
         if (!isClassCadre) {
             return false;

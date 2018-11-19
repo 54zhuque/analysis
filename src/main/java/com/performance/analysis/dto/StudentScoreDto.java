@@ -1,4 +1,8 @@
-package com.performance.analysis.pojo;
+package com.performance.analysis.dto;
+
+import com.performance.analysis.service.impl.BuaAnalyticalRule;
+
+import java.math.BigDecimal;
 
 /**
  * 学生成绩
@@ -6,7 +10,7 @@ package com.performance.analysis.pojo;
  * @author tangwei
  * @since 1.0
  */
-public class StudentScore {
+public class StudentScoreDto {
     /**
      * 学号
      */
@@ -26,27 +30,23 @@ public class StudentScore {
     /**
      * 身体素质计算分
      */
-    private Double physicalScore;
+    private Double physicalScore = 0.0d;
     /**
      * 思想素质计算分
      */
-    private Double moralScore;
+    private Double moralScore = 0.0d;
     /**
      * 专业成绩计算分
      */
-    private Double majorScore;
+    private Double majorScore = 0.0d;
     /**
      * 英语成绩
      */
-    private Double englishScore;
-    /**
-     * 综合评分
-     */
-    private Double fixScore;
+    private Double englishScore = 0.0d;
     /**
      * 额外加分（发展性素质分）
      */
-    private Double extraScore;
+    private Double extraScore = 0.0d;
 
     public String getStuNo() {
         return stuNo;
@@ -112,13 +112,6 @@ public class StudentScore {
         this.englishScore = englishScore;
     }
 
-    public Double getFixScore() {
-        return fixScore;
-    }
-
-    public void setFixScore(Double fixScore) {
-        this.fixScore = fixScore;
-    }
 
     public Double getExtraScore() {
         return extraScore;
@@ -127,4 +120,27 @@ public class StudentScore {
     public void setExtraScore(Double extraScore) {
         this.extraScore = extraScore;
     }
+
+    /**
+     * 基础素质分=体育*权重+道德*权重+学科*权重
+     *
+     * @return 基础素质分
+     */
+    public Double getBasicScore() {
+        //基础素质评优权重
+        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
+        return BuaAnalyticalRule.getWeightedScore(weights, physicalScore, majorScore, moralScore);
+    }
+
+    /**
+     * 综合素质分=基础素质分+额外加分
+     *
+     * @return 综合素质分
+     */
+    public Double getFixScore() {
+        BigDecimal basicScoreDecimal = new BigDecimal(this.getBasicScore());
+        BigDecimal extraScoreDecimal = new BigDecimal(this.extraScore);
+        return basicScoreDecimal.add(extraScoreDecimal).doubleValue();
+    }
+
 }

@@ -4,8 +4,8 @@ import com.performance.analysis.common.BuaEvaluation;
 import com.performance.analysis.common.BuaEvaluationEnum;
 import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.StudentEvaluationResult;
-import com.performance.analysis.pojo.StudentScore;
 import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 奖学金评选
@@ -73,21 +76,21 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         if (dtos.size() < MIN_STUDENT_NUM) {
             return null;
         }
-        List<StudentScore> studentScores = this.getSortStudentScores(dtos);
+        List<StudentScoreDto> studentScoreDtos = this.getSortStudentScores(dtos);
         BigDecimal per1 = new BigDecimal(0.02);
         BigDecimal per2 = per1.add(new BigDecimal(0.04));
         BigDecimal per3 = per2.add(new BigDecimal(0.08));
         BigDecimal per4 = per3.add(new BigDecimal(0.06));
-        BigDecimal len = new BigDecimal(studentScores.size());
+        BigDecimal len = new BigDecimal(studentScoreDtos.size());
         int index0 = len.multiply(per1).intValue();
         int index1 = len.multiply(per2).intValue();
         int index2 = len.multiply(per3).intValue();
         int index3 = len.multiply(per4).intValue();
-        List<StudentScore> scores0 = studentScores.subList(0, index0 + 1);
-        List<StudentScore> scores1 = studentScores.subList(index0 + 1, index1 + 1);
-        List<StudentScore> scores2 = studentScores.subList(index1 + 1, index2 + 1);
-        List<StudentScore> scores3 = studentScores.subList(index2 + 1, index3 + 1);
-        List<StudentEvaluationResult> results = new ArrayList<>(studentScores.size());
+        List<StudentScoreDto> scores0 = studentScoreDtos.subList(0, index0 + 1);
+        List<StudentScoreDto> scores1 = studentScoreDtos.subList(index0 + 1, index1 + 1);
+        List<StudentScoreDto> scores2 = studentScoreDtos.subList(index1 + 1, index2 + 1);
+        List<StudentScoreDto> scores3 = studentScoreDtos.subList(index2 + 1, index3 + 1);
+        List<StudentEvaluationResult> results = new ArrayList<>(studentScoreDtos.size());
         List<StudentEvaluationResult> tmp;
         if (scores0 != null && scores0.size() > 0) {
             String evaluationResult = BuaEvaluationEnum.SCHOLARSHIP_W0.getValue();
@@ -119,8 +122,8 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
      * @param dtos 数据
      * @return
      */
-    private List<StudentScore> getSortStudentScores(List<StudentEvaluationDto> dtos) {
-        List<StudentScore> studentScores = new ArrayList<>(dtos.size());
+    private List<StudentScoreDto> getSortStudentScores(List<StudentEvaluationDto> dtos) {
+        List<StudentScoreDto> studentScoreDtos = new ArrayList<>(dtos.size());
         for (StudentEvaluationDto dto : dtos) {
             Double physicalScore = dto.getPhysicalScore();
             Double moralScore = dto.getMoralScore();
@@ -131,54 +134,52 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
             String stuName = dto.getStuName();
             String stuNo = dto.getStuNo();
             String stuMajor = dto.getMajor();
-            Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
 
-            StudentScore studentScore = new StudentScore();
-            studentScore.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
-            studentScore.setStuGrade(stuGrade);
-            studentScore.setStuMajor(stuMajor);
-            studentScore.setMajorScore(majorScore);
-            studentScore.setMoralScore(moralScore);
-            studentScore.setStuName(stuName);
-            studentScore.setPhysicalScore(physicalScore);
-            studentScore.setStuNo(stuNo);
-            studentScore.setExtraScore(extraScore);
-            studentScore.setFixScore(fixScore);
-            studentScores.add(studentScore);
+            StudentScoreDto studentScoreDto = new StudentScoreDto();
+            studentScoreDto.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
+            studentScoreDto.setStuGrade(stuGrade);
+            studentScoreDto.setStuMajor(stuMajor);
+            studentScoreDto.setMajorScore(majorScore);
+            studentScoreDto.setMoralScore(moralScore);
+            studentScoreDto.setStuName(stuName);
+            studentScoreDto.setPhysicalScore(physicalScore);
+            studentScoreDto.setStuNo(stuNo);
+            studentScoreDto.setExtraScore(extraScore);
+            studentScoreDtos.add(studentScoreDto);
         }
-        Collections.sort(studentScores, new Comparator<StudentScore>() {
+        Collections.sort(studentScoreDtos, new Comparator<StudentScoreDto>() {
             @Override
-            public int compare(StudentScore o1, StudentScore o2) {
+            public int compare(StudentScoreDto o1, StudentScoreDto o2) {
                 Double score1 = o1.getFixScore();
                 Double score2 = o2.getFixScore();
                 return score1 > score2 ? -1 : score1 < score2 ? 1 : 0;
             }
         });
-        return studentScores;
+        return studentScoreDtos;
     }
 
     /**
      * 过滤分组内奖学金
      *
      * @param evaluationResult   奖学金类型
-     * @param studentScores      学生成绩
+     * @param studentScoreDtos   学生成绩
      * @param cet4List           英语四级
      * @param englishMedianScore 英语中位数
      * @return List<StudentEvaluationResult>
      */
-    private List<StudentEvaluationResult> getFilterResults(String evaluationResult, List<StudentScore> studentScores, List<String> cet4List, Double englishMedianScore) {
-        List<StudentEvaluationResult> tmp = new ArrayList<>(studentScores.size());
-        for (StudentScore studentScore : studentScores) {
-            String stuNo = studentScore.getStuNo();
-            Integer stuGrade = studentScore.getStuGrade();
-            Double englishScore = studentScore.getEnglishScore();
+    private List<StudentEvaluationResult> getFilterResults(String evaluationResult, List<StudentScoreDto> studentScoreDtos, List<String> cet4List, Double englishMedianScore) {
+        List<StudentEvaluationResult> tmp = new ArrayList<>(studentScoreDtos.size());
+        for (StudentScoreDto studentScoreDto : studentScoreDtos) {
+            String stuNo = studentScoreDto.getStuNo();
+            Integer stuGrade = studentScoreDto.getStuGrade();
+            Double englishScore = studentScoreDto.getEnglishScore();
             boolean isCET4 = cet4List != null && cet4List.contains(stuNo);
-            boolean isGtMedianScore = englishScore > englishMedianScore;
+            boolean isGtMedianScore = englishScore >= englishMedianScore;
             boolean isMet = this.meetEnglishRequirements(stuGrade, isCET4, isGtMedianScore);
             if (isMet) {
                 StudentEvaluationResult result = new StudentEvaluationResult();
-                BeanUtils.copyProperties(studentScore, result);
-                result.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScore.getEnglishScore()));
+                BeanUtils.copyProperties(studentScoreDto, result);
+                result.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScoreDto.getEnglishScore()));
                 result.setEvaluationResult(evaluationResult);
                 tmp.add(result);
             }
@@ -239,15 +240,4 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         }
         return BuaAnalyticalRule.getMedianNum(scores);
     }
-
-    /**
-     * 根据比重计算综合素质分
-     *
-     * @return weights
-     */
-    private Double[] getWeights() {
-        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
-        return weights;
-    }
-
 }

@@ -3,8 +3,8 @@ package com.performance.analysis.service.impl;
 import com.performance.analysis.common.BuaEvaluation;
 import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.StudentEvaluationResult;
-import com.performance.analysis.pojo.StudentScore;
 import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,25 +69,25 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
             String stuName = dto.getStuName();
             String stuNo = dto.getStuNo();
             String stuMajor = dto.getMajor();
-            Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
 
-            StudentScore studentScore = new StudentScore();
-            studentScore.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
-            studentScore.setStuGrade(stuGrade);
-            studentScore.setStuMajor(stuMajor);
-            studentScore.setMajorScore(majorScore);
-            studentScore.setMoralScore(moralScore);
-            studentScore.setStuName(stuName);
-            studentScore.setPhysicalScore(physicalScore);
-            studentScore.setStuNo(stuNo);
-            studentScore.setExtraScore(extraScore);
-            studentScore.setFixScore(fixScore);
+
+            StudentScoreDto studentScoreDto = new StudentScoreDto();
+            studentScoreDto.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
+            studentScoreDto.setStuGrade(stuGrade);
+            studentScoreDto.setStuMajor(stuMajor);
+            studentScoreDto.setMajorScore(majorScore);
+            studentScoreDto.setMoralScore(moralScore);
+            studentScoreDto.setStuName(stuName);
+            studentScoreDto.setPhysicalScore(physicalScore);
+            studentScoreDto.setStuNo(stuNo);
+            studentScoreDto.setExtraScore(extraScore);
             boolean isCET4 = cet4List != null && cet4List.contains(stuNo);
-            boolean isMetRequirements = this.meetRequirements(studentScore, isCET4, englishMedianScore);
+            boolean isMetRequirements = this.meetRequirements(studentScoreDto, isCET4, englishMedianScore);
             if (isMetRequirements) {
                 studentEvaluationResult = new StudentEvaluationResult();
-                BeanUtils.copyProperties(studentScore, studentEvaluationResult);
-                studentEvaluationResult.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScore.getEnglishScore()));
+                //基础素质分、综合素质分在studentScoreDto中计算
+                BeanUtils.copyProperties(studentScoreDto, studentEvaluationResult);
+                studentEvaluationResult.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScoreDto.getEnglishScore()));
                 studentEvaluationResult.setEvaluationResult(evaluationResult);
                 studentEvaluationDao.addStudentEvaluationResult(studentEvaluationResult);
             }
@@ -99,32 +99,22 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
     }
 
     /**
-     * 获取三好学生排序权重
-     *
-     * @return weights
-     */
-    private Double[] getWeights() {
-        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
-        return weights;
-    }
-
-    /**
      * 是否满足评判三好学生条件
      *
-     * @param studentScore       学生成绩
+     * @param studentScoreDto    学生成绩
      * @param isCET4             是否过英语四级
      * @param englishMedianScore 英语中位数
      * @return 是否满足 boolean
      */
-    private boolean meetRequirements(StudentScore studentScore, boolean isCET4, Double englishMedianScore) {
+    private boolean meetRequirements(StudentScoreDto studentScoreDto, boolean isCET4, Double englishMedianScore) {
         Double physicalScoreRequire = 80d;
         Double moralScoreRequire = 85d;
         Double majorScoreRequire = 85d;
-        Integer grade = studentScore.getStuGrade();
-        Double physicalFixedScore = studentScore.getPhysicalScore();
-        Double moralFixedScore = studentScore.getMoralScore();
-        Double majorFixedScore = studentScore.getMajorScore();
-        Double englishScore = studentScore.getEnglishScore();
+        Integer grade = studentScoreDto.getStuGrade();
+        Double physicalFixedScore = studentScoreDto.getPhysicalScore();
+        Double moralFixedScore = studentScoreDto.getMoralScore();
+        Double majorFixedScore = studentScoreDto.getMajorScore();
+        Double englishScore = studentScoreDto.getEnglishScore();
         //身体素质不大于80分不符合
         if (physicalFixedScore <= physicalScoreRequire) {
             return false;
@@ -139,11 +129,11 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
         }
         //一年级学生英语成绩在专业50%以上,二年级学生需要英语成绩在专业50%以上或者CET-4，其他需要CET-4
         if (grade == 1) {
-            if (englishScore <= englishMedianScore) {
+            if (englishScore < englishMedianScore) {
                 return false;
             }
         } else if (grade == 2) {
-            if (englishScore <= englishMedianScore) {
+            if (englishScore < englishMedianScore) {
                 if (!isCET4) {
                     return false;
                 }
