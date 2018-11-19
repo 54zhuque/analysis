@@ -58,15 +58,6 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         return results;
     }
 
-    /**
-     * 根据比重计算综合素质分
-     *
-     * @return weights
-     */
-    private Double[] getWeights() {
-        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
-        return weights;
-    }
 
     /**
      * 排序、分组、过滤
@@ -210,7 +201,9 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     private boolean meetEnglishRequirements(Integer grade, boolean isCET4, boolean isGtMedianScore) {
         if (grade == 2) {
             if (!isGtMedianScore) {
-                return false;
+                if (!isCET4) {
+                    return false;
+                }
             }
         } else if (grade == 3) {
             if (!isCET4) {
@@ -243,4 +236,15 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         }
         return BuaAnalyticalRule.getMedianNum(scores);
     }
+
+    /**
+     * 根据比重计算综合素质分
+     *
+     * @return weights
+     */
+    private Double[] getWeights() {
+        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
+        return weights;
+    }
+
 }

@@ -57,6 +57,7 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
             String stuName = dto.getStuName();
             String stuNo = dto.getStuNo();
             String stuMajor = dto.getMajor();
+            Double fixScore = BuaAnalyticalRule.getWeightedScore(this.getWeights(), physicalScore, majorScore, moralScore);
 
             StudentScore studentScore = new StudentScore();
             studentScore.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
@@ -68,6 +69,7 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
             studentScore.setPhysicalScore(physicalScore);
             studentScore.setStuNo(stuNo);
             studentScore.setExtraScore(extraScore);
+            studentScore.setFixScore(fixScore);
             boolean isClassCadre = classCadre != null && classCadre.contains(stuNo);
             boolean isMetRequirements = this.meetRequirements(studentScore, isClassCadre);
             if (isMetRequirements) {
@@ -82,6 +84,16 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
         results = studentEvaluationDao.
                 findStudentEvaluationByTypeOne(evaluationResult, grade, major);
         return results;
+    }
+
+    /**
+     * 根据比重计算综合素质分
+     *
+     * @return weights
+     */
+    private Double[] getWeights() {
+        Double[] weights = new Double[]{0.2d, 0.6d, 0.2d};
+        return weights;
     }
 
     /**
