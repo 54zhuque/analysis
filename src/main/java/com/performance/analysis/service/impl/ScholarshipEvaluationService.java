@@ -3,8 +3,8 @@ package com.performance.analysis.service.impl;
 import com.performance.analysis.common.BuaEvaluation;
 import com.performance.analysis.common.BuaEvaluationEnum;
 import com.performance.analysis.dao.StudentEvaluationDao;
-import com.performance.analysis.dto.StudentEvaluationDto;
 import com.performance.analysis.dto.StudentScoreDto;
+import com.performance.analysis.pojo.CourseEvaluation;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,12 +21,23 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 奖学金评选
+ * 奖学金评选，范围全年级
  * 计算方式：
- * 特等奖学金---基础性素质分为前2%，大二英语前50%，大三大四CET4
- * 一等奖学金---基础性素质分为前次4%，大二英语前50%，大三大四CET4
- * 二等奖学金---基础性素质分为前次8%，大二英语前50%，大三大四CET4
- * 三等奖学金---基础性素质分为前次6%
+ * 1.没有挂科
+ * 2.身体素质得分60分以上
+ * 3.思想道德素质在75以上
+ * 4.特等奖学金---基础性素质分为前2%，大二英语前50%，大三大四CET4
+ * 5.一等奖学金---基础性素质分为前次4%，大二英语前50%，大三大四CET4
+ * 6.二等奖学金---基础性素质分为前次8%，大二英语前50%，大三大四CET4
+ * 7.三等奖学金---基础性素质分为前次6%
+ * <p>
+ * 基础素质分计算：
+ * 身体素质分20%
+ * 思想素质分20%
+ * 专业素质分60%
+ * <p>
+ * 排序：
+ * 按发展性素质分排序
  *
  * @author tangwei
  * @since 1.0
@@ -43,12 +53,11 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     public List<StudentEvaluationResult> evaluate(BuaEvaluation evaluation) {
         String evaluationResult = evaluation.getEvaluationResult();
         Integer grade = evaluation.getGrade();
-        List<StudentEvaluationResult> results = studentEvaluationDao.
-                findStudentEvaluationByTypeTwo(evaluationResult, grade);
+        List<StudentEvaluationResult> results = studentEvaluationDao.findStudentEvaluationByTypeTwo(evaluationResult, grade);
         if (results != null && results.size() > 0) {
             return results;
         }
-        List<StudentEvaluationDto> dtos = studentEvaluationDao.findStudentEvaluationsWithGrade(grade);
+        List<StudentScoreDto> dtos = studentEvaluationDao.findStudentEvaluationsWithGrade(grade);
         if (dtos == null || dtos.size() == 0) {
             return null;
         }
@@ -72,7 +81,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
      * @param dtos
      * @return
      */
-    private List<StudentEvaluationResult> getResults(List<StudentEvaluationDto> dtos, List<String> cet4List, Double englishMedianScore) {
+    private List<StudentEvaluationResult> getResults(List<StudentScoreDto> dtos, List<String> cet4List, Double englishMedianScore) {
         if (dtos.size() < MIN_STUDENT_NUM) {
             return null;
         }
@@ -86,33 +95,53 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         int index1 = len.multiply(per2).intValue();
         int index2 = len.multiply(per3).intValue();
         int index3 = len.multiply(per4).intValue();
+        //取2%数据块
         List<StudentScoreDto> scores0 = studentScoreDtos.subList(0, index0 + 1);
+        //取次4%数据块
         List<StudentScoreDto> scores1 = studentScoreDtos.subList(index0 + 1, index1 + 1);
+        //取次8%数据块
         List<StudentScoreDto> scores2 = studentScoreDtos.subList(index1 + 1, index2 + 1);
+        //取次6%数据块
         List<StudentScoreDto> scores3 = studentScoreDtos.subList(index2 + 1, index3 + 1);
-        List<StudentEvaluationResult> results = new ArrayList<>(studentScoreDtos.size());
+        List<StudentEvaluationResult> results = new ArrayList<>(index3);
         List<StudentEvaluationResult> tmp;
+        //特等奖学金
         if (scores0 != null && scores0.size() > 0) {
             String evaluationResult = BuaEvaluationEnum.SCHOLARSHIP_W0.getValue();
-            tmp = this.getFilterResults(evaluationResult, scores0, cet4List, englishMedianScore);
+            //满足filter条件1
+            tmp = this.getFilterResults1(evaluationResult, scores0, cet4List, englishMedianScore);
+            tmp = this.getSortResults(tmp);
             results.addAll(tmp);
         }
+        //一等奖学金
         if (scores1 != null && scores1.size() > 0) {
             String evaluationResult = BuaEvaluationEnum.SCHOLARSHIP_W1.getValue();
-            tmp = this.getFilterResults(evaluationResult, scores1, cet4List, englishMedianScore);
+            //满足filter条件1
+            tmp = this.getFilterResults1(evaluationResult, scores1, cet4List, englishMedianScore);
+            tmp = this.getSortResults(tmp);
             results.addAll(tmp);
         }
+        //二等奖学金
         if (scores2 != null && scores2.size() > 0) {
             String evaluationResult = BuaEvaluationEnum.SCHOLARSHIP_W2.getValue();
-            tmp = this.getFilterResults(evaluationResult, scores2, cet4List, englishMedianScore);
+            //满足filter条件1
+            tmp = this.getFilterResults1(evaluationResult, scores2, cet4List, englishMedianScore);
+            tmp = this.getSortResults(tmp);
             results.addAll(tmp);
         }
+        //三等奖学金
         if (scores3 != null && scores3.size() > 0) {
             String evaluationResult = BuaEvaluationEnum.SCHOLARSHIP_W3.getValue();
-            tmp = this.getFilterResults(evaluationResult, scores3, cet4List, englishMedianScore);
+            //满足filter条件2
+            tmp = this.getFilterResults2(evaluationResult, scores3);
+            tmp = this.getSortResults(tmp);
+            for (StudentEvaluationResult result : tmp) {
+                boolean isCET4 = cet4List != null && cet4List.contains(result.getStuNo());
+                //处理过CET4的学生
+                result.setEnglishScore(isCET4 ? "CET4" : String.valueOf(result.getEnglishScore()));
+            }
             results.addAll(tmp);
         }
-
         return results;
     }
 
@@ -122,32 +151,8 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
      * @param dtos 数据
      * @return
      */
-    private List<StudentScoreDto> getSortStudentScores(List<StudentEvaluationDto> dtos) {
-        List<StudentScoreDto> studentScoreDtos = new ArrayList<>(dtos.size());
-        for (StudentEvaluationDto dto : dtos) {
-            Double physicalScore = dto.getPhysicalScore();
-            Double moralScore = dto.getMoralScore();
-            Double majorScore = dto.getMajorScore();
-            Double extraScore = dto.getExtraScore();
-            String englishScore = dto.getEnglishScore();
-            Integer stuGrade = dto.getStuGrade();
-            String stuName = dto.getStuName();
-            String stuNo = dto.getStuNo();
-            String stuMajor = dto.getMajor();
-
-            StudentScoreDto studentScoreDto = new StudentScoreDto();
-            studentScoreDto.setEnglishScore(StringUtils.isEmpty(englishScore) ? 0 : Double.valueOf(englishScore));
-            studentScoreDto.setStuGrade(stuGrade);
-            studentScoreDto.setStuMajor(stuMajor);
-            studentScoreDto.setMajorScore(majorScore);
-            studentScoreDto.setMoralScore(moralScore);
-            studentScoreDto.setStuName(stuName);
-            studentScoreDto.setPhysicalScore(physicalScore);
-            studentScoreDto.setStuNo(stuNo);
-            studentScoreDto.setExtraScore(extraScore);
-            studentScoreDtos.add(studentScoreDto);
-        }
-        Collections.sort(studentScoreDtos, new Comparator<StudentScoreDto>() {
+    private List<StudentScoreDto> getSortStudentScores(List<StudentScoreDto> dtos) {
+        Collections.sort(dtos, new Comparator<StudentScoreDto>() {
             @Override
             public int compare(StudentScoreDto o1, StudentScoreDto o2) {
                 Double score1 = o1.getFixScore();
@@ -155,11 +160,11 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
                 return score1 > score2 ? -1 : score1 < score2 ? 1 : 0;
             }
         });
-        return studentScoreDtos;
+        return dtos;
     }
 
     /**
-     * 过滤分组内奖学金
+     * 过滤分组内奖学金条件1，针对特等、一等、二等
      *
      * @param evaluationResult   奖学金类型
      * @param studentScoreDtos   学生成绩
@@ -167,24 +172,59 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
      * @param englishMedianScore 英语中位数
      * @return List<StudentEvaluationResult>
      */
-    private List<StudentEvaluationResult> getFilterResults(String evaluationResult, List<StudentScoreDto> studentScoreDtos, List<String> cet4List, Double englishMedianScore) {
-        List<StudentEvaluationResult> tmp = new ArrayList<>(studentScoreDtos.size());
+    private List<StudentEvaluationResult> getFilterResults1(String evaluationResult, List<StudentScoreDto> studentScoreDtos, List<String> cet4List, Double englishMedianScore) {
+        List<StudentEvaluationResult> results = new ArrayList<>(studentScoreDtos.size());
         for (StudentScoreDto studentScoreDto : studentScoreDtos) {
             String stuNo = studentScoreDto.getStuNo();
             Integer stuGrade = studentScoreDto.getStuGrade();
+            List<CourseEvaluation> courseEvaluations = studentScoreDto.getStuCourse();
             Double englishScore = studentScoreDto.getEnglishScore();
             boolean isCET4 = cet4List != null && cet4List.contains(stuNo);
             boolean isGtMedianScore = englishScore >= englishMedianScore;
-            boolean isMet = this.meetEnglishRequirements(stuGrade, isCET4, isGtMedianScore);
-            if (isMet) {
+            boolean isMetScore = this.meetScoreRequirements(courseEvaluations);
+            boolean isMetEnglish = this.meetEnglishRequirements(stuGrade, isCET4, isGtMedianScore);
+            if (isMetScore && isMetEnglish) {
                 StudentEvaluationResult result = new StudentEvaluationResult();
                 BeanUtils.copyProperties(studentScoreDto, result);
                 result.setEnglishScore(isCET4 ? "CET4" : String.valueOf(studentScoreDto.getEnglishScore()));
                 result.setEvaluationResult(evaluationResult);
-                tmp.add(result);
+                results.add(result);
             }
         }
-        Collections.sort(tmp, new Comparator<StudentEvaluationResult>() {
+        return results;
+    }
+
+    /**
+     * 过滤分组内奖学金条件2，针对三等
+     *
+     * @param evaluationResult 奖学金类型
+     * @param studentScoreDtos 学生成绩
+     * @return List<StudentEvaluationResult>
+     */
+    private List<StudentEvaluationResult> getFilterResults2(String evaluationResult, List<StudentScoreDto> studentScoreDtos) {
+        List<StudentEvaluationResult> results = new ArrayList<>(studentScoreDtos.size());
+        for (StudentScoreDto studentScoreDto : studentScoreDtos) {
+            List<CourseEvaluation> courseEvaluations = studentScoreDto.getStuCourse();
+            boolean isMet = this.meetScoreRequirements(courseEvaluations);
+            if (isMet) {
+                StudentEvaluationResult result = new StudentEvaluationResult();
+                BeanUtils.copyProperties(studentScoreDto, result);
+                result.setEnglishScore(String.valueOf(studentScoreDto.getEnglishScore()));
+                result.setEvaluationResult(evaluationResult);
+                results.add(result);
+            }
+        }
+        return results;
+    }
+
+    /**
+     * 发展性素质分排序
+     *
+     * @param results 评选结果
+     * @return
+     */
+    private List<StudentEvaluationResult> getSortResults(List<StudentEvaluationResult> results) {
+        Collections.sort(results, new Comparator<StudentEvaluationResult>() {
             @Override
             public int compare(StudentEvaluationResult o1, StudentEvaluationResult o2) {
                 Double extraScore1 = o1.getExtraScore();
@@ -192,7 +232,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
                 return extraScore1 > extraScore2 ? -1 : extraScore1 < extraScore2 ? 1 : 0;
             }
         });
-        return tmp;
+        return results;
     }
 
     /**
@@ -222,6 +262,26 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         return true;
     }
 
+    /**
+     * 各科成绩满足要求
+     *
+     * @param courseEvaluations
+     * @return
+     */
+    private boolean meetScoreRequirements(List<CourseEvaluation> courseEvaluations) {
+        if (courseEvaluations == null) {
+            return false;
+        }
+        Double passScore = 60d;
+        for (CourseEvaluation courseEvaluation : courseEvaluations) {
+            //满足没有挂科，各科成绩>=60
+            if (courseEvaluation.getScore() < passScore) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * 获取英语成绩中位数
@@ -229,14 +289,11 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
      * @param dtos 数据对象
      * @return 英语成绩中位数
      */
-    private Double getMedianNum(List<StudentEvaluationDto> dtos) {
+    private Double getMedianNum(List<StudentScoreDto> dtos) {
         List<Integer> scores = new ArrayList<>(dtos.size());
-        for (StudentEvaluationDto dto : dtos) {
-            String s = dto.getEnglishScore();
-            if (StringUtils.isEmpty(s)) {
-                continue;
-            }
-            scores.add(Integer.valueOf(s));
+        for (StudentScoreDto dto : dtos) {
+            int score = dto.getEnglishScore().intValue();
+            scores.add(score);
         }
         return BuaAnalyticalRule.getMedianNum(scores);
     }

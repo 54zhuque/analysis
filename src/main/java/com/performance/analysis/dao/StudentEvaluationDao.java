@@ -1,6 +1,7 @@
 package com.performance.analysis.dao;
 
 import com.performance.analysis.dto.StudentEvaluationDto;
+import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.ClassCadre;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import org.apache.ibatis.annotations.Insert;
@@ -57,10 +58,11 @@ public interface StudentEvaluationDao {
             "student.stu_no," +
             "student.name as stu_name," +
             "student.grade as stu_grade," +
-            "student.major as major," +
+            "student.major as stu_major," +
             "extra_evaluation.extra_score as extra_score," +
             "physical_evaluation.fix_score as physical_score," +
             "moral_evaluation.fix_score as moral_score," +
+            "major_evaluation.course as stu_course," +
             "major_evaluation.fix_score as major_score," +
             "english_evaluation.english_score as english_score " +
             "from " +
@@ -71,7 +73,7 @@ public interface StudentEvaluationDao {
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
             "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
             "where student.grade = #{grade}")
-    List<StudentEvaluationDto> findStudentEvaluationsWithGrade(@Param("grade") Integer grade);
+    List<StudentScoreDto> findStudentEvaluationsWithGrade(@Param("grade") Integer grade);
 
     /**
      * 获取通过英语四级列表
@@ -109,6 +111,13 @@ public interface StudentEvaluationDao {
     @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score desc")
     List<StudentEvaluationResult> findStudentEvaluationByTypeOne(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
 
+    /**
+     * 查询对应年级下的评优
+     *
+     * @param evaluationResult
+     * @param grade
+     * @return
+     */
     @Select("select * from student_evaluation where evaluation_result like '%${evaluationResult}%' and stu_grade = #{grade} order by extra_score desc")
     List<StudentEvaluationResult> findStudentEvaluationByTypeTwo(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade);
 }

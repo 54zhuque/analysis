@@ -1,8 +1,13 @@
 package com.performance.analysis.dto;
 
+import com.alibaba.fastjson.JSON;
+import com.performance.analysis.pojo.CourseEvaluation;
 import com.performance.analysis.service.impl.BuaAnalyticalRule;
+import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 学生成绩
@@ -10,7 +15,7 @@ import java.math.BigDecimal;
  * @author tangwei
  * @since 1.0
  */
-public class StudentScoreDto {
+public class StudentScoreDto implements Serializable {
     /**
      * 学号
      */
@@ -27,6 +32,11 @@ public class StudentScoreDto {
      * 专业
      */
     private String stuMajor;
+
+    /**
+     * 学生成绩
+     */
+    private String stuCourse;
     /**
      * 身体素质计算分
      */
@@ -119,6 +129,17 @@ public class StudentScoreDto {
 
     public void setExtraScore(Double extraScore) {
         this.extraScore = extraScore;
+    }
+
+    public List<CourseEvaluation> getStuCourse() {
+        if (StringUtils.isEmpty(stuCourse)) {
+            return null;
+        }
+        return JSON.parseArray(stuCourse, CourseEvaluation.class);
+    }
+
+    public void setStuCourse(String stuCourse) {
+        this.stuCourse = stuCourse;
     }
 
     /**
