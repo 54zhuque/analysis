@@ -43,11 +43,31 @@
                         <td>{{student.stuNo}}</td>
                         <td>{{student.stuName}}</td>
                         <td>{{student.stuGrade}}</td>
-                        <td>{{student.physicalScore}}</td>
-                        <td>{{student.moralScore}}</td>
-                        <td>{{student.majorScore}}</td>
+                        <td>
+                            <span th:if="${student.physicalScore>=85}" th:text="优秀"></span>
+                            <span th:if="${student.physicalScore>=75&&student.physicalScore<85}" th:text="良好"></span>
+                            <span th:if="${student.physicalScore>=60&&student.physicalScore<75}" th:text="合格"></span>
+                            <span th:if="${student.physicalScore<60}" th:text="不合格"></span>
+                        </td>
+                        <td>
+                            <span th:if="${student.moralScore>=85}" th:text="优秀"></span>
+                            <span th:if="${student.moralScore>=75&&student.moralScore<85}" th:text="良好"></span>
+                            <span th:if="${student.moralScore>=60&&student.moralScore<75}" th:text="合格"></span>
+                            <span th:if="${student.moralScore<60}" th:text="不合格"></span>
+                        </td>
+                        <td>
+                            <span th:if="${student.majorScore>=85}" th:text="优秀"></span>
+                            <span th:if="${student.majorScore>=75&&student.majorScore<85}" th:text="良好"></span>
+                            <span th:if="${student.majorScore>=60&&student.majorScore<75}" th:text="合格"></span>
+                            <span th:if="${student.majorScore<60}" th:text="不合格"></span>
+                        </td>
                         <td>{{student.englishScore}}</td>
-                        <td>{{student.fixScore}}</td>
+                        <td>
+                            <span th:if="${student.fixScore>=85}" th:text="优秀"></span>
+                            <span th:if="${student.fixScore>=75&&student.fixScore<85}" th:text="良好"></span>
+                            <span th:if="${student.fixScore>=60&&student.fixScore<75}" th:text="合格"></span>
+                            <span th:if="${student.fixScore<60}" th:text="不合格"></span>
+                        </td>
                         <td>{{student.evaluationResult}}</td>
                     </tr>
                 </tbody>

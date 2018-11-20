@@ -32,7 +32,9 @@
                 <tbody>
                 <tr th:each="extra, extraStat: ${extraList}">
                     <td th:text="${extra.stuNo}"></td>
-                    <td th:text="${extra.extraScore}"></td>
+                    <td>
+                        <span th:text="${extra.extraScore}"></span>
+                    </td>
                 </tr>
                 </tbody>
             </table>

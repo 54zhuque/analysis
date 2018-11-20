@@ -35,10 +35,30 @@
                 <tbody>
                 <tr th:each="physical, stuStat: ${physicalList}">
                     <td th:text="${physical.stuNo}"></td>
-                    <td th:text="${physical.cultureScore}"></td>
-                    <td th:text="${physical.trainingScore}"></td>
-                    <td th:text="${physical.additionalPlus}"></td>
-                    <td th:text="${physical.fixScore}"></td>
+                    <td>
+                        <span th:if="${physical.cultureScore>=85}" th:text="优秀"></span>
+                        <span th:if="${physical.cultureScore>=75&&physical.cultureScore<85}" th:text="良好"></span>
+                        <span th:if="${physical.cultureScore>=60&&physical.cultureScore<75}" th:text="合格"></span>
+                        <span th:if="${physical.cultureScore<60}" th:text="不合格"></span>
+                    </td>
+                    <td>
+                        <span th:if="${physical.trainingScore>=85}" th:text="优秀"></span>
+                        <span th:if="${physical.trainingScore>=75&&physical.trainingScore<85}" th:text="良好"></span>
+                        <span th:if="${physical.trainingScore>=60&&physical.trainingScore<75}" th:text="合格"></span>
+                        <span th:if="${physical.trainingScore<60}" th:text="不合格"></span>
+                    </td>
+                    <td>
+                        <span th:if="${physical.additionalPlus>=85}" th:text="优秀"></span>
+                        <span th:if="${physical.additionalPlus>=75&&physical.additionalPlus<85}" th:text="良好"></span>
+                        <span th:if="${physical.additionalPlus>=60&&physical.additionalPlus<75}" th:text="合格"></span>
+                        <span th:if="${physical.additionalPlus<60}" th:text="不合格"></span>
+                    </td>
+                    <td>
+                        <span th:if="${physical.fixScore>=85}" th:text="优秀"></span>
+                        <span th:if="${physical.fixScore>=75&&physical.fixScore<85}" th:text="良好"></span>
+                        <span th:if="${physical.fixScore>=60&&physical.fixScore<75}" th:text="合格"></span>
+                        <span th:if="${physical.fixScore<60}" th:text="不合格"></span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
