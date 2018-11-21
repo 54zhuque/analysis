@@ -81,8 +81,10 @@ public class BuaPhysicalDataReadService implements FileDataReadService {
                 if (row == null) {
                     continue;
                 }
-                physicalEvaluation = new PhysicalEvaluation();
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
+                if (StringUtils.isEmpty(stuNo)) {
+                    continue;
+                }
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 String cultureScoreCellValue = ExcelUtil.getCellValue(row.getCell(2));
                 Double cultureScore = StringUtils.isEmpty(cultureScoreCellValue) ?
@@ -93,6 +95,7 @@ public class BuaPhysicalDataReadService implements FileDataReadService {
                 String additionalPlusCellValue = ExcelUtil.getCellValue(row.getCell(4));
                 Double additionalPlus = StringUtils.isEmpty(additionalPlusCellValue) ?
                         0 : Double.valueOf(additionalPlusCellValue);
+                physicalEvaluation = new PhysicalEvaluation();
                 physicalEvaluation.setAdditionalPlus(additionalPlus);
                 physicalEvaluation.setCultureScore(cultureScore);
                 physicalEvaluation.setStuNo(stuNo);

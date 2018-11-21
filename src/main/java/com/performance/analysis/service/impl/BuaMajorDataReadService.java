@@ -51,8 +51,6 @@ public class BuaMajorDataReadService implements FileDataReadService {
             stu.setGrade(BuaAnalyticalRule.getGrade(majorEvaluation.getStuNo()));
             stu.setMajor(BuaAnalyticalRule.getMajor(majorEvaluation.getStuNo()));
             studentDao.addStudent(stu);
-            majorEvaluation.setFixScore(this.getMajorWeightedAverageScore(majorEvaluation.getCourseEvaluations()));
-
             majorEvaluationDao.addMajorEvaluation(majorEvaluation.getStuNo(),
                     JSON.toJSONString(majorEvaluation.getCourseEvaluations()),
                     majorEvaluation.getFixScore());
@@ -115,8 +113,10 @@ public class BuaMajorDataReadService implements FileDataReadService {
                     continue;
                 }
                 List<CourseEvaluation> copyCourseEvaluations = this.getCourseCopy(courseEvaluations);
-                majorEvaluation = new MajorEvaluation();
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
+                if (StringUtils.isEmpty(stuNo)) {
+                    continue;
+                }
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 int lastCellNum = row.getPhysicalNumberOfCells();
                 for (int cellNum = 2; cellNum < lastCellNum; cellNum++) {
@@ -125,6 +125,7 @@ public class BuaMajorDataReadService implements FileDataReadService {
                             : Double.valueOf(ExcelUtil.getCellValue(cell));
                     copyCourseEvaluations.get(cellNum - 2).setScore(score);
                 }
+                majorEvaluation = new MajorEvaluation();
                 majorEvaluation.setCourseEvaluations(copyCourseEvaluations);
                 majorEvaluation.setStuNo(stuNo);
                 majorEvaluation.setStuName(stuName);

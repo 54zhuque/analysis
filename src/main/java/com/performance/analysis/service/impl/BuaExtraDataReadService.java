@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,10 +81,13 @@ public class BuaExtraDataReadService implements FileDataReadService {
                 if (row == null) {
                     continue;
                 }
-                extraEvaluation = new ExtraEvaluation();
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
+                if (StringUtils.isEmpty(stuNo)) {
+                    continue;
+                }
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 String extraScore = ExcelUtil.getCellValue(row.getCell(2));
+                extraEvaluation = new ExtraEvaluation();
                 extraEvaluation.setExtraScore(extraScore);
                 extraEvaluation.setStuName(stuName);
                 extraEvaluation.setStuNo(stuNo);

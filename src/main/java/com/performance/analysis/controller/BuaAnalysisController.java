@@ -91,38 +91,7 @@ public class BuaAnalysisController {
      * 学生评优
      *
      * @param grade 年级
-     * @param major 专业
-     * @param type  类型A、B
-     * @return
-     */
-    @GetMapping("/bua/analysis/evaluations/{grade}/{major}/{type}")
-    @ResponseBody
-    public SystemResponse<List<StudentEvaluationResult>> handleBuaStudentEvaluation(@PathVariable Integer grade, @PathVariable String major, @PathVariable String type) {
-        SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
-        List<StudentEvaluationResult> studentEvaluationResults;
-        BuaEvaluation evaluation = new BuaEvaluation();
-        evaluation.setEvaluationResult(type);
-        evaluation.setGrade(grade);
-        evaluation.setMajor(major);
-        if (BuaEvaluationEnum.STUDENT_MODEL.getValue().equals(type)) {
-            studentEvaluationResults = studentModelEvaluationService.evaluate(evaluation);
-        } else if (BuaEvaluationEnum.CLASS_CADRE_MODEL.getValue().equals(type)) {
-            studentEvaluationResults = classCadreModelEvaluationService.evaluate(evaluation);
-        } else if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
-            studentEvaluationResults = scholarshipEvaluationService.evaluate(evaluation);
-        } else {
-            studentEvaluationResults = null;
-        }
-
-        response.setData(studentEvaluationResults);
-        return response;
-    }
-
-    /**
-     * 奖学金评选
-     *
-     * @param grade 年级
-     * @param type  类型W
+     * @param type  类型A、B、W
      * @return
      */
     @GetMapping("/bua/analysis/evaluations/{grade}/{type}")
@@ -133,11 +102,18 @@ public class BuaAnalysisController {
         BuaEvaluation evaluation = new BuaEvaluation();
         evaluation.setEvaluationResult(type);
         evaluation.setGrade(grade);
-        if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
+        if (BuaEvaluationEnum.STUDENT_MODEL.getValue().equals(type)) {
+            studentEvaluationResults = studentModelEvaluationService.evaluate(evaluation);
+        } else if (BuaEvaluationEnum.CLASS_CADRE_MODEL.getValue().equals(type)) {
+            studentEvaluationResults = classCadreModelEvaluationService.evaluate(evaluation);
+        } else if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
+            studentEvaluationResults = scholarshipEvaluationService.evaluate(evaluation);
+        } else if (BuaEvaluationEnum.SCHOLARSHIP.getValue().equals(type)) {
             studentEvaluationResults = scholarshipEvaluationService.evaluate(evaluation);
         } else {
             studentEvaluationResults = null;
         }
+
         response.setData(studentEvaluationResults);
         return response;
     }

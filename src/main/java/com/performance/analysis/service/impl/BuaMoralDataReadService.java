@@ -47,9 +47,6 @@ public class BuaMoralDataReadService implements FileDataReadService {
             stu.setName(moralEvaluation.getStuName());
             stu.setMajor(BuaAnalyticalRule.getMajor(moralEvaluation.getStuNo()));
             studentDao.addStudent(stu);
-            Double[] weights = BuaAnalyticalRule.getMoralWeights();
-            moralEvaluation.setFixScore(BuaAnalyticalRule.getWeightedScore(weights, moralEvaluation.getMateScore(),
-                    moralEvaluation.getTeacherScore(), moralEvaluation.getDormScore()));
             moralEvaluationDao.addMoralEvaluation(moralEvaluation);
         }
     }
@@ -59,12 +56,14 @@ public class BuaMoralDataReadService implements FileDataReadService {
     public void readMerge(File file) throws IOException, DataReadInException {
         Workbook workbook = ExcelUtil.getWorkbook(file);
         List<MoralEvaluation> moralEvaluations = this.readInMoralEvaluation(workbook);
+        MoralEvaluation averageEvaluation;
         for (MoralEvaluation moralEvaluation : moralEvaluations) {
             String stuNo = moralEvaluation.getStuNo();
             MoralEvaluation evaluation = moralEvaluationDao.findMoralEvaluationByStuNo(stuNo);
             if (evaluation == null) {
                 throw new DataReadInException("缺失上学期数据！");
             }
+            averageEvaluation = new MoralEvaluation();
             //计算mate平均分
             Double mateAverageScore = BuaAnalyticalRule
                     .getAverageScore(moralEvaluation.getMateScore(), evaluation.getMateScore());
@@ -77,12 +76,14 @@ public class BuaMoralDataReadService implements FileDataReadService {
             //重新计算加权分
             Double[] weights = BuaAnalyticalRule.getMoralWeights();
             Double fixAverageScore = BuaAnalyticalRule.getWeightedScore(weights, mateAverageScore, teacherAverageScore, dormAverageScore);
-            evaluation.setDormScore(dormAverageScore);
-            evaluation.setMateScore(mateAverageScore);
-            evaluation.setTeacherScore(teacherAverageScore);
-            evaluation.setFixScore(fixAverageScore);
+            averageEvaluation.setStuNo(stuNo);
+            averageEvaluation.setStuName(evaluation.getStuName());
+            averageEvaluation.setDormScore(dormAverageScore);
+            averageEvaluation.setMateScore(mateAverageScore);
+            averageEvaluation.setTeacherScore(teacherAverageScore);
+            averageEvaluation.setFixScore(fixAverageScore);
             //更新思想素质数据
-            moralEvaluationDao.addMoralEvaluation(evaluation);
+            moralEvaluationDao.addMoralEvaluation(averageEvaluation);
         }
     }
 
@@ -107,8 +108,10 @@ public class BuaMoralDataReadService implements FileDataReadService {
                 if (row == null) {
                     continue;
                 }
-                moralEvaluation = new MoralEvaluation();
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
+                if (StringUtils.isEmpty(stuNo)) {
+                    continue;
+                }
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 String mateScoreCellValue = ExcelUtil.getCellValue(row.getCell(2));
                 Double mateScore = StringUtils.isEmpty(mateScoreCellValue) ?
@@ -119,6 +122,7 @@ public class BuaMoralDataReadService implements FileDataReadService {
                 String dormScoreCellValue = ExcelUtil.getCellValue(row.getCell(4));
                 Double dormScore = StringUtils.isEmpty(dormScoreCellValue) ?
                         0 : Double.valueOf(dormScoreCellValue);
+                moralEvaluation = new MoralEvaluation();
                 moralEvaluation.setDormScore(dormScore);
                 moralEvaluation.setMateScore(mateScore);
                 moralEvaluation.setStuNo(stuNo);

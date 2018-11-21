@@ -24,7 +24,7 @@ public interface StudentDao {
      *
      * @param student
      */
-    @Insert("insert or ignore into student(stu_no,name,grade,major) values(#{stuNo},#{name},#{grade},#{major})")
+    @Insert("insert or replace into student(stu_no,name,grade,major) values(#{stuNo},#{name},#{grade},#{major})")
     void addStudent(Student student);
 
     /**
@@ -49,7 +49,7 @@ public interface StudentDao {
      */
     @Select("select " +
             "student.stu_no," +
-            "student.major,"+
+            "student.major," +
             "student.name as stu_name," +
             "student.grade as stu_grade," +
             "physical_evaluation.fix_score as physical_score," +
@@ -64,6 +64,6 @@ public interface StudentDao {
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
             "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
             "left join extra_evaluation on student.stu_no = extra_evaluation.stu_no "
-            )
+    )
     List<StudentEvaluationDto> studentsResultOverview();
 }

@@ -86,11 +86,14 @@ public class BuaEnglishDataReadService implements FileDataReadService {
                 if (row == null) {
                     continue;
                 }
-                englishEvaluation = new EnglishEvaluation();
                 String stuNo = ExcelUtil.getCellValue(row.getCell(0));
+                if (StringUtils.isEmpty(stuNo)) {
+                    continue;
+                }
                 String stuName = ExcelUtil.getCellValue(row.getCell(1));
                 String englishScore = ExcelUtil.getCellValue(row.getCell(2));
                 String cet4 = ExcelUtil.getCellValue(row.getCell(3));
+                englishEvaluation = new EnglishEvaluation();
                 englishEvaluation.setEnglishScore(englishScore);
                 englishEvaluation.setStuName(stuName);
                 englishEvaluation.setStuNo(stuNo);
