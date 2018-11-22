@@ -45,21 +45,21 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术 2",
+					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/evaluations/2/2013",
+					"href": "/bua/analysis/evaluations/2/A",
 					"spread": false
 				},
 				{
-					"title": "生物工程 2",
+					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/evaluations/2/2014",
+					"href": "/bua/analysis/evaluations/2/B",
 					"spread": false
 				},
 				{
-					"title": "应用化学 2",
+					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/evaluations/2/2015",
+					"href": "/bua/analysis/evaluations/2/W",
 					"spread": false
 				}
 			]
@@ -71,21 +71,21 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术 3",
+					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/evaluations/3/2013",
+					"href": "/bua/analysis/evaluations/3/A",
 					"spread": false
 				},
 				{
-					"title": "生物工程 3",
+					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/evaluations/3/2014",
+					"href": "/bua/analysis/evaluations/3/B",
 					"spread": false
 				},
 				{
-					"title": "应用化学 3",
+					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/evaluations/3/2015",
+					"href": "/bua/analysis/evaluations/3/W",
 					"spread": false
 				}
 			]
@@ -97,25 +97,25 @@
 			"spread": false,
 			"children": [
 				{
-					"title": "生物技术 4",
+					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/evaluations/4/2013",
+					"href": "/bua/analysis/evaluations/4/A",
 					"spread": false
 				},
 				{
-					"title": "生物工程 4",
+					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/evaluations/4/2014",
+					"href": "/bua/analysis/evaluations/4/B",
 					"spread": false
 				},
 				{
-					"title": "应用化学 4",
+					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/evaluations/4/2015",
+					"href": "/bua/analysis/evaluations/4/W",
 					"spread": false
 				}
 			]
-		}
+		},
 	]
 }
 
