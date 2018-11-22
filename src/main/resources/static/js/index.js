@@ -73,10 +73,10 @@ layui.use(['bodyTab', 'form', 'element', 'layer', 'jquery'], function () {
     $(".clearCache").click(function () {
         window.sessionStorage.clear();
         window.localStorage.clear();
-        var index = layer.msg('清除缓存中，请稍候', {icon: 16, time: false, shade: 0.8});
+        var index = layer.msg('数据清除中，请稍候', {icon: 16, time: false, shade: 0.8});
         setTimeout(function () {
             layer.close(index);
-            layer.msg("缓存清除成功！");
+            layer.msg("数据清除成功！");
         }, 1000);
     });
 

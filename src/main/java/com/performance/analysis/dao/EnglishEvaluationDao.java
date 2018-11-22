@@ -39,6 +39,6 @@ public interface EnglishEvaluationDao {
      *
      * @return List<EnglishEvaluation>
      */
-    @Select("select * from english_evaluation")
+    @Select("select english_evaluation.stu_no,english_evaluation.english_score,english_cet4.desc as cet4 from english_evaluation left join english_cet4 on english_evaluation.stu_no=english_cet4.stu_no")
     List<EnglishEvaluation> listEnglishEvaluation();
 }

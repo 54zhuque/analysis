@@ -2,9 +2,11 @@ package com.performance.analysis.controller;
 
 import com.performance.analysis.dto.StudentEvaluationDto;
 import com.performance.analysis.pojo.*;
+import com.performance.analysis.service.ClearDataService;
 import com.performance.analysis.service.StudentService;
 import com.performance.analysis.service.VariousGradeService;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,6 +42,8 @@ public class MainPageController {
     private StudentService studentService;
     @Autowired
     private VariousGradeService variousGradeService;
+    @Autowired
+    private ClearDataService clearDataService;
 
     /**
      * 返回主页面
@@ -137,4 +143,34 @@ public class MainPageController {
         }
         return dataList;
     }
+
+    /**
+     * 清空分析结果
+     *
+     */
+    @GetMapping("/clear/evaluation")
+    public void clearEvaluation(HttpServletResponse resp) {
+        try {
+            clearDataService.clearStudentEvaluation();
+            resp.getWriter().print("success");
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 清楚所有数据
+     *
+     */
+    @GetMapping("/clear/all")
+    public void clearAllData(HttpServletResponse resp) {
+        try {
+            clearDataService.clearAllData();
+            resp.getWriter().print("success");
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -4,10 +4,7 @@ import com.performance.analysis.dto.StudentEvaluationDto;
 import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.ClassCadre;
 import com.performance.analysis.pojo.StudentEvaluationResult;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -120,4 +117,32 @@ public interface StudentEvaluationDao {
      */
     @Select("select * from student_evaluation where evaluation_result like '%${evaluationResult}%' and stu_grade = #{grade} order by extra_score desc")
     List<StudentEvaluationResult> findStudentEvaluationByTypeTwo(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade);
+
+    /**
+     * 清空分析结果
+     * */
+    @Delete("delete from student_evaluation")
+    int clearStudentEvaluation ();
+    /**
+     * 清楚全部数据
+     * */
+    @Delete("delete from class_cadre")
+    int clearClassCadre();
+    @Delete("delete from english_cet4")
+    int clearEnglishCet4();
+    @Delete("delete from extra_evaluation")
+    int clearExtraEvaluation();
+    @Delete("delete from major_evaluation")
+    int clearMajorEvaluation();
+    @Delete("delete from moral_evaluation")
+    int clearMoralEvaluation();
+    @Delete("delete from physical_evaluation")
+    int clearPhysicalEvaluation();
+    @Delete("delete from sqlite_sequence")
+    int clearSqliteSequence();
+    @Delete("delete from student")
+    int clearStudent();
+    @Delete("delete from english_evaluation")
+    int clearEnglishEvaluation();
+
 }

@@ -56,14 +56,17 @@ public interface StudentDao {
             "moral_evaluation.fix_score as moral_score," +
             "major_evaluation.fix_score as major_score," +
             "english_evaluation.english_score as english_score," +
-            "extra_evaluation.extra_score as extra_score " +
+            "extra_evaluation.extra_score as extra_score, " +
+            "english_cet4.desc as cet4 "+
             "from " +
             "(((student " +
             "left join physical_evaluation on student.stu_no = physical_evaluation.stu_no) " +
             "left join moral_evaluation on student.stu_no = moral_evaluation.stu_no) " +
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
             "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
+            "left join english_cet4 on student.stu_no=english_cet4.stu_no "+
             "left join extra_evaluation on student.stu_no = extra_evaluation.stu_no "
+
     )
     List<StudentEvaluationDto> studentsResultOverview();
 

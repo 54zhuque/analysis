@@ -30,6 +30,7 @@
                     <th>年级</th>
                     <th>专业</th>
                     <th>英语成绩</th>
+                    <th>是否过四级</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,7 @@
                         <span th:case="'*'" th:text="${english.student.major}"></span>
                     </td>
                     <td th:text="${english.englishScore}"></td>
+                    <td th:text="${english.cet4}"></td>
                 </tr>
                 </tbody>
             </table>

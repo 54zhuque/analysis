@@ -57,10 +57,17 @@
                 </ul>
                 <!-- 顶部右侧菜单 -->
                 <ul class="layui-nav top_menu">
-                    <li class="layui-nav-item" pc>
+                    <li class="layui-nav-item" pc onclick="clear1();">
                         <a href="javascript:;" class="clearCache">
                             <i class="layui-icon" data-icon="&#xe640;">&#xe640;</i>
-                            <cite>清除缓存</cite>
+                            <cite>清除分析结果</cite>
+                            <span class="layui-badge-dot"></span>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item" pc onclick="clear2();">
+                        <a href="javascript:;" class="clearCache">
+                            <i class="layui-icon" data-icon="&#xe640;">&#xe640;</i>
+                            <cite>清除全部数据</cite>
                             <span class="layui-badge-dot"></span>
                         </a>
                     </li>
@@ -133,4 +140,13 @@
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
     <script type="text/javascript" th:src="@{/js/cache.js}"></script>
 </body>
+
+<script>
+    function clear1() {
+        $.ajax({url:"/clear/evaluation",async:true});
+    }
+    function clear2() {
+        $.ajax({url:"/clear/all",async:true});
+    }
+</script>
 </html>

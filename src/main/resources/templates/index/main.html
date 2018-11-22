@@ -122,7 +122,10 @@
                         <span th:if="${student.moralScore<60}" th:text="不合格"></span>)
                     </td>
                     <!-- 英语成绩转换 -->
-                    <td th:text="${student.englishScore}"></td>
+                    <td>
+                        <span th:if="${student.cet4}" th:text="cet4"></span>
+                        <span th:text="${student.englishScore}"></span>
+                    </td>
                     <td th:text="${student.extraScore}"></td>
                 </tr>
                 </tbody>
@@ -133,6 +136,7 @@
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script>
+
     layui.use('upload', function () {
         var upload = layui.upload;
 
