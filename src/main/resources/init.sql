@@ -9,4 +9,4 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `user` (username,password) VALUES ('lilei','123456aaa');
+INSERT INTO `user` (username,password) VALUES ('adm','123456aaa');
