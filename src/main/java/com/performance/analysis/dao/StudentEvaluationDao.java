@@ -96,8 +96,8 @@ public interface StudentEvaluationDao {
      *
      * @param studentEvaluationResult
      */
-    @Insert("insert into student_evaluation(stu_no,stu_name,stu_grade,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result,extra_score,stu_major) " +
-            "values(#{stuNo},#{stuName},#{stuGrade},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult},#{extraScore},#{stuMajor})")
+    @Insert("insert into student_evaluation(stu_no,stu_name,stu_grade,physical_score,moral_score,major_score,english_score,fix_score,evaluation_result,extra_score,stu_major,basic_score) " +
+            "values(#{stuNo},#{stuName},#{stuGrade},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult},#{extraScore},#{stuMajor},#{basicScore})")
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
 
     /**
