@@ -101,38 +101,24 @@
                     <td th:text="${student.stuName}"></td>
                     <td th:text="${student.stuGrade}"></td>
                     <td th:text="${student.major}"></td>
+                    <td th:text="${student.majorScore}"></td>
                     <td>
-                        <span th:if="${student.majorScore>=85}" th:text="优秀"></span>
-                        <span th:if="${student.majorScore>=75&&student.majorScore<85}" th:text="良好"></span>
-                        <span th:if="${student.majorScore>=60&&student.majorScore<75}" th:text="合格"></span>
-                        <span th:if="${student.majorScore<60}" th:text="不合格"></span>
-                    </td>
-                    <td>
+                        <span th:text="${student.physicalScore}"></span>(
                         <span th:if="${student.physicalScore>=85}" th:text="优秀"></span>
                         <span th:if="${student.physicalScore>=75&&student.physicalScore<85}" th:text="良好"></span>
                         <span th:if="${student.physicalScore>=60&&student.physicalScore<75}" th:text="合格"></span>
-                        <span th:if="${student.physicalScore<60}" th:text="不合格"></span>
+                        <span th:if="${student.physicalScore<60}" th:text="不合格"></span>)
                     </td>
                     <td>
+                        <span th:text="${student.moralScore}"></span>(
                         <span th:if="${student.moralScore>=85}" th:text="优秀"></span>
                         <span th:if="${student.moralScore>=75&&student.moralScore<85}" th:text="良好"></span>
                         <span th:if="${student.moralScore>=60&&student.moralScore<75}" th:text="合格"></span>
-                        <span th:if="${student.moralScore<60}" th:text="不合格"></span>
+                        <span th:if="${student.moralScore<60}" th:text="不合格"></span>)
                     </td>
                     <!-- 英语成绩转换 -->
-                    <td th:if="${student.englishScore}eq'CET4'">
-                        CET4
-                    </td>
-                    <td th:if="${#strings.isEmpty(student.englishScore)}"></td>
-                    <td th:unless="${#strings.isEmpty(student.englishScore)} or ${student.englishScore}eq'CET4'">
-                        <span th:if="${#numbers.formatDecimal(student.englishScore,2,2)}>=85" th:text="优秀"></span>
-                        <span th:if="${#numbers.formatDecimal(student.englishScore,2,2)}>=75 and ${#numbers.formatDecimal(student.englishScore,2,2)}<85" th:text="良好"></span>
-                        <span th:if="${#numbers.formatDecimal(student.englishScore,2,2)}>=60 and ${#numbers.formatDecimal(student.englishScore,2,2)}<75" th:text="良好"></span>
-                        <span th:if="${#numbers.formatDecimal(student.englishScore,2,2)}<60" th:text="不合格"></span>
-                    </td>
-                    <td>
-                        <span th:text="${student.extraScore}"></span>
-                    </td>
+                    <td th:text="${student.englishScore}"></td>
+                    <td th:text="${student.extraScore}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -26,6 +26,9 @@
                 <thead>
                 <tr>
                     <th>学号</th>
+                    <th>姓名</th>
+                    <th>年级</th>
+                    <th>专业</th>
                     <th>学生互评得分</th>
                     <th>教师评分</th>
                     <th>宿舍表现分</th>
@@ -35,29 +38,36 @@
                 <tbody>
                 <tr th:each="moral, stuStat: ${moralList}">
                     <td th:text="${moral.stuNo}"></td>
+                    <td th:text="${moral.student.name}"></td>
+                    <td th:text="${moral.student.grade}"></td>
+                    <td th:text="${moral.student.major}"></td>
                     <td>
+                        <span th:text="${moral.mateScore}"></span>(
                         <span th:if="${moral.mateScore>=85}" th:text="优秀"></span>
                         <span th:if="${moral.mateScore>=75&&moral.mateScore<85}" th:text="良好"></span>
                         <span th:if="${moral.mateScore>=60&&moral.mateScore<75}" th:text="合格"></span>
-                        <span th:if="${moral.mateScore<60}" th:text="不合格"></span>
+                        <span th:if="${moral.mateScore<60}" th:text="不合格"></span>)
                     </td>
                     <td>
+                        <span th:text="${moral.teacherScore}"></span>(
                         <span th:if="${moral.teacherScore>=85}" th:text="优秀"></span>
                         <span th:if="${moral.teacherScore>=75&&moral.teacherScore<85}" th:text="良好"></span>
                         <span th:if="${moral.teacherScore>=60&&moral.teacherScore<75}" th:text="合格"></span>
-                        <span th:if="${moral.teacherScore<60}" th:text="不合格"></span>
+                        <span th:if="${moral.teacherScore<60}" th:text="不合格"></span>)
                     </td>
                     <td>
+                        <span th:text="${moral.dormScore}"></span>(
                         <span th:if="${moral.dormScore>=85}" th:text="优秀"></span>
                         <span th:if="${moral.dormScore>=75&&moral.dormScore<85}" th:text="良好"></span>
                         <span th:if="${moral.dormScore>=60&&moral.dormScore<75}" th:text="合格"></span>
-                        <span th:if="${moral.dormScore<60}" th:text="不合格"></span>
+                        <span th:if="${moral.dormScore<60}" th:text="不合格"></span>)
                     </td>
                     <td>
+                        <span th:text="${moral.fixScore}"></span>(
                         <span th:if="${moral.fixScore>=85}" th:text="优秀"></span>
                         <span th:if="${moral.fixScore>=75&&moral.fixScore<85}" th:text="良好"></span>
                         <span th:if="${moral.fixScore>=60&&moral.fixScore<75}" th:text="合格"></span>
-                        <span th:if="${moral.fixScore<60}" th:text="不合格"></span>
+                        <span th:if="${moral.fixScore<60}" th:text="不合格"></span>)
                     </td>
                 </tr>
                 </tbody>

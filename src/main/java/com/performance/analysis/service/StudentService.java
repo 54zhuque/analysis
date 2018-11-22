@@ -29,4 +29,8 @@ public class StudentService {
 
         return studentDao.studentsResultOverview();
     }
+
+    public Student findStudentByStuNo(String stuNo){
+        return studentDao.findStudentByStuNo(stuNo);
+    }
 }

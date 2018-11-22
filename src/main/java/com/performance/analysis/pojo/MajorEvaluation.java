@@ -14,6 +14,7 @@ public class MajorEvaluation implements Serializable {
     private String stuName;//姓名
     private List<CourseEvaluation> courseEvaluations;//课程
     private Double fixScore;//加权平均分（学分加权）
+    private Student student;
 
     public String getStuNo() {
         return stuNo;
@@ -45,5 +46,13 @@ public class MajorEvaluation implements Serializable {
 
     public void setFixScore(Double fixScore) {
         this.fixScore = fixScore;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

@@ -26,18 +26,19 @@
                 <thead>
                 <tr>
                     <th>学号</th>
+                    <th>姓名</th>
+                    <th>年级</th>
+                    <th>专业</th>
                     <th>加权平均分</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="majoy, majoyStat: ${majoyList}">
                     <td th:text="${majoy.stuNo}"></td>
-                    <td>
-                        <span th:if="${majoy.fixScore>=85}" th:text="优秀"></span>
-                        <span th:if="${majoy.fixScore>=75&&majoy.fixScore<85}" th:text="良好"></span>
-                        <span th:if="${majoy.fixScore>=60&&majoy.fixScore<75}" th:text="合格"></span>
-                        <span th:if="${majoy.fixScore<60}" th:text="不合格"></span>
-                    </td>
+                    <td th:text="${majoy.student.name}"></td>
+                    <td th:text="${majoy.student.grade}"></td>
+                    <td th:text="${majoy.student.major}"></td>
+                    <td th:text="${majoy.fixScore}"></td>
                 </tr>
                 </tbody>
             </table>

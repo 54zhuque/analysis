@@ -22,6 +22,8 @@ public class ClassCadre implements Serializable {
      */
     private String desc;
 
+    private Student student;
+
     public String getStuNo() {
         return stuNo;
     }
@@ -44,5 +46,13 @@ public class ClassCadre implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

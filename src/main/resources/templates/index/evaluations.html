@@ -39,37 +39,17 @@
                 </tr>
                 </thead>
                 <tbody id="excellent_students">
-                    <tr v-for="(student, index) in studentList">
-                        <td>{{student.stuNo}}</td>
-                        <td>{{student.stuName}}</td>
-                        <td>{{student.stuGrade}}</td>
-                        <td>
-                            <span th:if="${student.physicalScore>=85}" th:text="优秀"></span>
-                            <span th:if="${student.physicalScore>=75&&student.physicalScore<85}" th:text="良好"></span>
-                            <span th:if="${student.physicalScore>=60&&student.physicalScore<75}" th:text="合格"></span>
-                            <span th:if="${student.physicalScore<60}" th:text="不合格"></span>
-                        </td>
-                        <td>
-                            <span th:if="${student.moralScore>=85}" th:text="优秀"></span>
-                            <span th:if="${student.moralScore>=75&&student.moralScore<85}" th:text="良好"></span>
-                            <span th:if="${student.moralScore>=60&&student.moralScore<75}" th:text="合格"></span>
-                            <span th:if="${student.moralScore<60}" th:text="不合格"></span>
-                        </td>
-                        <td>
-                            <span th:if="${student.majorScore>=85}" th:text="优秀"></span>
-                            <span th:if="${student.majorScore>=75&&student.majorScore<85}" th:text="良好"></span>
-                            <span th:if="${student.majorScore>=60&&student.majorScore<75}" th:text="合格"></span>
-                            <span th:if="${student.majorScore<60}" th:text="不合格"></span>
-                        </td>
-                        <td>{{student.englishScore}}</td>
-                        <td>
-                            <span th:if="${student.fixScore>=85}" th:text="优秀"></span>
-                            <span th:if="${student.fixScore>=75&&student.fixScore<85}" th:text="良好"></span>
-                            <span th:if="${student.fixScore>=60&&student.fixScore<75}" th:text="合格"></span>
-                            <span th:if="${student.fixScore<60}" th:text="不合格"></span>
-                        </td>
-                        <td>{{student.evaluationResult}}</td>
-                    </tr>
+                <tr v-for="(student, index) in studentList">
+                    <td>{{student.stuNo}}</td>
+                    <td>{{student.stuName}}</td>
+                    <td>{{student.stuGrade}}</td>
+                    <td>{{student.physicalScore}}</td>
+                    <td>{{student.moralScore}}</td>
+                    <td>{{student.majorScore}}</td>
+                    <td>{{student.englishScore}}</td>
+                    <td>{{student.fixScore}}</td>
+                    <td>{{student.evaluationResult}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -84,23 +64,48 @@
             studentList: []
         }
     });
-    layui.use(['form','jquery',"layer"],function() {
+    layui.use(['form', 'jquery', "layer"], function () {
         var $ = layui.jquery;
 
         var grade = $("#grade").val();
         var subject = $("#subject").val();
         //获取数据
-        var url = '/bua/analysis/evaluations/'+grade+'/'+subject+'/A';
-        $.get(url, null, function(data){
+        var url = '/bua/analysis/evaluations/' + grade + '/' + subject + '/A';
+        $.get(url, null, function (data) {
             var code = data['code'];
-            if(parseInt(code) === 200){
+            if (parseInt(code) === 200) {
                 var showData = data['data'];
-                if(showData && showData.length > 0){
-                    studentTable.$data.studentList = showData;
+                if (showData && showData.length > 0) {
+                    studentTable.$data.studentList = convertShowData(showData);
                 }
             }
         });
     });
+
+    function convertShowData(data_list) {
+        for (var i = 0; i < data_list.length; i++) {
+            var data = data_list[i];
+            data['physicalScore'] = getScoreAndLevel(data['physicalScore']);
+            data['moralScore'] = getScoreAndLevel(data['moralScore']);
+        }
+        return data_list;
+    }
+
+    function getScoreAndLevel(score) {
+        score = parseInt(score);
+        var result = score + "(";
+        if (score >= 85) {
+            result += "优秀";
+        } else if (score >= 75) {
+            result += "良好";
+        } else if (score >= 60) {
+            result += "合格";
+        } else {
+            result += "不合格";
+        }
+        result += ")";
+        return result;
+    }
 </script>
 </body>
 </html>

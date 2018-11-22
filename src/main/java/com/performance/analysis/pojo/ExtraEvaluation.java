@@ -11,6 +11,7 @@ public class ExtraEvaluation implements Serializable {
     private String stuNo;
     private String stuName;
     private String extraScore;
+    private Student student;
 
     public String getStuNo() {
         return stuNo;
@@ -34,5 +35,13 @@ public class ExtraEvaluation implements Serializable {
 
     public void setExtraScore(String extraScore) {
         this.extraScore = extraScore;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

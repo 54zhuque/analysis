@@ -27,6 +27,8 @@
                 <tr>
                     <th>学号</th>
                     <th>姓名</th>
+                    <th>年级</th>
+                    <th>专业</th>
                     <th>职务</th>
                 </tr>
                 </thead>
@@ -34,6 +36,8 @@
                 <tr th:each="cadre, cadreStat: ${cadreList}">
                     <td th:text="${cadre.stuNo}"></td>
                     <td th:text="${cadre.stuName}"></td>
+                    <td th:text="${cadre.student.grade}"></td>
+                    <td th:text="${cadre.student.major}"></td>
                     <td th:text="${cadre.desc}"></td>
                 </tr>
                 </tbody>

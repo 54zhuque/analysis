@@ -15,6 +15,7 @@ public class PhysicalEvaluation implements Serializable {
     private Double trainingScore;//体侧成绩
     private Double additionalPlus;//额外加分
     private Double fixScore;//加权
+    private Student student;
 
     public String getStuNo() {
         return stuNo;
@@ -62,5 +63,13 @@ public class PhysicalEvaluation implements Serializable {
 
     public void setFixScore(Double fixScore) {
         this.fixScore = fixScore;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

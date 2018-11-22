@@ -26,12 +26,18 @@
                 <thead>
                 <tr>
                     <th>学号</th>
+                    <th>姓名</th>
+                    <th>年级</th>
+                    <th>专业</th>
                     <th>英语成绩</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="english, stuStat: ${englishList}">
                     <td th:text="${english.stuNo}"></td>
+                    <td th:text="${english.student.name}"></td>
+                    <td th:text="${english.student.grade}"></td>
+                    <td th:text="${english.student.major}"></td>
                     <td th:text="${english.englishScore}"></td>
                 </tr>
                 </tbody>

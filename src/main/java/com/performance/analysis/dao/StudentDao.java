@@ -66,4 +66,13 @@ public interface StudentDao {
             "left join extra_evaluation on student.stu_no = extra_evaluation.stu_no "
     )
     List<StudentEvaluationDto> studentsResultOverview();
+
+    /**
+     * 根据学号查询学生信息
+     * @param stuNo
+     * @return
+     */
+    @Select("select * from student where stu_no = #{stuNo}")
+    Student findStudentByStuNo(String stuNo);
+
 }

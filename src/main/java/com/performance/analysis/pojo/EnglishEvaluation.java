@@ -27,6 +27,8 @@ public class EnglishEvaluation implements Serializable {
      */
     private String cet4;
 
+    private Student student;
+
     public String getStuNo() {
         return stuNo;
     }
@@ -57,5 +59,13 @@ public class EnglishEvaluation implements Serializable {
 
     public void setCet4(String cet4) {
         this.cet4 = cet4;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

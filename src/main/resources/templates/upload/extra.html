@@ -26,15 +26,19 @@
                 <thead>
                 <tr>
                     <th>学号</th>
+                    <th>姓名</th>
+                    <th>年级</th>
+                    <th>专业</th>
                     <th>额外加分</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="extra, extraStat: ${extraList}">
                     <td th:text="${extra.stuNo}"></td>
-                    <td>
-                        <span th:text="${extra.extraScore}"></span>
-                    </td>
+                    <td th:text="${extra.student.name}"></td>
+                    <td th:text="${extra.student.grade}"></td>
+                    <td th:text="${extra.student.major}"></td>
+                    <td th:text="${extra.extraScore}"></td>
                 </tr>
                 </tbody>
             </table>

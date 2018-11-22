@@ -15,6 +15,7 @@ public class MoralEvaluation implements Serializable {
     private Double teacherScore;//教师评分
     private Double dormScore;//宿舍表现分
     private Double fixScore;//加权分
+    private Student student;
 
     public String getStuNo() {
         return stuNo;
@@ -62,5 +63,13 @@ public class MoralEvaluation implements Serializable {
 
     public void setFixScore(Double fixScore) {
         this.fixScore = fixScore;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
