@@ -47,19 +47,19 @@
 				{
 					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/analysis/evaluations/2/A",
+					"href": "/bua/evaluations/2/A",
 					"spread": false
 				},
 				{
 					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/analysis/evaluations/2/B",
+					"href": "/bua/evaluations/2/B",
 					"spread": false
 				},
 				{
 					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/analysis/evaluations/2/W",
+					"href": "/bua/evaluations/2/W",
 					"spread": false
 				}
 			]
@@ -73,19 +73,19 @@
 				{
 					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/analysis/evaluations/3/A",
+					"href": "/bua/evaluations/3/A",
 					"spread": false
 				},
 				{
 					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/analysis/evaluations/3/B",
+					"href": "/bua/evaluations/3/B",
 					"spread": false
 				},
 				{
 					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/analysis/evaluations/3/W",
+					"href": "/bua/evaluations/3/W",
 					"spread": false
 				}
 			]
@@ -99,23 +99,23 @@
 				{
 					"title": "三好学生",
 					"icon": "&#xe674;",
-					"href": "/bua/analysis/evaluations/4/A",
+					"href": "/bua/evaluations/4/A",
 					"spread": false
 				},
 				{
 					"title": "优秀班干部",
 					"icon": "&#xe64c;",
-					"href": "/bua/analysis/evaluations/4/B",
+					"href": "/bua/evaluations/4/B",
 					"spread": false
 				},
 				{
 					"title": "奖学金",
 					"icon": "&#xe631;",
-					"href": "/bua/analysis/evaluations/4/W",
+					"href": "/bua/evaluations/4/W",
 					"spread": false
 				}
 			]
-		},
+		}
 	]
 }
 
