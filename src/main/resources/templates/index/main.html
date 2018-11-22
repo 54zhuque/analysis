@@ -100,7 +100,12 @@
                     <td th:text="${student.stuNo}"></td>
                     <td th:text="${student.stuName}"></td>
                     <td th:text="${student.stuGrade}"></td>
-                    <td th:text="${student.major}"></td>
+                    <td th:switch="${student.major}">
+                        <span th:case="'2013'">生物技术</span>
+                        <span th:case="'2014'">生物工程</span>
+                        <span th:case="'2015'">应用化学</span>
+                        <span th:case="'*'" th:text="${student.major}"></span>
+                    </td>
                     <td th:text="${student.majorScore}"></td>
                     <td>
                         <span th:text="${student.physicalScore}"></span>(

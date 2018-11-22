@@ -39,7 +39,12 @@
                 <tr th:each="physical, stuStat: ${physicalList}">
                     <td th:text="${physical.stuNo}"></td>
                     <td th:text="${physical.student.name}"></td>
-                    <td th:text="${physical.student.grade}"></td>
+                    <td th:switch="${physical.student.major}">
+                        <span th:case="'2013'">生物技术</span>
+                        <span th:case="'2014'">生物工程</span>
+                        <span th:case="'2015'">应用化学</span>
+                        <span th:case="'*'" th:text="${physical.student.major}"></span>
+                    </td>
                     <td th:text="${physical.student.major}"></td>
                     <td>
                         <span th:text="${physical.cultureScore}"></span>(

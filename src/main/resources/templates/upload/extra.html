@@ -36,7 +36,12 @@
                 <tr th:each="extra, extraStat: ${extraList}">
                     <td th:text="${extra.stuNo}"></td>
                     <td th:text="${extra.student.name}"></td>
-                    <td th:text="${extra.student.grade}"></td>
+                    <td th:switch="${extra.student.major}">
+                        <span th:case="'2013'">生物技术</span>
+                        <span th:case="'2014'">生物工程</span>
+                        <span th:case="'2015'">应用化学</span>
+                        <span th:case="'*'" th:text="${extra.student.major}"></span>
+                    </td>
                     <td th:text="${extra.student.major}"></td>
                     <td th:text="${extra.extraScore}"></td>
                 </tr>

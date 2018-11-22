@@ -37,7 +37,12 @@
                     <td th:text="${cadre.stuNo}"></td>
                     <td th:text="${cadre.stuName}"></td>
                     <td th:text="${cadre.student.grade}"></td>
-                    <td th:text="${cadre.student.major}"></td>
+                    <td th:switch="${cadre.student.major}">
+                        <span th:case="'2013'">生物技术</span>
+                        <span th:case="'2014'">生物工程</span>
+                        <span th:case="'2015'">应用化学</span>
+                        <span th:case="'*'" th:text="${cadre.student.major}"></span>
+                    </td>
                     <td th:text="${cadre.desc}"></td>
                 </tr>
                 </tbody>
