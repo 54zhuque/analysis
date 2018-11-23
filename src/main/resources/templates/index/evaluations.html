@@ -107,6 +107,10 @@
             data['physicalScore'] = getScoreAndLevel(data['physicalScore']);
             data['moralScore'] = getScoreAndLevel(data['moralScore']);
             data['evaluationResult'] = getEvaluationResultText(data['evaluationResult']);
+            if(data['englishScore']=='0.0'){
+
+                data['englishScore']='无要求';
+            }
         }
         return data_list;
     }
