@@ -13,6 +13,11 @@
     <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/layui/font/font-awesome/font-awesome.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/css/site.css}" media="all"/>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body class="main_body padding-10">
 <div class="layui-container width-full padding-10 bg-white">
@@ -49,7 +54,7 @@
                 </tr>
                 </thead>
                 <tbody id="excellent_students">
-                <tr v-for="(student, index) in studentList">
+                <tr v-for="(student, index) in studentList" v-cloak>
                     <td>{{student.stuNo}}</td>
                     <td>{{student.stuName}}</td>
                     <td>{{student.stuGrade}}</td>
