@@ -155,8 +155,8 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         Collections.sort(dtos, new Comparator<StudentScoreDto>() {
             @Override
             public int compare(StudentScoreDto o1, StudentScoreDto o2) {
-                Double score1 = o1.getFixScore();
-                Double score2 = o2.getFixScore();
+                Double score1 = o1.getBasicScore();
+                Double score2 = o2.getBasicScore();
                 return score1 > score2 ? -1 : score1 < score2 ? 1 : 0;
             }
         });
