@@ -115,7 +115,7 @@ public interface StudentEvaluationDao {
      * @param grade
      * @return
      */
-    @Select("select * from student_evaluation where evaluation_result like '%${evaluationResult}%' and stu_grade = #{grade} order by extra_score desc")
+    @Select("select * from student_evaluation where evaluation_result like '%${evaluationResult}%' and stu_grade = #{grade} order by evaluation_result asc,extra_score desc")
     List<StudentEvaluationResult> findStudentEvaluationByTypeTwo(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade);
 
     /**
