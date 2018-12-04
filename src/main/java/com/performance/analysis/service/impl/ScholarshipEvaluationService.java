@@ -2,9 +2,11 @@ package com.performance.analysis.service.impl;
 
 import com.performance.analysis.common.BuaEvaluation;
 import com.performance.analysis.common.BuaEvaluationEnum;
+import com.performance.analysis.dao.ScholarshipEvaluatingDao;
 import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.dto.StudentScoreDto;
 import com.performance.analysis.pojo.CourseEvaluation;
+import com.performance.analysis.pojo.ScholarshipEvaluatingResult;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.BuaEvaluationService;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +49,8 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     private static final int MIN_STUDENT_NUM = 50;
     @Autowired
     private StudentEvaluationDao studentEvaluationDao;
+    @Autowired
+    private ScholarshipEvaluatingDao scholarshipEvaluatingDao;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
@@ -66,9 +70,13 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         //英语中位数
         Double englishMedianScore = this.getMedianNum(dtos);
         results = this.getResults(dtos, cet4List, englishMedianScore);
+        ScholarshipEvaluatingResult evaluatingResult;
         if (results != null && results.size() > 0) {
             for (StudentEvaluationResult result : results) {
-                studentEvaluationDao.addStudentEvaluationResult(result);
+                evaluatingResult = new ScholarshipEvaluatingResult();
+                BeanUtils.copyProperties(result, evaluatingResult);
+                evaluatingResult.setEvaluationResult1(result.getEvaluationResult());
+                scholarshipEvaluatingDao.saveOrUpdateScholarshipEvaluatingResult(evaluatingResult);
             }
         }
         return results;
