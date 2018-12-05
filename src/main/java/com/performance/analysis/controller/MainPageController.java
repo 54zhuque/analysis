@@ -37,6 +37,7 @@ public class MainPageController {
     private static final String EXTRA = "extra";
     private static final String PHYSICAL = "physical";
     private static final String CADRE = "cadre";
+    private static final String SCHOLARSHIP = "W";
 
     @Autowired
     private StudentService studentService;
@@ -80,7 +81,11 @@ public class MainPageController {
         ModelAndView view = new ModelAndView();
         view.addObject("grade", grade);
         view.addObject("subject", subject);
-        view.setViewName("index/evaluations");
+        if(SCHOLARSHIP.equalsIgnoreCase(subject)){
+            view.setViewName("index/evaluations_scholarship");
+        }else{
+            view.setViewName("index/evaluations");
+        }
         return view;
     }
 

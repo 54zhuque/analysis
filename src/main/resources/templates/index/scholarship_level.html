@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div th:fragment="scholarship_W0">
+        <div class="layui-col-md2 margin-bottom-10">
+            <button class="layui-btn layui-btn-fluid scholarship_submit_btn" table_level="W0">确定</button>
+        </div>
+        <table class="layui-table" id="scholarship_student_W0">
+            <colgroup>
+                <col width="100">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>身体素质得分</th>
+                <th>思想素质得分</th>
+                <th>专业成绩得分</th>
+                <th>英语成绩</th>
+                <th>基础得分</th>
+                <th>额外加分</th>
+                <th>综合评分</th>
+            </tr>
+            </thead>
+            <tbody id="excellent_students_W0">
+            <tr v-for="(student, index) in studentList" v-cloak>
+                <td><input type="checkbox" title="特等奖" :stuNo="student.stuNo" :checked="student.evaluationResult2 == 'W0'"></td>
+                <td>{{student.stuNo}}</td>
+                <td>{{student.stuName}}</td>
+                <td>{{student.stuGrade}}</td>
+                <td>{{student.physicalScore}}</td>
+                <td>{{student.moralScore}}</td>
+                <td>{{student.majorScore}}</td>
+                <td>{{student.englishScore}}</td>
+                <td>{{student.basicScore}}</td>
+                <td>{{student.extraScore}}</td>
+                <td>{{student.fixScore}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:fragment="scholarship_W1">
+        <div class="layui-col-md2 margin-bottom-10">
+            <button class="layui-btn layui-btn-fluid scholarship_submit_btn" table_level="W1">确定</button>
+        </div>
+        <table class="layui-table" id="scholarship_student_W1">
+            <colgroup>
+                <col width="100">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>身体素质得分</th>
+                <th>思想素质得分</th>
+                <th>专业成绩得分</th>
+                <th>英语成绩</th>
+                <th>基础得分</th>
+                <th>额外加分</th>
+                <th>综合评分</th>
+            </tr>
+            </thead>
+            <tbody id="excellent_students_W1">
+            <tr v-for="(student, index) in studentList" v-cloak>
+                <td>
+                    <input type="checkbox" title="一等奖" :stuNo="student.stuNo"
+                           :disabled="student.evaluationResult1 == 'W0'"
+                           :checked="student.evaluationResult2 == 'W1'"
+                    >
+                </td>
+                <td>{{student.stuNo}}</td>
+                <td>{{student.stuName}}</td>
+                <td>{{student.stuGrade}}</td>
+                <td>{{student.physicalScore}}</td>
+                <td>{{student.moralScore}}</td>
+                <td>{{student.majorScore}}</td>
+                <td>{{student.englishScore}}</td>
+                <td>{{student.basicScore}}</td>
+                <td>{{student.extraScore}}</td>
+                <td>{{student.fixScore}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:fragment="scholarship_W2">
+        <div class="layui-col-md2 margin-bottom-10">
+            <button class="layui-btn layui-btn-fluid scholarship_submit_btn" table_level="W2">确定</button>
+        </div>
+        <table class="layui-table" id="scholarship_student_W2">
+            <colgroup>
+                <col width="100">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>身体素质得分</th>
+                <th>思想素质得分</th>
+                <th>专业成绩得分</th>
+                <th>英语成绩</th>
+                <th>基础得分</th>
+                <th>额外加分</th>
+                <th>综合评分</th>
+            </tr>
+            </thead>
+            <tbody id="excellent_students_W2">
+            <tr v-for="(student, index) in studentList" v-cloak>
+                <td>
+                    <input type="checkbox" title="二等奖" :stuNo="student.stuNo"
+                           :disabled="student.evaluationResult1 == 'W1'"
+                           :checked="student.evaluationResult2 == 'W2'"
+                    >
+                </td>
+                <td>{{student.stuNo}}</td>
+                <td>{{student.stuName}}</td>
+                <td>{{student.stuGrade}}</td>
+                <td>{{student.physicalScore}}</td>
+                <td>{{student.moralScore}}</td>
+                <td>{{student.majorScore}}</td>
+                <td>{{student.englishScore}}</td>
+                <td>{{student.basicScore}}</td>
+                <td>{{student.extraScore}}</td>
+                <td>{{student.fixScore}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:fragment="scholarship_W3">
+        <div class="layui-col-md2 margin-bottom-10">
+            <button class="layui-btn layui-btn-fluid scholarship_submit_btn" table_level="W3">确定</button>
+        </div>
+        <div class="layui-col-md2 margin-bottom-10 layui-col-md-offset8">
+            <button class="layui-btn layui-btn-fluid layui-btn-normal" id="upload_evaluations_scholarship">上传评选结果</button>
+        </div>
+        <table class="layui-table" id="scholarship_student_W3">
+            <colgroup>
+                <col width="100">
+            </colgroup>
+            <thead>
+            <tr>
+                <th></th>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>身体素质得分</th>
+                <th>思想素质得分</th>
+                <th>专业成绩得分</th>
+                <th>英语成绩</th>
+                <th>基础得分</th>
+                <th>额外加分</th>
+                <th>综合评分</th>
+            </tr>
+            </thead>
+            <tbody id="excellent_students_W3">
+            <tr v-for="(student, index) in studentList" v-cloak>
+                <td>
+                    <input type="checkbox" title="三等奖" :stuNo="student.stuNo"
+                           :disabled="student.evaluationResult1 == 'W2'"
+                           :checked="student.evaluationResult2 == 'W3'"
+                    >
+                </td>
+                <td>{{student.stuNo}}</td>
+                <td>{{student.stuName}}</td>
+                <td>{{student.stuGrade}}</td>
+                <td>{{student.physicalScore}}</td>
+                <td>{{student.moralScore}}</td>
+                <td>{{student.majorScore}}</td>
+                <td>{{student.englishScore}}</td>
+                <td>{{student.basicScore}}</td>
+                <td>{{student.extraScore}}</td>
+                <td>{{student.fixScore}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:fragment="scholarship_result">
+        <div class="layui-col-md2 margin-bottom-10">
+            <button class="layui-btn" type="button" onClick="exportTableData()">
+                <i class="icon fa-download" aria-hidden="true"></i> 数据导出Excel
+            </button>
+        </div>
+        <table class="layui-table" id="scholarship_student_result">
+            <colgroup>
+                <col width="100">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>年级</th>
+                <th>身体素质得分</th>
+                <th>思想素质得分</th>
+                <th>专业成绩得分</th>
+                <th>英语成绩</th>
+                <th>基础得分</th>
+                <th>额外加分</th>
+                <th>综合评分</th>
+                <th>考核结果</th>
+            </tr>
+            </thead>
+            <tbody id="excellent_students_result">
+            <tr v-for="(student, index) in studentList" v-cloak>
+                <td>{{student.stuNo}}</td>
+                <td>{{student.stuName}}</td>
+                <td>{{student.stuGrade}}</td>
+                <td>{{student.physicalScore}}</td>
+                <td>{{student.moralScore}}</td>
+                <td>{{student.majorScore}}</td>
+                <td>{{student.englishScore}}</td>
+                <td>{{student.basicScore}}</td>
+                <td>{{student.extraScore}}</td>
+                <td>{{student.fixScore}}</td>
+                <td>{{student.evaluationResult}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

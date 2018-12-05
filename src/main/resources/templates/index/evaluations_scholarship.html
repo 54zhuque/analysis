@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>成绩分析系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/layui/font/font-awesome/font-awesome.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/css/site.css}" media="all"/>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="main_body padding-10">
+<div class="layui-container width-full padding-10 bg-white">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <input type="hidden" id="grade" th:value="${grade}"/>
+            <input type="hidden" id="subject" th:value="${subject}"/>
+            <div class="layui-tab layui-tab-brief" lay-filter="scholarship_tab">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">特等奖</li>
+                    <li>一等奖</li>
+                    <li>二等奖</li>
+                    <li>三等奖</li>
+                    <li>评选结果</li>
+                </ul>
+                <div class="layui-tab-content layui-form">
+                    <div class="layui-tab-item layui-show" th:include="index/scholarship_level::scholarship_W0"></div>
+                    <div class="layui-tab-item" th:include="index/scholarship_level::scholarship_W1"></div>
+                    <div class="layui-tab-item" th:include="index/scholarship_level::scholarship_W2"></div>
+                    <div class="layui-tab-item" th:include="index/scholarship_level::scholarship_W3"></div>
+                    <div class="layui-tab-item" th:include="index/scholarship_level::scholarship_result"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/vue.js}"></script>
+<script type="text/javascript" th:src="@{/js/xlsx/xlsx.full.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/filesaver/FileSaver.js}"></script>
+<script type="text/javascript" th:src="@{/js/scholarship_evaluate.js}"></script>
+</body>
+</html>
