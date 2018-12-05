@@ -61,6 +61,10 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         if (results != null && results.size() > 0) {
             return results;
         }
+        List<ScholarshipEvaluatingResult> evaluatingResults = scholarshipEvaluatingDao.findScholarshipEvaluatingResults(grade);
+        if (evaluatingResults != null && evaluatingResults.size() > 0) {
+            return new ArrayList<>();
+        }
         List<StudentScoreDto> dtos = studentEvaluationDao.findStudentEvaluationsWithGrade(grade);
         if (dtos == null || dtos.size() == 0) {
             return null;
