@@ -1,8 +1,11 @@
 package com.performance.analysis.controller;
 
+import com.performance.analysis.common.BuaEvaluation;
+import com.performance.analysis.common.BuaEvaluationEnum;
 import com.performance.analysis.common.SystemCode;
 import com.performance.analysis.common.SystemResponse;
 import com.performance.analysis.pojo.ScholarshipEvaluatingResult;
+import com.performance.analysis.service.BuaEvaluationService;
 import com.performance.analysis.service.ScholarshipEvaluatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @RestController
 public class ScholarshipEvaluatingController {
+    @Autowired
+    private BuaEvaluationService scholarshipEvaluationService;
     @Autowired
     private ScholarshipEvaluatingService scholarshipEvaluatingService;
 
@@ -46,6 +51,10 @@ public class ScholarshipEvaluatingController {
     @GetMapping("/bua/scholarship/evaluating/results/{stuGrade}/{result}")
     public SystemResponse getScholarshipConcludeEvaluatingResults(@PathVariable Integer stuGrade, @PathVariable String result) {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
+        BuaEvaluation evaluation = new BuaEvaluation();
+        evaluation.setGrade(stuGrade);
+        evaluation.setEvaluationResult(BuaEvaluationEnum.SCHOLARSHIP.getValue());
+        scholarshipEvaluationService.evaluate(evaluation);
         result = result.toUpperCase();
         List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingService.getScholarshipConcludeEvaluatingResults(stuGrade, result);
         response.setData(results);
