@@ -20,11 +20,6 @@ public class ScholarshipEvaluatingServiceImpl implements ScholarshipEvaluatingSe
     private ScholarshipEvaluatingDao scholarshipEvaluatingDao;
 
     @Override
-    public List<ScholarshipEvaluatingResult> getScholarshipEvaluatingResults() {
-        return scholarshipEvaluatingDao.findScholarshipEvaluatingResults();
-    }
-
-    @Override
     public void updateScholarshipEvaluatingResult2(String evaluation_result2, String stuNo) {
         scholarshipEvaluatingDao.updateScholarshipEvaluatingResult(evaluation_result2, stuNo);
     }

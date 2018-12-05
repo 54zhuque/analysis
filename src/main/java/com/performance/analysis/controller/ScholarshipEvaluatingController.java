@@ -24,19 +24,6 @@ public class ScholarshipEvaluatingController {
     private ScholarshipEvaluatingService scholarshipEvaluatingService;
 
     /**
-     * 获取奖学金评选过程数据
-     *
-     * @return
-     */
-    @GetMapping("/bua/scholarship/evaluating/results")
-    public SystemResponse getScholarshipEvaluatingResults() {
-        SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
-        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingService.getScholarshipEvaluatingResults();
-        response.setData(results);
-        return response;
-    }
-
-    /**
      * 修改奖学金评选等级
      *
      * @param stuNo  学号
@@ -51,14 +38,15 @@ public class ScholarshipEvaluatingController {
     }
 
     /**
-     * 获取归纳后的奖学金数据
+     * 获取的奖学金数据
      *
      * @param result 奖学金等级
      * @return
      */
-    @GetMapping("/bua/scholarship/evaluating/conclude/results/result")
+    @GetMapping("/bua/scholarship/evaluating/results/{result}")
     public SystemResponse getScholarshipConcludeEvaluatingResults(@PathVariable String result) {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
+        result = result.toUpperCase();
         List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingService.getScholarshipConcludeEvaluatingResults(result);
         response.setData(results);
         return response;

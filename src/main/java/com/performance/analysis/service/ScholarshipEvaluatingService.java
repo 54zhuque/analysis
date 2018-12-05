@@ -13,13 +13,6 @@ import java.util.List;
 public interface ScholarshipEvaluatingService {
 
     /**
-     * 获取所有奖学金评选过程结果
-     *
-     * @return
-     */
-    List<ScholarshipEvaluatingResult> getScholarshipEvaluatingResults();
-
-    /**
      * 更新result2
      *
      * @param evaluation_result2
