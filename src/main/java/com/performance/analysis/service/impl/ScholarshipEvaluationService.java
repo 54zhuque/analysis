@@ -79,7 +79,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
                 scholarshipEvaluatingDao.saveOrUpdateScholarshipEvaluatingResult(evaluatingResult);
             }
         }
-        return results;
+        return new ArrayList<>();
     }
 
 
