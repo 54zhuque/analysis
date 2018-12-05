@@ -27,4 +27,9 @@ public interface ScholarshipEvaluatingService {
      * @return
      */
     List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(String evaluationResult);
+
+    /**
+     * 确定奖学金最终结果
+     */
+    void evaluatedResults();
 }

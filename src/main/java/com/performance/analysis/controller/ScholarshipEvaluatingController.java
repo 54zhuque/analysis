@@ -51,4 +51,16 @@ public class ScholarshipEvaluatingController {
         response.setData(results);
         return response;
     }
+
+    /**
+     * 提交奖学金最终结果
+     *
+     * @return
+     */
+    @GetMapping("/bua/scholarship/evaluated")
+    public SystemResponse evaluatedResults() {
+        SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
+        scholarshipEvaluatingService.evaluatedResults();
+        return response;
+    }
 }

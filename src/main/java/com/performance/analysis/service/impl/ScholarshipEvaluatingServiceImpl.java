@@ -1,8 +1,11 @@
 package com.performance.analysis.service.impl;
 
 import com.performance.analysis.dao.ScholarshipEvaluatingDao;
+import com.performance.analysis.dao.StudentEvaluationDao;
 import com.performance.analysis.pojo.ScholarshipEvaluatingResult;
+import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.ScholarshipEvaluatingService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ import java.util.List;
 public class ScholarshipEvaluatingServiceImpl implements ScholarshipEvaluatingService {
     @Autowired
     private ScholarshipEvaluatingDao scholarshipEvaluatingDao;
+    @Autowired
+    private StudentEvaluationDao studentEvaluationDao;
 
     @Override
     public void updateScholarshipEvaluatingResult2(String evaluation_result2, String stuNo) {
@@ -27,5 +32,17 @@ public class ScholarshipEvaluatingServiceImpl implements ScholarshipEvaluatingSe
     @Override
     public List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(String evaluationResult) {
         return scholarshipEvaluatingDao.findScholarshipConcludeEvaluatingResults(evaluationResult);
+    }
+
+    @Override
+    public void evaluatedResults() {
+        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingDao.findScholarshipEvaluatingResults();
+        StudentEvaluationResult result;
+        for (ScholarshipEvaluatingResult evaluatingResult : results) {
+            result = new StudentEvaluationResult();
+            BeanUtils.copyProperties(evaluatingResult, result);
+            result.setEvaluationResult(evaluatingResult.getEvaluationResult2());
+            studentEvaluationDao.addStudentEvaluationResult(result);
+        }
     }
 }
