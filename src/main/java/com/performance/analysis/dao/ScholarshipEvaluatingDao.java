@@ -1,10 +1,7 @@
 package com.performance.analysis.dao;
 
 import com.performance.analysis.pojo.ScholarshipEvaluatingResult;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,7 +31,7 @@ public interface ScholarshipEvaluatingDao {
      * @param stuNo
      */
     @Update("update scholarship_evaluating set evaluation_result2 = #{evaluation_result2} where stu_no = #{stuNo}")
-    void updateScholarshipEvaluatingResult(String evaluation_result2, String stuNo);
+    void updateScholarshipEvaluatingResult(@Param("evaluation_result2") String evaluation_result2, @Param("stuNo") String stuNo);
 
     /**
      * 通过学号查询评选过程
@@ -43,7 +40,7 @@ public interface ScholarshipEvaluatingDao {
      * @return
      */
     @Select("select * from scholarship_evaluating where stu_no = #{stuNo}")
-    ScholarshipEvaluatingResult findScholarshipEvaluatingResultByStuNo(String stuNo);
+    ScholarshipEvaluatingResult findScholarshipEvaluatingResultByStuNo(@Param("stuNo") String stuNo);
 
     /**
      * 查询所有评选过程数据
@@ -59,5 +56,5 @@ public interface ScholarshipEvaluatingDao {
      * @return
      */
     @Select("select * from scholarship_evaluating where evaluation_result1=#{evaluationResult} or evaluation_result2=#{evaluationResult}")
-    List<ScholarshipEvaluatingResult> findScholarshipConcludeEvaluatingResults(String evaluationResult);
+    List<ScholarshipEvaluatingResult> findScholarshipConcludeEvaluatingResults(@Param("evaluationResult") String evaluationResult);
 }
