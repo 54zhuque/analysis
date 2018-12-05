@@ -1,15 +1,12 @@
 package com.performance.analysis.controller;
 
 import com.performance.analysis.common.*;
-import com.performance.analysis.exception.DataAnalysisException;
 import com.performance.analysis.exception.DataReadInException;
 import com.performance.analysis.exception.StorageException;
 import com.performance.analysis.pojo.StudentEvaluationResult;
 import com.performance.analysis.service.BuaEvaluationService;
 import com.performance.analysis.service.FileDataReadService;
 import com.performance.analysis.service.FileSystemStorageService;
-import com.performance.analysis.service.impl.BuaMajorDataReadService;
-import com.performance.analysis.service.impl.BuaMoralDataReadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

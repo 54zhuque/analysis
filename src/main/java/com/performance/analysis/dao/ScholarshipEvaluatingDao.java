@@ -27,8 +27,14 @@ public interface ScholarshipEvaluatingDao {
             "values(#{stuNo},#{stuName},#{stuGrade},#{physicalScore},#{moralScore},#{majorScore},#{englishScore},#{fixScore},#{evaluationResult1},#{evaluationResult2},#{extraScore},#{stuMajor},#{basicScore})")
     void saveOrUpdateScholarshipEvaluatingResult(ScholarshipEvaluatingResult result);
 
+    /**
+     * 更新评选过程result
+     *
+     * @param evaluation_result2
+     * @param stuNo
+     */
     @Update("update scholarship_evaluating set evaluation_result2 = #{evaluation_result2} where stu_no = #{stuNo}")
-    void updateScholarshipEvaluatingResult2(String evaluation_result2, String stuNo);
+    void updateScholarshipEvaluatingResult(String evaluation_result2, String stuNo);
 
     /**
      * 通过学号查询评选过程
