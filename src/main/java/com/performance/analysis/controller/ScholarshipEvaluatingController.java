@@ -43,11 +43,11 @@ public class ScholarshipEvaluatingController {
      * @param result 奖学金等级
      * @return
      */
-    @GetMapping("/bua/scholarship/evaluating/results/{result}")
-    public SystemResponse getScholarshipConcludeEvaluatingResults(@PathVariable String result) {
+    @GetMapping("/bua/scholarship/evaluating/results/{stuGrade}/{result}")
+    public SystemResponse getScholarshipConcludeEvaluatingResults(@PathVariable Integer stuGrade, @PathVariable String result) {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
         result = result.toUpperCase();
-        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingService.getScholarshipConcludeEvaluatingResults(result);
+        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingService.getScholarshipConcludeEvaluatingResults(stuGrade, result);
         response.setData(results);
         return response;
     }
@@ -57,10 +57,10 @@ public class ScholarshipEvaluatingController {
      *
      * @return
      */
-    @GetMapping("/bua/scholarship/evaluated")
-    public SystemResponse evaluatedResults() {
+    @GetMapping("/bua/scholarship/evaluated/{stuGrade}")
+    public SystemResponse evaluatedResults(@PathVariable Integer stuGrade) {
         SystemResponse response = new SystemResponse(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMsg());
-        scholarshipEvaluatingService.evaluatedResults();
+        scholarshipEvaluatingService.evaluatedResults(stuGrade);
         return response;
     }
 }

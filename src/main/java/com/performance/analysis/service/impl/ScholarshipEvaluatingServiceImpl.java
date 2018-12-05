@@ -30,13 +30,13 @@ public class ScholarshipEvaluatingServiceImpl implements ScholarshipEvaluatingSe
     }
 
     @Override
-    public List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(String evaluationResult) {
-        return scholarshipEvaluatingDao.findScholarshipConcludeEvaluatingResults(evaluationResult);
+    public List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(Integer stuGrade, String evaluationResult) {
+        return scholarshipEvaluatingDao.findScholarshipConcludeEvaluatingResults(stuGrade, evaluationResult);
     }
 
     @Override
-    public void evaluatedResults() {
-        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingDao.findScholarshipEvaluatingResults();
+    public void evaluatedResults(Integer stuGrade) {
+        List<ScholarshipEvaluatingResult> results = scholarshipEvaluatingDao.findScholarshipEvaluatingResults(stuGrade);
         StudentEvaluationResult result;
         for (ScholarshipEvaluatingResult evaluatingResult : results) {
             result = new StudentEvaluationResult();

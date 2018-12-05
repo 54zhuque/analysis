@@ -47,14 +47,14 @@ public interface ScholarshipEvaluatingDao {
      *
      * @return
      */
-    @Select("select * from scholarship_evaluating")
-    List<ScholarshipEvaluatingResult> findScholarshipEvaluatingResults();
+    @Select("select * from scholarship_evaluating where stu_grade=#{stuGrade}")
+    List<ScholarshipEvaluatingResult> findScholarshipEvaluatingResults(@Param("stuGrade") Integer stuGrade);
 
     /**
      * 查询归类的评选过程数据
      *
      * @return
      */
-    @Select("select * from scholarship_evaluating where evaluation_result1=#{evaluationResult} or evaluation_result2=#{evaluationResult}")
-    List<ScholarshipEvaluatingResult> findScholarshipConcludeEvaluatingResults(@Param("evaluationResult") String evaluationResult);
+    @Select("select * from scholarship_evaluating where stu_grade=#{stuGrade} and (evaluation_result1=#{evaluationResult} or evaluation_result2=#{evaluationResult})")
+    List<ScholarshipEvaluatingResult> findScholarshipConcludeEvaluatingResults(@Param("stuGrade") Integer stuGrade, @Param("evaluationResult") String evaluationResult);
 }
