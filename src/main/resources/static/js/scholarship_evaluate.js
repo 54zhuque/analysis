@@ -198,40 +198,5 @@ function exportTableData() {
     var workbook = XLSX.utils.table_to_book(document.getElementById('scholarship_student_result'));
     var wopts = {bookType: 'xlsx', bookSST: false, type: 'array'};
     var wbout = XLSX.write(workbook, wopts);
-    saveAs(new Blob([wbout], {type: "application/octet-stream"}), getFileName());
-}
-
-function getFileName() {
-    var grade = document.getElementById('grade').value;
-    var subject = document.getElementById('subject').value;
-    var file_name = "";
-    switch (grade) {
-        case('2'):
-            file_name += "二年级";
-            break;
-        case('3'):
-            file_name += "三年级";
-            break;
-        case('4'):
-            file_name += "四年级";
-            break;
-        default:
-            break;
-    }
-    switch (subject) {
-        case('A'):
-            file_name += '_三好学生';
-            break;
-        case('B'):
-            file_name += '_优秀班干部';
-            break;
-        case('W'):
-            file_name += '_奖学金';
-            break;
-        default:
-            file_name += 'file';
-            break;
-    }
-    file_name += '.xlsx';
-    return file_name;
+    saveAs(new Blob([wbout], {type: "application/octet-stream"}), '奖学金.xlsx');
 }
