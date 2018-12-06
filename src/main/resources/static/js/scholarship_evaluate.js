@@ -54,8 +54,7 @@ layui.use(['jquery', "layer", "element"], function () {
 
     // 最终提交
     $("#upload_evaluations_scholarship").on("click", function () {
-        var grade = $("#grade").val();
-        $.get('/bua/scholarship/evaluated/' + grade, function () {
+        $.get('/bua/scholarship/evaluated', function () {
             layer.msg('评选结果上传成功');
         });
     });
@@ -73,7 +72,7 @@ function loadStudentGradeTable(level) {
         level = 'W0';
     }
     var grade = $("#grade").val();
-    var url = '/bua/scholarship/evaluating/results/' + grade + '/' + level;
+    var url = '/bua/scholarship/evaluating/results/' + level;
     $.get(url, null, function (data) {
         var code = data['code'];
         if (parseInt(code) === 200) {
