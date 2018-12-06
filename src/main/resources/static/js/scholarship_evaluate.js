@@ -71,7 +71,6 @@ function loadStudentGradeTable(level) {
     if (!level) {
         level = 'W0';
     }
-    var grade = $("#grade").val();
     var url = '/bua/scholarship/evaluating/results/' + level;
     $.get(url, null, function (data) {
         var code = data['code'];
