@@ -56,16 +56,15 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public List<StudentEvaluationResult> evaluate(BuaEvaluation evaluation) {
         String evaluationResult = evaluation.getEvaluationResult();
-        Integer grade = evaluation.getGrade();
-        List<StudentEvaluationResult> results = studentEvaluationDao.findStudentEvaluationByTypeTwo(evaluationResult, grade);
+        List<StudentEvaluationResult> results = studentEvaluationDao.findStudentEvaluationByTypeOne(evaluationResult);
         if (results != null && results.size() > 0) {
             return results;
         }
-        List<ScholarshipEvaluatingResult> evaluatingResults = scholarshipEvaluatingDao.findScholarshipEvaluatingResults(grade);
+        List<ScholarshipEvaluatingResult> evaluatingResults = scholarshipEvaluatingDao.findScholarshipEvaluatingResults();
         if (evaluatingResults != null && evaluatingResults.size() > 0) {
             return new ArrayList<>();
         }
-        List<StudentScoreDto> dtos = studentEvaluationDao.findStudentEvaluationsWithGrade(grade);
+        List<StudentScoreDto> dtos = studentEvaluationDao.findStudentEvaluations();
         if (dtos == null || dtos.size() == 0) {
             return null;
         }
@@ -189,11 +188,10 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
         for (StudentScoreDto studentScoreDto : studentScoreDtos) {
             String stuNo = studentScoreDto.getStuNo();
             Integer stuGrade = studentScoreDto.getStuGrade();
-            List<CourseEvaluation> courseEvaluations = studentScoreDto.getStuCourse();
             Double englishScore = studentScoreDto.getEnglishScore();
+            boolean isMetScore = this.meetScoreRequirements(studentScoreDto);
             boolean isCET4 = cet4List != null && cet4List.contains(stuNo);
             boolean isGtMedianScore = englishScore >= englishMedianScore;
-            boolean isMetScore = this.meetScoreRequirements(courseEvaluations);
             boolean isMetEnglish = this.meetEnglishRequirements(stuGrade, isCET4, isGtMedianScore);
             if (isMetScore && isMetEnglish) {
                 StudentEvaluationResult result = new StudentEvaluationResult();
@@ -216,8 +214,7 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     private List<StudentEvaluationResult> getFilterResults2(String evaluationResult, List<StudentScoreDto> studentScoreDtos) {
         List<StudentEvaluationResult> results = new ArrayList<>(studentScoreDtos.size());
         for (StudentScoreDto studentScoreDto : studentScoreDtos) {
-            List<CourseEvaluation> courseEvaluations = studentScoreDto.getStuCourse();
-            boolean isMet = this.meetScoreRequirements(courseEvaluations);
+            boolean isMet = this.meetScoreRequirements(studentScoreDto);
             if (isMet) {
                 StudentEvaluationResult result = new StudentEvaluationResult();
                 BeanUtils.copyProperties(studentScoreDto, result);
@@ -275,18 +272,32 @@ public class ScholarshipEvaluationService implements BuaEvaluationService {
     }
 
     /**
-     * 各科成绩满足要求
+     * 身体素质，思想素质，各科成绩满足要求
      *
-     * @param courseEvaluations
+     * @param scoreDto
      * @return
      */
-    private boolean meetScoreRequirements(List<CourseEvaluation> courseEvaluations) {
+    private boolean meetScoreRequirements(StudentScoreDto scoreDto) {
+        if (scoreDto == null) {
+            return false;
+        }
+        Double physicalScoreRequire = 60d;
+        Double moralScoreRequire = 75d;
+        //身体素质小于60分不不符合
+        if (scoreDto.getPhysicalScore() == null || scoreDto.getPhysicalScore() < physicalScoreRequire) {
+            return false;
+        }
+        //思想素质小于75分不符合
+        if (scoreDto.getMoralScore() == null || scoreDto.getMoralScore() < moralScoreRequire) {
+            return false;
+        }
+        List<CourseEvaluation> courseEvaluations = scoreDto.getStuCourse();
         if (courseEvaluations == null) {
             return false;
         }
         Double passScore = 60d;
         for (CourseEvaluation courseEvaluation : courseEvaluations) {
-            //满足没有挂科，各科成绩>=60
+            //存在挂科，学科成绩有小于60分的不符合
             if (courseEvaluation.getScore() < passScore) {
                 return false;
             }

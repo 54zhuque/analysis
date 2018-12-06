@@ -18,20 +18,19 @@ import java.util.List;
 public interface StudentEvaluationDao {
 
     /**
-     * 查询对应年级专业下的学生考核信息
+     * 查询所有年级专业下的学生考核信息
      *
-     * @param grade 年级
-     * @param major 专业
      * @return List<StudentEvaluationDto>
      */
     @Select("select " +
             "student.stu_no," +
             "student.name as stu_name," +
             "student.grade as stu_grade," +
-            "student.major as major," +
+            "student.major as stu_major," +
             "extra_evaluation.extra_score as extra_score," +
             "physical_evaluation.fix_score as physical_score," +
             "moral_evaluation.fix_score as moral_score," +
+            "major_evaluation.course as stu_course," +
             "major_evaluation.fix_score as major_score," +
             "english_evaluation.english_score as english_score " +
             "from " +
@@ -40,9 +39,8 @@ public interface StudentEvaluationDao {
             "left join physical_evaluation on student.stu_no = physical_evaluation.stu_no) " +
             "left join moral_evaluation on student.stu_no = moral_evaluation.stu_no) " +
             "left join major_evaluation on student.stu_no = major_evaluation.stu_no) " +
-            "left join english_evaluation on student.stu_no = english_evaluation.stu_no " +
-            "where student.grade=${grade} and student.stu_no like '%${major}%'")
-    List<StudentEvaluationDto> findStudentEvaluationsWithGradMajor(@Param("grade") Integer grade, @Param("major") String major);
+            "left join english_evaluation on student.stu_no = english_evaluation.stu_no ")
+    List<StudentScoreDto> findStudentEvaluations();
 
 
     /**
@@ -98,15 +96,13 @@ public interface StudentEvaluationDao {
     void addStudentEvaluationResult(StudentEvaluationResult studentEvaluationResult);
 
     /**
-     * 查询对应年级专业下的评优信息
+     * 查询所有年级下的评优信息
      *
      * @param evaluationResult
-     * @param grade
-     * @param major
      * @return
      */
-    @Select("select * from student_evaluation where evaluation_result = #{evaluationResult} and stu_grade = #{grade} and stu_no like '%${major}%' order by fix_score desc")
-    List<StudentEvaluationResult> findStudentEvaluationByTypeOne(@Param("evaluationResult") String evaluationResult, @Param("grade") Integer grade, @Param("major") String major);
+    @Select("select * from student_evaluation where evaluation_result like '%${evaluationResult}%' order by evaluation_result asc,extra_score desc")
+    List<StudentEvaluationResult> findStudentEvaluationByTypeOne(@Param("evaluationResult") String evaluationResult);
 
     /**
      * 查询对应年级下的评优
@@ -120,28 +116,37 @@ public interface StudentEvaluationDao {
 
     /**
      * 清空分析结果
-     * */
+     */
     @Delete("delete from student_evaluation")
-    int clearStudentEvaluation ();
+    int clearStudentEvaluation();
+
     /**
      * 清楚全部数据
-     * */
+     */
     @Delete("delete from class_cadre")
     int clearClassCadre();
+
     @Delete("delete from english_cet4")
     int clearEnglishCet4();
+
     @Delete("delete from extra_evaluation")
     int clearExtraEvaluation();
+
     @Delete("delete from major_evaluation")
     int clearMajorEvaluation();
+
     @Delete("delete from moral_evaluation")
     int clearMoralEvaluation();
+
     @Delete("delete from physical_evaluation")
     int clearPhysicalEvaluation();
+
     @Delete("delete from sqlite_sequence")
     int clearSqliteSequence();
+
     @Delete("delete from student")
     int clearStudent();
+
     @Delete("delete from english_evaluation")
     int clearEnglishEvaluation();
 

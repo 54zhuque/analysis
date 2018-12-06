@@ -103,16 +103,16 @@ public class ClassCadreModelEvaluationService implements BuaEvaluationService {
         if (!isClassCadre) {
             return false;
         }
-        //身体素质不大于75分不符合
-        if (physicalFixedScore <= physicalScoreRequire) {
+        //身体素质小于75分不符合
+        if (physicalFixedScore < physicalScoreRequire) {
             return false;
         }
-        //思想素质不大于85分不符合
-        if (moralFixedScore <= moralScoreRequire) {
+        //思想素质小于85分不符合
+        if (moralFixedScore < moralScoreRequire) {
             return false;
         }
-        //专业素质不大于75分不符合
-        if (majorFixedScore <= majorScoreRequire) {
+        //专业素质小于75分不符合
+        if (majorFixedScore < majorScoreRequire) {
             return false;
         }
         return true;

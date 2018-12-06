@@ -23,16 +23,13 @@ public interface ScholarshipEvaluatingService {
     /**
      * 获取奖学金初步评选归纳后结果
      *
-     * @param stuGrade         年级
      * @param evaluationResult 奖学金类型
      * @return
      */
-    List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(Integer stuGrade, String evaluationResult);
+    List<ScholarshipEvaluatingResult> getScholarshipConcludeEvaluatingResults(String evaluationResult);
 
     /**
      * 确定奖学金最终结果
-     *
-     * @param stuGrade 年级
      */
-    void evaluatedResults(Integer stuGrade);
+    void evaluatedResults();
 }

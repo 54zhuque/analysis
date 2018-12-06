@@ -104,16 +104,16 @@ public class StudentModelEvaluationService implements BuaEvaluationService {
         Double moralFixedScore = studentScoreDto.getMoralScore();
         Double majorFixedScore = studentScoreDto.getMajorScore();
         Double englishScore = studentScoreDto.getEnglishScore();
-        //身体素质不大于80分不符合
-        if (physicalFixedScore <= physicalScoreRequire) {
+        //身体素质小于80分不符合
+        if (physicalFixedScore < physicalScoreRequire) {
             return false;
         }
-        //思想素质不大于85分不符合
-        if (moralFixedScore <= moralScoreRequire) {
+        //思想素质小于85分不符合
+        if (moralFixedScore < moralScoreRequire) {
             return false;
         }
-        //专业素质不大于85分不符合
-        if (majorFixedScore <= majorScoreRequire) {
+        //专业素质小于85分不符合
+        if (majorFixedScore < majorScoreRequire) {
             return false;
         }
         Integer grade = studentScoreDto.getStuGrade();
